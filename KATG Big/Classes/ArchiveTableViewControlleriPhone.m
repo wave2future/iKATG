@@ -9,33 +9,35 @@
 #import "ArchiveTableViewControlleriPhone.h"
 
 @implementation ArchiveTableViewControlleriPhone
-@synthesize activityIndicator;
+@synthesize activityIndicator	=	_activityIndicator;
 
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
 	
-	UIActivityIndicatorView	*	anActivityIndicator	=	[[UIActivityIndicatorView alloc] 
-														 initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-	if (anActivityIndicator)
+	self.tableView.separatorStyle	=	UITableViewCellSeparatorStyleNone;
+	
+	UIActivityIndicatorView	*	activityIndicator	=	[[UIActivityIndicatorView alloc] 
+														 initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+	if (activityIndicator)
 	{
-		self.activityIndicator						=	anActivityIndicator;
-		[anActivityIndicator release];
+		self.activityIndicator						=	activityIndicator;
+		[activityIndicator release];
 		[self.activityIndicator setHidesWhenStopped:YES];
-		UIBarButtonItem		*	button				=	[[UIBarButtonItem alloc] 
-														 initWithCustomView:activityIndicator];
-		[self.navigationItem setRightBarButtonItem:button];
-		[button release];
-		
+		self.activityIndicator.center				=	self.view.center;
+		[self.view addSubview:self.activityIndicator];
 		[self.activityIndicator startAnimating];
 	}
 }
 
 - (void)shows:(NSArray *)shows
 {
-	[super shows:shows];
 	if (shows.count > 0)
+	{
 		[self.activityIndicator stopAnimating];
+		self.tableView.separatorStyle	=	UITableViewCellSeparatorStyleSingleLine;
+	}
+	[super shows:shows];
 }
 
 - (void)viewDidUnload
@@ -45,7 +47,7 @@
 }
 - (void)dealloc
 {
-	[activityIndicator release];
+	[_activityIndicator release];
 	[super dealloc];
 }
 

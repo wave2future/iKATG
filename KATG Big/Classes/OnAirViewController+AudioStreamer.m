@@ -17,7 +17,7 @@
 //  limitations under the License.
 //  
 
-#define testFeed 1
+#define testFeed 0
 #if testFeed
 static NSString *urlString = @"http://scfire-mtc-aa05.stream.aol.com:80/stream/1010";
 #else
@@ -92,7 +92,7 @@ static NSString *urlString = @"http://liveshow.keithandthegirl.com:8004";
 // Parameters:
 //    sender - normally, the play/stop button.
 //
-- (IBAction)audioButtonPressed:(id)sender
+- (void)_audioButtonPressed:(id)sender
 {
 	if ([audioButton.currentImage isEqual:[UIImage imageNamed:@"Play"]])
 	{

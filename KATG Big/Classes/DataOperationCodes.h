@@ -2,3 +2,4 @@
 #define kLiveShowStatusCode 2
 #define kFeedbackCode 3
 #define kShowArchivesCode 4
+#define kShowDetailsCode 5

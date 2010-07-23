@@ -21,7 +21,7 @@
 #import "DataModel.h"
 #import "DataModel+Processing.h"
 #import "DataModel+Notification.h"
-#import "DataOperationCodes.h"
+
 #import "DataModelURIList.h"
 #import "ModelLogging.h"
 
@@ -228,13 +228,30 @@ static DataModel	*	sharedDataModel	=	nil;
 - (void)showsNoPoll
 {
 	//
-	//  Retrieve events already in Core Data Store
+	//  Retrieve shows already in Core Data Store
 	//
 #ifdef __IPHONE_4_0
 	[coreDataOperationQueue addOperationWithBlock:^{[[DataModel sharedDataModel] fetchShows];}];
 #else
 	// write some 3.0 code :(
 #endif
+}
+- (void)showDetails:(NSString *)ID
+{
+	//
+	//  *UNREVISEDCOMMENTS*
+	//
+	DataOperation	*	op	=	[[DataOperation alloc] init];
+	[op setDelegate:self];
+	// Object setters are (nonatomic, copy)
+	[op setCode:kShowDetailsCode];
+	[op setBufferDict:[NSDictionary dictionaryWithObject:ID forKey:kShowIDKey]];
+	[op setURI:kShowDetailsURIAddress];
+	if (connected)
+		[operationQueue addOperation:op];
+	else
+		[delayedOperations addObject:op];
+	[op release];
 }
 /******************************************************************************/
 #pragma mark -

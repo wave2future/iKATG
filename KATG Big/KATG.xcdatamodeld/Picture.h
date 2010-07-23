@@ -2,12 +2,13 @@
 //  Picture.h
 //  KATG Big
 //
-//  Created by Doug Russell on 6/23/10.
+//  Created by Doug Russell on 7/21/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import <CoreData/CoreData.h>
 
+@class Show;
 
 @interface Picture :  NSManagedObject  
 {
@@ -18,6 +19,7 @@
 @property (nonatomic, retain) NSString * Description;
 @property (nonatomic, retain) NSString * Title;
 @property (nonatomic, retain) NSString * ShowID;
+@property (nonatomic, retain) Show * newRelationship;
 
 @end
 

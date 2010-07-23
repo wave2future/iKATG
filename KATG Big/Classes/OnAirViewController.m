@@ -1,4 +1,4 @@
-    //
+//
 //  OnAirViewController.m
 //  KATG Big
 //
@@ -31,6 +31,7 @@
 - (void)findGuest:(NSString *)eventTitle;
 - (void)loadDefaults;
 - (void)writeDefaults;
+- (void)updateReachability:(Reachability*)curReach;
 @end
 
 @implementation OnAirViewController
@@ -143,14 +144,18 @@
     [super dealloc];
 }
 #pragma mark -
-#pragma mark Feedback Button
+#pragma mark Buttons
 #pragma mark -
 - (IBAction)submitButtonPressed:(id)sender
 {
 	[self sendFeedback];
 }
+- (IBAction)audioButtonPressed:(id)sender
+{
+    [self _audioButtonPressed:sender];
+}
 #pragma mark -
-#pragma mark UserDefaultss
+#pragma mark UserDefaults
 #pragma mark -
 - (void)handleForegroundNotification
 {

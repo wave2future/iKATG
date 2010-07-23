@@ -91,18 +91,22 @@ void uncaughtExceptionHandler(NSException *exception)
     
     return YES;
 }
+- (void)applicationWillResignActive:(UIApplication *)application 
+{
+	application.applicationIconBadgeNumber = 0;
+}
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	NSLog(@"Application Termination");
 	
-	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-	//NSLog(@"Cookies Shutdown :%@", cookies);
-	if (cookies != nil)
-	{
-		//BOOL success = 
-		[NSKeyedArchiver archiveRootObject:cookies 
-									toFile:AppDirectoryCachePathAppended(@"cookies")];
-	}
+//	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+//	//NSLog(@"Cookies Shutdown :%@", cookies);
+//	if (cookies != nil)
+//	{
+//		//BOOL success = 
+//		[NSKeyedArchiver archiveRootObject:cookies 
+//									toFile:AppDirectoryCachePathAppended(@"cookies")];
+//	}
 	
 	NSError *error = nil;
     if (managedObjectContext != nil) 
@@ -114,7 +118,7 @@ void uncaughtExceptionHandler(NSException *exception)
 			 
 			 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
 			 */
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+			ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
         } 
     }

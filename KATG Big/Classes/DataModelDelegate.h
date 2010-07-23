@@ -22,7 +22,13 @@
 
 @protocol DataModelDelegate
 @optional
+//
+//
+//
 - (void)events:(NSArray *)events;
+//
+//
+//
 - (void)liveShowStatus:(BOOL)live;
 //
 //  NSArray of
@@ -39,4 +45,9 @@
 //  @property (nonatomic, retain) NSSet* Pictures;
 //
 - (void)shows:(NSArray *)shows;
+//
+//
+//
+- (void)showDetailsAvailable:(NSString *)ID;
+
 @end

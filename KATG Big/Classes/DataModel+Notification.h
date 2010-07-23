@@ -13,5 +13,6 @@
 - (void)notifyEvents:(NSArray *)events;
 - (void)notifyLiveShowStatus:(NSString *)status;
 - (void)notifyShows:(NSArray *)shows;
+- (void)notifyShowDetails:(NSString *)ID;
 
 @end

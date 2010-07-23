@@ -11,16 +11,18 @@
 @interface ArchiveTableViewCell : UITableViewCell 
 {
 	UIImageView	*	_showTypeImageView;
+	UILabel		*	_showNumberLabel;
 	UILabel		*	_showTitleLabel;
 	UILabel		*	_showGuestsLabel;
 	UIImageView	*	_showNotesImageView;
 	UIImageView	*	_showPicsImageView;
 }
 
-@property (nonatomic, retain) IBOutlet 	UIImageView	*	showTypeImageView;
-@property (nonatomic, retain) IBOutlet 	UILabel		*	showTitleLabel;
-@property (nonatomic, retain) IBOutlet 	UILabel		*	showGuestsLabel;
-@property (nonatomic, retain) IBOutlet 	UIImageView	*	showNotesImageView;
-@property (nonatomic, retain) IBOutlet 	UIImageView	*	showPicsImageView;
+@property (nonatomic, retain)	IBOutlet 	UIImageView	*	showTypeImageView;
+@property (nonatomic, retain)	IBOutlet 	UILabel		*	showNumberLabel;
+@property (nonatomic, retain)	IBOutlet 	UILabel		*	showTitleLabel;
+@property (nonatomic, retain)	IBOutlet 	UILabel		*	showGuestsLabel;
+@property (nonatomic, retain)	IBOutlet 	UIImageView	*	showNotesImageView;
+@property (nonatomic, retain)	IBOutlet 	UIImageView	*	showPicsImageView;
 
 @end

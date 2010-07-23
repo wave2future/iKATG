@@ -98,5 +98,6 @@
 @property (nonatomic, retain) IBOutlet UILabel			*	guestLabel;
 
 - (IBAction)submitButtonPressed:(id)sender;
+- (IBAction)audioButtonPressed:(id)sender;
 
 @end

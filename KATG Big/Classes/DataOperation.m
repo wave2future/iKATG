@@ -22,6 +22,25 @@
 #import "DataOperationCodes.h"
 #import "DataOperationLogging.h"
 
+void LogUnparsed(NSString *message, NSInteger instanceNumber, NSData *xmlData)
+{
+	ESLog(message, instanceNumber, [[[NSString alloc] initWithData:xmlData encoding:NSUTF8StringEncoding] autorelease]);
+}
+void LogParsed(NSString *message, NSInteger instanceNumber, NSDictionary *entries)
+{
+	ESLog(message, instanceNumber, entries);
+}
+GrabXMLFeed * CreateParserForXPath(NSInteger code, NSData *data, NSString *xPath, id<GrabXMLFeedDelegate> delegate)
+{
+	GrabXMLFeed	*	parser	=	
+	[[GrabXMLFeed alloc] 
+	 initWithData:data 
+	 xPath:[NSString stringWithFormat:@"//%@", xPath]];
+	[parser setDelegate:delegate];
+	[parser setInstanceNumber:code];
+	return parser;
+}
+
 @implementation DataOperation
 @synthesize delegate, code, baseURL, URI, bufferDict, dataDict, userInfo;
 
@@ -37,7 +56,7 @@
 }
 - (void)dealloc
 {
-	delegate = nil;
+	delegate	=	nil;
 	[URI release];
 	[baseURL release];
 	[bufferDict release];
@@ -54,46 +73,35 @@
 {
 	if (!self.isCancelled)
 	{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		NSAutoreleasePool	*	pool	=
+		[[NSAutoreleasePool alloc] init];
 		
-		request = [[Request alloc] init];
+		request	=	[[Request alloc] init];
 		[request setDelegate:self];
 		[request setInstanceCode:code];
 		[request setURI:URI];
 		
 		if (baseURL != nil)
-		{
 			[request setBaseURL:baseURL];
-		}
 		
 		if (userInfo != nil)
-		{
 			[request setUserInfo:userInfo];
-		}
 		
 		if (!self.isCancelled && dataDict == nil && bufferDict == nil)
-		{
 			[request get];
-		}
 		else if (!self.isCancelled && dataDict == nil && bufferDict != nil)
-		{
 			[request post:bufferDict];
-		}
 		else if (!self.isCancelled && dataDict != nil && bufferDict != nil)
-		{
 			[request post:bufferDict data:dataDict];
-		} 
 		else 
-		{
-			//failed
-		}
+			ESLog(@"Data Operation Failed or Cancelled");
 		
-		[URI release]; URI = nil;
-		[bufferDict release]; bufferDict = nil;
-		[dataDict release]; dataDict = nil;
-		[userInfo release]; userInfo = nil;
-		[request release]; request = nil;
-		[aParser release]; aParser = nil;
+		[URI release];			URI			=	nil;
+		[bufferDict release];	bufferDict	=	nil;
+		[dataDict release];		dataDict	=	nil;
+		[userInfo release];		userInfo	=	nil;
+		[request release];		request		=	nil;
+		[aParser release];		aParser		=	nil;
 		
 		[pool drain];
 	}
@@ -103,45 +111,39 @@
 #pragma mark -
 - (void)requestDone:(Request *)rqst
 {
-	[request release];
-	request = nil;
+	[request release];	request	=	nil;
 }
 - (void)requestFailed:(Request *)rqst error:(NSError *)error
 {
-	//NSLog(@"Request Failed");
+	ESLog(@"Request Failed %@", error);
 }
 - (void)requestDidReturnData:(NSData *)data instance:(NSInteger)instanceCode
 {
 #if LogAllReturnedData
-	NSLog(@"\nReturned Data for Instance %d: \n\n%@\n\n", instanceCode, [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+	LogUnparsed(@"\nReturned Data for Instance %d: \n\n%@\n\n", instanceCode, data)
 #endif
 	switch (instanceCode) 
 	{
 		case kEventsListCode:
 #if LogEventsXML
-			NSLog(@"\nEvents XML for Instance %d: \n\n%@\n\n", instanceCode, [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+			LogUnparsed(@"\nEvents XML for Instance %d: \n\n%@\n\n", instanceCode, data)
 #endif
-			aParser = [[GrabXMLFeed alloc] initWithData:data xPath:@"//Event"];
-			[aParser setDelegate:self];
-			[aParser setInstanceNumber:code];
+			aParser	=	CreateParserForXPath(code, data, @"Event", self);
 			[aParser parse];
 			break;
 		case kLiveShowStatusCode:
 #if LogFeedStatusXML
-			NSLog(@"\nFeed Status XML for Instance %d: \n\n%@\n\n", instanceCode, [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+			LogUnparsed(@"\nFeed Status XML for Instance %d: \n\n%@\n\n", instanceCode, data);
 #endif
-			aParser = [[GrabXMLFeed alloc] initWithData:data xPath:@"//root"];
-			[aParser setDelegate:self];
-			[aParser setInstanceNumber:code];
+		case kShowDetailsCode:
+			aParser	=	CreateParserForXPath(code, data, @"root", self);
 			[aParser parse];
 			break;
 		case kShowArchivesCode:
 #if LogShowArchiveXML
-			NSLog(@"\nFeed Status XML for Instance %d: \n\n%@\n\n", instanceCode, [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+			LogUnparsed(@"\nFeed Status XML for Instance %d: \n\n%@\n\n", instanceCode, data);
 #endif
-			aParser = [[GrabXMLFeed alloc] initWithData:data xPath:@"//S"];
-			[aParser setDelegate:self];
-			[aParser setInstanceNumber:code];
+			aParser	=	CreateParserForXPath(code, data, @"S", self);
 			[aParser parse];
 			break;
 		default:
@@ -163,33 +165,40 @@
 	NSArray *entries;
 	entries = [[parser feedEntries] copy];
 #if LogAllParsed
-	NSLog(@"\nParsed XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
+	LogParsed(@"\nParsed XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
 #endif
 	switch ([parser instanceNumber]) 
 	{
 		case kEventsListCode:
 #if LogEventsParsed
-			NSLog(@"\nParsed Events XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
+			LogParsed(@"\nParsed Events XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
 #endif
-			[[self delegate] processEventsList:(NSArray *)entries];
+			[self.delegate processEventsList:(NSArray *)entries];
 			break;
 		case kLiveShowStatusCode:
 #if LogFeedStatusXML
-			NSLog(@"\nParsed Feed Status XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
+			LogParsed(@"\nParsed Feed Status XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
 #endif
-			[[self delegate] processLiveShowStatus:entries];
+			[self.delegate processLiveShowStatus:entries];
 			break;
 		case kShowArchivesCode:
 #if LogShowArchiveParsed
-			NSLog(@"\nParsed Feed Status XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
+			LogParsed(@"\nParsed Show Archive XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
 #endif
-			[[self delegate] procesShowsList:entries];
+			[self.delegate procesShowsList:entries];
+			break;
+		case kShowDetailsCode:
+#if LogShowDetailsParsed
+			LogParsed(@"\nParsed Show Details XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
+#endif
+			[self.delegate procesShowDetails:entries withID:[bufferDict objectForKey:@"ShowID"]];
 			break;
 		default:
 			break;
 	}
 	[entries release];
-	[[self delegate] dataOperationDidFinish:self];
+	
+	[self.delegate dataOperationDidFinish:self];
 }
 
 @end

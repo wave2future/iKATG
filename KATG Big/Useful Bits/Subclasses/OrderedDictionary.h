@@ -42,8 +42,6 @@
 
 - (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile;
 
-/// This method is similar to initWithDictionary, the difference is: This method will Scan the all Dictionary tree converting internal elements too.
-- (id)convertFromDictionary:(id)anObject;
 
 //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// 
 #pragma mark -

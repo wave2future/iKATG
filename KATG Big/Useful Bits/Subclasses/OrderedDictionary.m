@@ -141,44 +141,6 @@ NSString *DescriptionForObject(NSObject *object, id locale, NSUInteger indent)
 	return NO;
 }
 
-//// //// //// //// //// //// //// //// //// //// //// //
-
-// This method is similar to initWithDictionary, the difference is: This method will Scan the all Dictionary tree converting internal elements too.
-- (id)convertFromDictionary:(id)anObject {
-	
-	// Init.
-	[self initWithCapacity:0];					
-	
-	// Loop on all elements.
-	for ( id key in anObject ) {
-
-		//// //// //// //// //// //// //// //// //// //// //// //
-		
-		// Test if this element are one class of Dictionary.
-		if ( [ [anObject objectForKey:key] isMemberOfClass: NSClassFromString( @"NSDictionary" ) ] ||
-		   	 [ [anObject objectForKey:key] isMemberOfClass: NSClassFromString( @"NSMutableDictionary" ) ] ||
-			 [ [anObject objectForKey:key] isMemberOfClass: NSClassFromString( @"NSCFDictionary" ) ] ) {
-			
-			// Call this same method to convert this class of Dictionary.
-			OrderedDictionary *convertedObject = [[OrderedDictionary alloc] convertFromDictionary:[anObject objectForKey:key] ]; 
-			
-			//// //// //// //// //// //// //// //// //// //// //// //
-			
-			// Use setObject to set this converted element.
-			[self setObject:convertedObject forKey:key ];
-			
-		// If not, just add on the new Dictionary.
-		} else {
-			
-			// Use setObject to set this object. 
-			[self setObject:[anObject objectForKey:key] forKey:key ]; 
-		}
-	}
-	
-	// Return converted dictionary.
-	return self;
-}
-
 
 //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// //// 
 #pragma mark -

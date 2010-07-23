@@ -2,7 +2,7 @@
 //  Guest.h
 //  KATG Big
 //
-//  Created by Doug Russell on 6/23/10.
+//  Created by Doug Russell on 7/21/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 

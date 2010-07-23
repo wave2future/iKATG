@@ -42,7 +42,6 @@ BOOL FutureTest(NSDate *date) {
 #endif
 
 @implementation DataModel (Processing)
-
 /******************************************************************************/
 #pragma mark -
 #pragma mark Events
@@ -299,10 +298,13 @@ BOOL FutureTest(NSDate *date) {
 				NSString	*	title			=	[show objectForKey:@"T"];
 				NSString	*	isKATGTV		=	[show objectForKey:@"TV"];
 				
-				if (guests)
+				if (!guests || guests.length == 0 || [guests isEqualToString:@"NULL"])
+					guests	=	@"No Guest";
+				
+				if ([guests rangeOfString:@","].location != NSNotFound)
 				{
 					NSArray	*	guestArray	=	[guests componentsSeparatedByString:@","];
-					if (guestArray)
+					if (guestArray && guestArray.count > 0)
 					{
 						for (NSString *guest in guestArray)
 						{
@@ -315,9 +317,34 @@ BOOL FutureTest(NSDate *date) {
 							[managedGuest setGuest:guest];
 							
 							[managedShow addGuestsObject:managedGuest];
+							
+							NSError	*	error;
+							if (![self.managedObjectContext save:&error])
+							{	// Handle Error
+								ESLog(@"Core Data Error %@", error);
+							}
 						}
 					}
 				}
+				else
+				{
+					Guest	*	managedGuest	=
+					(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
+														   inManagedObjectContext:self.managedObjectContext];
+					
+					[managedGuest addShowObject:managedShow];
+					
+					[managedGuest setGuest:guests];
+					
+					[managedShow addGuestsObject:managedGuest];
+					
+					NSError	*	error;
+					if (![self.managedObjectContext save:&error])
+					{	// Handle Error
+						ESLog(@"Core Data Error %@", error);
+					}
+				}
+				
 				if (ID)
 				{
 					NSInteger	idInt	=	[ID intValue];
@@ -407,6 +434,73 @@ BOOL FutureTest(NSDate *date) {
 	
 	[fetchResults release];
 	[request release];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Show Details
+#pragma mark -
+/******************************************************************************/
+- (void)procesShowDetails:(NSArray *)entries withID:(NSString *)ID
+{
+	if (entries && entries.count > 0)
+	{
+		NSDictionary	*	details	=	[entries objectAtIndex:0];
+		[coreDataOperationQueue addOperationWithBlock: ^(void) {
+			NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
+			NSEntityDescription	*	entity	=
+			[NSEntityDescription entityForName:@"Show" 
+						inManagedObjectContext:managedObjectContext];
+			[request setEntity:entity];
+			[request setFetchLimit:1];
+			NSPredicate	*	predicate	=
+			[NSPredicate predicateWithFormat:@"ID == %@", ID];
+			[request setPredicate:predicate];
+			NSError		*	error;
+			NSArray		*	fetchResults	=
+			[managedObjectContext executeFetchRequest:request 
+												error:&error];
+			if (fetchResults == nil)
+			{	// Handle Error
+				ESLog(@"%@", error);
+			}
+			if (fetchResults.count > 0)
+			{
+				Show		*	show	=	[fetchResults objectAtIndex:0];
+				
+				NSString	*	notes	=	[details objectForKey:@"Detail"];
+				if (!notes || notes.length == 0 || [notes isEqualToString:@"NULL"])
+					notes				=	@"No Show Notes";
+				else
+				{					
+					notes	=	[notes stringByReplacingOccurrencesOfString:@"\n" withString:@"\n • "];
+				}
+				[show setNotes:[NSString stringWithFormat:@" • %@", notes]];
+				
+				NSString	*	quote	=	[details objectForKey:@"Description"];
+				if (!quote || quote.length == 0 || [quote isEqualToString:@"NULL"])
+					quote				=	@"No Quote";
+				[show setQuote:quote];
+				
+				NSString	*	URL		=	[details objectForKey:@"FileUrl"];
+				if (!URL || [URL isEqualToString:@"NULL"])
+					URL				=	@"";
+				[show setURL:URL];
+				
+				ESLog(@"%@", show);
+				
+				NSError	*	error;
+				if (![self.managedObjectContext save:&error])
+				{	// Handle Error
+					ESLog(@"Core Data Error %@", error);
+				}
+				
+				[self performSelectorOnMainThread:@selector(notifyShowDetails:) 
+									   withObject:ID 
+									waitUntilDone:NO];
+			}
+			[request release];
+		}];
+	}
 }
 
 @end

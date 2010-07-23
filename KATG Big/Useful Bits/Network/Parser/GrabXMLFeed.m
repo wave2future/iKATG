@@ -23,6 +23,7 @@
 @interface GrabXMLFeed (PrivateMethods)
 
 - (void)_performParse;
+- (NSDictionary *)processNode:(CXMLNode *)node;
 
 @end
 

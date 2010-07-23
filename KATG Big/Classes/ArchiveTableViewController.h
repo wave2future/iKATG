@@ -12,10 +12,12 @@
 @interface ArchiveTableViewController : UITableViewController 
 <DataModelDelegate>
 {
-	DataModel	*	model;
-	NSArray		*	_shows;
+	DataModel		*	model;
+	NSArray			*	_shows;
+	NSMutableArray	*	_filteredShows;
 }
 
-@property (nonatomic, retain) NSArray	*	shows;
+@property (nonatomic, retain)	NSArray					*	shows;
+@property (nonatomic, retain)	NSMutableArray			*	filteredShows;
 
 @end

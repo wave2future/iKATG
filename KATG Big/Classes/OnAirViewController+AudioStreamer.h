@@ -23,7 +23,7 @@
 // Setup
 - (void)setupAudioAssets;
 // Shoutcast
-- (IBAction)audioButtonPressed:(id)sender;
+- (void)_audioButtonPressed:(id)sender;
 - (void)setAudioButtonImage:(UIImage *)image;
 - (void)pulseButton;
 - (void)destroyStreamer;

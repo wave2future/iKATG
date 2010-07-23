@@ -2,7 +2,7 @@
 //  Show.m
 //  KATG Big
 //
-//  Created by Doug Russell on 6/23/10.
+//  Created by Doug Russell on 7/21/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
@@ -13,14 +13,16 @@
 
 @implementation Show 
 
+@dynamic ForumThread;
+@dynamic HasNotes;
+@dynamic ID;
+@dynamic URL;
 @dynamic Number;
 @dynamic TV;
-@dynamic URL;
-@dynamic Notes;
 @dynamic Title;
-@dynamic HasNotes;
+@dynamic Notes;
+@dynamic Quote;
 @dynamic PictureCount;
-@dynamic ID;
 @dynamic Guests;
 @dynamic Pictures;
 

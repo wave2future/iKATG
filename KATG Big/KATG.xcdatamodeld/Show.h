@@ -2,7 +2,7 @@
 //  Show.h
 //  KATG Big
 //
-//  Created by Doug Russell on 6/23/10.
+//  Created by Doug Russell on 7/21/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
@@ -15,14 +15,16 @@
 {
 }
 
+@property (nonatomic, retain) NSString * ForumThread;
+@property (nonatomic, retain) NSNumber * HasNotes;
+@property (nonatomic, retain) NSNumber * ID;
+@property (nonatomic, retain) NSString * URL;
 @property (nonatomic, retain) NSNumber * Number;
 @property (nonatomic, retain) NSNumber * TV;
-@property (nonatomic, retain) NSString * URL;
-@property (nonatomic, retain) NSString * Notes;
 @property (nonatomic, retain) NSString * Title;
-@property (nonatomic, retain) NSNumber * HasNotes;
+@property (nonatomic, retain) NSString * Notes;
+@property (nonatomic, retain) NSString * Quote;
 @property (nonatomic, retain) NSNumber * PictureCount;
-@property (nonatomic, retain) NSNumber * ID;
 @property (nonatomic, retain) NSSet* Guests;
 @property (nonatomic, retain) NSSet* Pictures;
 

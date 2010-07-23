@@ -16,7 +16,7 @@
 #import <UIKit/UIKit.h>
 #else
 #import <Cocoa/Cocoa.h>
-#endif TARGET_OS_IPHONE			
+#endif		
 
 #include <pthread.h>
 #include <AudioToolbox/AudioToolbox.h>
@@ -143,6 +143,8 @@ extern NSString * const ASStatusChangedNotification;
 @property (readonly) AudioStreamerState state;
 @property (readonly) double progress;
 @property (readwrite) UInt32 bitRate;
+
+
 
 - (id)initWithURL:(NSURL *)aURL;
 - (void)start;

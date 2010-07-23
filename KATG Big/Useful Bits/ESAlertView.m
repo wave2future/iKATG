@@ -19,7 +19,7 @@
 //  
 
 #import "ESAlertView.h"
-#import <QuartzCore/QuartzCore.h>.
+#import <QuartzCore/QuartzCore.h>
 #import "GradButton.h"
 
 #define kTitleFontSize 24
@@ -253,7 +253,10 @@
 	CAGradientLayer	*	gradient		=	[CAGradientLayer layer];
 	gradient.frame						=	self.bounds;
 	gradient.colors						=	[NSArray arrayWithObjects:
-											 (id)[[UIColor blackColor] CGColor],
+											 (id)[[UIColor colorWithRed:(CGFloat)(31.0/255.0) 
+																  green:(CGFloat)(83.0/255.0) 
+																   blue:(CGFloat)(8.0/255.0) 
+																  alpha:0.9] CGColor],
 											 (id)[[UIColor colorWithRed:(CGFloat)(57.0/255.0) 
 																  green:(CGFloat)(143.0/255.0) 
 																   blue:(CGFloat)(47.0/255.0) 
