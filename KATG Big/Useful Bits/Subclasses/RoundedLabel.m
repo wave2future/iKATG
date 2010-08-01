@@ -1,26 +1,20 @@
 //
-//  RoundedView.m
+//  RoundedLabel.m
+//  Deezly
 //
-//  Created by Doug Russell on 5/3/10.
-//  Copyright 2010 Everything Solution. All rights reserved.
-//  
+//  Created by Doug Russell on 7/24/10.
+//  Copyright (c) 2010 Everything Solution. All rights reserved.
+//
 
-#import "RoundedView.h"
+#import "RoundedLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface RoundedView ()
+@interface RoundedLabel ()
 - (void)setup;
 @end
 
-@implementation RoundedView
-- (id)init
-{
-	if ((self = [super init])) 
-	{
-		[self setup];
-    }
-    return self;
-}
+@implementation RoundedLabel
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	if ((self = [super initWithCoder:aDecoder])) 
@@ -39,7 +33,9 @@
 }
 - (void)setup
 {
-	self.layer.cornerRadius = 10;
+	self.layer.cornerRadius =	6;
+	//self.layer.borderColor	=	[[UIColor blackColor] CGColor];
+	//self.layer.borderWidth	=	1.0;
 }
 - (void)dealloc 
 {

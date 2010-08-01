@@ -472,7 +472,7 @@ BOOL FutureTest(NSDate *date) {
 					notes				=	@"No Show Notes";
 				else
 				{					
-					notes	=	[notes stringByReplacingOccurrencesOfString:@"\n" withString:@"\n • "];
+					notes	=	[notes stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\n • "];
 				}
 				[show setNotes:[NSString stringWithFormat:@" • %@", notes]];
 				

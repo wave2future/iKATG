@@ -158,11 +158,20 @@ GrabXMLFeed * CreateParserForXPath(NSInteger code, NSData *data, NSString *xPath
 	if (self.isCancelled)
 	{
 		[parser cancel];
+		return;
+	}
+	switch ([parser instanceNumber]) {
+		case kShowArchivesCode:
+			if (node.count > 0)
+				[self.delegate procesShowsList:[NSArray arrayWithObject:node]];
+			break;
+		default:
+			break;
 	}
 }
 - (void)parsingDidCompleteSuccessfully:(GrabXMLFeed *)parser
 {
-	NSArray *entries;
+	NSArray	*	entries;
 	entries = [[parser feedEntries] copy];
 #if LogAllParsed
 	LogParsed(@"\nParsed XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
@@ -181,12 +190,12 @@ GrabXMLFeed * CreateParserForXPath(NSInteger code, NSData *data, NSString *xPath
 #endif
 			[self.delegate processLiveShowStatus:entries];
 			break;
-		case kShowArchivesCode:
-#if LogShowArchiveParsed
-			LogParsed(@"\nParsed Show Archive XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
-#endif
-			[self.delegate procesShowsList:entries];
-			break;
+//		case kShowArchivesCode:
+//#if LogShowArchiveParsed
+//			LogParsed(@"\nParsed Show Archive XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
+//#endif
+//			[self.delegate procesShowsList:entries];
+//			break;
 		case kShowDetailsCode:
 #if LogShowDetailsParsed
 			LogParsed(@"\nParsed Show Details XML with Instance %d \n\n%@\n\n", [parser instanceNumber], entries);
