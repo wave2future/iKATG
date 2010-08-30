@@ -9,25 +9,31 @@
 #import "ArchiveDetailViewController.h"
 #import "Show.h"
 #import "Guest.h"
-#import <MediaPlayer/MediaPlayer.h>
+#import "PlayerController.h"
 
 @interface ArchiveDetailViewController ()
-- (void)makePlayer;
+- (void)presentPlayer:(NSURL *)URL;
+- (void)presentPlayer;
 @end
 
 
 @implementation ArchiveDetailViewController
 @synthesize show;
-@synthesize showTitleLabel, showNumberLabel, showGuestsLabel, showNotesTextView, playButton, player;
+@synthesize showTitleLabel, showNumberLabel, showGuestsLabel, showNotesTextView, playButton;
 
+#pragma mark -
+#pragma mark View Life Cycle
+#pragma mark -
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
 	
+	//[(UIScrollView *)self.view setContentSize:CGSizeMake(320, 660)];
+	
 	model	=	[DataModel sharedDataModel];
 	
 	self.showTitleLabel.text	=	[self.show Title];
-	self.showNumberLabel.text		=	[NSString stringWithFormat:@"Show %@", [self.show Number]];
+	self.showNumberLabel.text	=	[NSString stringWithFormat:@"Show %@", [self.show Number]];
 	NSMutableString	*	guests	=	[NSMutableString string];
 	int	i	=	0;
 	for (Guest *guest in [self.show Guests])
@@ -44,9 +50,23 @@
 		self.showNotesTextView.text	=	[self.show Notes];
 		self.showNotesTextView.font	=	[UIFont systemFontOfSize:15];
 	}
+	
 	if ([self.show URL])
+		self.playButton.hidden		=	NO;
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	if ([PlayerController sharedPlayerController].player != nil)
 	{
-		[self makePlayer];
+		UIBarButtonItem	*	button	=
+		[[UIBarButtonItem alloc] 
+		 initWithTitle:@"Player" 
+		 style:UIBarButtonItemStyleBordered 
+		 target:self 
+		 action:@selector(presentPlayer)];
+		self.navigationItem.rightBarButtonItem	=	button;
+		[button release];
 	}
 }
 - (void)viewDidAppear:(BOOL)animated
@@ -54,14 +74,14 @@
 	[super viewDidAppear:animated];
 	[model addDelegate:self];
 }
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
 	[model removeDelegate:self];
-}
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
 }
 - (void)viewDidUnload 
 {
@@ -72,64 +92,52 @@
 	self.showNotesTextView	=	nil;
 	self.playButton			=	nil;
 }
+#pragma mark -
+#pragma mark Memory Management
+#pragma mark -
+- (void)didReceiveMemoryWarning 
+{
+    [super didReceiveMemoryWarning];
+}
 - (void)dealloc 
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[showTitleLabel release];
 	[showNumberLabel release];
 	[showGuestsLabel release];
 	[showNotesTextView release];
 	[playButton release];
-	[player release];
     [super dealloc];
 }
 #pragma mark -
-#pragma mark Data
+#pragma mark Buttons
+#pragma mark -
+- (IBAction)playButtonPressed:(id)sender
+{
+	if ([self.show URL])
+	{
+		[self presentPlayer:[NSURL URLWithString:[self.show URL]]];
+		self.playButton.hidden	=	YES;
+	}
+}
+- (void)presentPlayer:(NSURL *)URL
+{
+	[self presentPlayer];
+	[[PlayerController sharedPlayerController] preparePlayer:URL];
+}
+- (void)presentPlayer
+{
+	PlayerController	*	viewController	=	[PlayerController sharedPlayerController];
+	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;
+	[self presentModalViewController:viewController animated:YES];
+}
+#pragma mark -
+#pragma mark Data Model Delegates
 #pragma mark -
 - (void)showDetailsAvailable:(NSString *)ID
 {
 	self.showNotesTextView.text	=	[self.show Notes];
-	
-	if (self.player == nil || [self.show URL])
-	{
-		[self makePlayer];
-	}
-}
-#pragma mark -
-#pragma mark Player
-#pragma mark -
-- (void)makePlayer
-{
-	self.player	=
-	[[[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:[self.show URL]]] autorelease];
-	[[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(handlePlaybackStateNotification:) 
-												 name:MPMoviePlayerLoadStateDidChangeNotification 
-											   object:self.player];
-	[[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(handleSizeNotification:) 
-												 name:MPMovieNaturalSizeAvailableNotification 
-											   object:self.player];
-	[player prepareToPlay];
-}
-- (void)handlePlaybackStateNotification:(NSNotification *)note
-{
-	if (self.player.loadState == MPMovieLoadStatePlaythroughOK ||
-		self.player.loadState == MPMovieLoadStatePlayable)
-	{
-		self.player.view.frame	=	CGRectMake(0, 
-											   0, 
-											   320,
-											   30);
-		[self.view addSubview:self.player.view];
-	}
-}
-- (void)handleSizeNotification:(NSNotification *)note
-{
-	self.player.view.frame	=	CGRectMake(0, 
-										   0, 
-										   320, 
-										   self.player.naturalSize.height);
+	if ([self.show URL])
+		self.playButton.hidden	=	NO;
 }
 
 @end

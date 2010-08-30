@@ -1,6 +1,5 @@
 //
 //  DataModel+Processing.m
-//  KATG Big
 //
 //  Created by Doug Russell on 5/5/10.
 //  Copyright 2010 Doug Russell. All rights reserved.
@@ -24,24 +23,33 @@
 #import "Show.h"
 #import "Guest.h"
 
-#ifdef __IPHONE_4_0
 BOOL (^FutureTest)(NSDate *date) = ^(NSDate *date) {
 	NSInteger	timeSince	=	[date timeIntervalSinceNow];
 	NSInteger	threshHold	=	-(60/*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/);
 	BOOL		inFuture	=	(timeSince > threshHold);
 	return inFuture;
 };
-#elif __IPHONE_3_2
-BOOL FutureTest(NSDate *date);
-BOOL FutureTest(NSDate *date) {
-	NSInteger	timeSince	=	[date timeIntervalSinceNow];
-	NSInteger	threshHold	=	-(60/*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/);
-	BOOL		inFuture	=	(timeSince > threshHold);
-	return inFuture;
-}
-#endif
 
 @implementation DataModel (Processing)
+- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
+{
+	[coreDataOperationQueue addOperationWithBlock:^(void) {
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+	}];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Data Operation Delegates
+#pragma mark -
+/******************************************************************************/
+- (void)dataOperationDidFinish:(DataOperation *)op
+{
+	
+}
+- (void)dataOperationDidFail:(DataOperation *)op withError:(NSError *)error
+{
+	
+}
 /******************************************************************************/
 #pragma mark -
 #pragma mark Events
@@ -49,11 +57,10 @@ BOOL FutureTest(NSDate *date) {
 /******************************************************************************/
 - (void)processEventsList:(NSArray *)entries
 {
-	//
-	// Use data formatters to create localized event
-	// strings and store them in core data store
-	//
-#ifdef __IPHONE_4_0
+	//	
+	//	Use data formatters to create localized event
+	//	strings and store them in core data store
+	//	
 	if (entries && entries.count > 0)
 	{
 		NSDictionary * (^DateFormatters)(NSDictionary *event);
@@ -169,68 +176,64 @@ BOOL FutureTest(NSDate *date) {
 			}
 		}];
 	}
-#elif __IPHONE_3_2
-	// Write some 3.0 code :(
-#endif
 }
 - (void)fetchEvents
 {
 	//
-	// Fetch events from Core Data store
+	// Setup fetch events from Core Data store
 	// sorted by NSDate object DateTime
 	//
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = 
-	[NSEntityDescription entityForName:@"Event" 
-				inManagedObjectContext:managedObjectContext];
-	[request setEntity:entity];
+	NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
+	NSEntityDescription	*	entity	=	[NSEntityDescription 
+										 entityForName:@"Event" 
+										 inManagedObjectContext:managedObjectContext];
+	request.entity					=	entity;
 	
-	NSSortDescriptor *sortDescriptor = 
-	[[NSSortDescriptor alloc] initWithKey:@"DateTime" ascending:YES];
-	NSArray *sortDescriptors = 
-	[[NSArray alloc] initWithObjects:sortDescriptor, nil];
+	NSSortDescriptor	*	sortDescriptor	=	[[NSSortDescriptor alloc] 
+												 initWithKey:@"DateTime" 
+												 ascending:YES];
+	NSArray				*	sortDescriptors	=	[[NSArray alloc] initWithObjects:sortDescriptor, nil];
 	[request setSortDescriptors:sortDescriptors];
 	[sortDescriptors release];
 	[sortDescriptor release];
-	
-	NSError *error;
-	NSMutableArray *fetchResults = 
-	[[managedObjectContext executeFetchRequest:request 
-										 error:&error] mutableCopy];
+	//	
+	//	Perform fetch and check for error
+	//	
+	NSError				*	error;
+	NSMutableArray		*	fetchResults	=	[[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
 	if (fetchResults == nil)
 	{	// Handle Error
 		NSLog(@"Core Data Error %@", error);
 	}
-	//
-	// Remove any past events
-	//
-	NSArray *uniquedResults = 
-	[self removePastEvents:fetchResults];
-	//
-	// Notify delegates that event data
-	// is available
-	//
+	//	
+	//	Remove any past events
+	//	
+	NSArray				*	futureEvents	=	[self removePastEvents:fetchResults];
+	//	
+	//	Notify delegates that event data
+	//	is available
+	//	
 	[self performSelectorOnMainThread:@selector(notifyEvents:) 
-						   withObject:uniquedResults 
+						   withObject:futureEvents 
 						waitUntilDone:NO];
-	
 	[fetchResults release];
 	[request release];
 }
 - (NSArray *)removePastEvents:(NSMutableArray *)array
 {
-	//
-	//  *UNREVISED COMMENTS*
-	//
+	//	
+	//	Remove any events prior to 12 hours before
+	//	current time
+	//	
 	NSMutableArray	*	futureEvents	=	[NSMutableArray array];
 	for (Event *event in array)
 	{
 		if (!FutureTest([event DateTime]))
 		{
 			[managedObjectContext deleteObject:event];
-			NSError *error;
+			NSError	*	error;
 			if (![managedObjectContext save:&error])
-			{	// Handle Error
+			{// Handle Error
 				NSLog(@"Core Data Error %@", error);
 			}
 		}
@@ -248,15 +251,15 @@ BOOL FutureTest(NSDate *date) {
 /******************************************************************************/
 - (void)processLiveShowStatus:(NSArray *)entries
 {
-	//
-	// Shoutcast feed status
-	//
+	//	
+	//	Shoutcast feed status
+	//	
 	if (entries && entries.count > 0)
 	{
-		NSDictionary *status = [entries objectAtIndex:0];
+		NSDictionary	*	status	=	[entries objectAtIndex:0];
 		if (status)
 		{
-			NSString *onAir = [status objectForKey:@"OnAir"];
+			NSString	*	onAir	=	[status objectForKey:@"OnAir"];
 			[self performSelectorOnMainThread:@selector(notifyLiveShowStatus:) 
 								   withObject:onAir 
 								waitUntilDone:NO];
@@ -268,133 +271,139 @@ BOOL FutureTest(NSDate *date) {
 #pragma mark Show Archives
 #pragma mark -
 /******************************************************************************/
-- (void)procesShowsList:(NSArray *)entries
+- (void)processShowsList:(NSArray *)entries
 {
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	NSPersistentStoreCoordinator	*	psc			=	[self.managedObjectContext persistentStoreCoordinator];
+	NSManagedObjectContext			*	showContext	=	[[NSManagedObjectContext alloc] init];
+	showContext.persistentStoreCoordinator			=	psc;
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
 	NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
-	NSEntityDescription	*	entity	=
-	[NSEntityDescription entityForName:@"Show" 
-				inManagedObjectContext:managedObjectContext];
-	[request setEntity:entity];
-	[request setFetchLimit:1];
-	
+	NSEntityDescription	*	entity	=	[NSEntityDescription entityForName:@"Show" 
+											   inManagedObjectContext:showContext];
+	request.entity					=	entity;
+	request.fetchLimit				=	1;
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
 	if (entries && entries.count > 0)
 	{
-		[coreDataOperationQueue addOperationWithBlock: ^(void) {
-			for (NSDictionary *show in entries)
+		for (NSDictionary *show in entries)
+		{
+			NSString	*	ID				=	[show objectForKey:@"I"];
+			
+			if ([self hasShow:request forID:[NSNumber numberWithInt:[ID intValue]]])
+				continue;
+			
+			Show	*	managedShow = 
+			(Show *)[NSEntityDescription insertNewObjectForEntityForName:@"Show" 
+												  inManagedObjectContext:showContext];
+			
+			NSString	*	guests			=	[show objectForKey:@"G"];
+			NSString	*	number			=	[show objectForKey:@"N"];
+			NSString	*	pictureCount	=	[show objectForKey:@"P"];
+			NSString	*	hasShowNotes	=	[show objectForKey:@"SN"];
+			NSString	*	title			=	[show objectForKey:@"T"];
+			NSString	*	isKATGTV		=	[show objectForKey:@"TV"];
+			
+			if (!guests || guests.length == 0 || [guests isEqualToString:@"NULL"])
+				guests						=	@"No Guest";
+			
+			if ([guests rangeOfString:@","].location != NSNotFound)
 			{
-				NSString	*	ID				=	[show objectForKey:@"I"];
-				
-				if ([self hasShow:request forID:[NSNumber numberWithInt:[ID intValue]]])
-					continue;
-				
-				Show	*	managedShow = 
-				(Show *)[NSEntityDescription insertNewObjectForEntityForName:@"Show" 
-													  inManagedObjectContext:self.managedObjectContext];
-				
-				NSString	*	guests			=	[show objectForKey:@"G"];
-				NSString	*	number			=	[show objectForKey:@"N"];
-				NSString	*	pictureCount	=	[show objectForKey:@"P"];
-				NSString	*	hasShowNotes	=	[show objectForKey:@"SN"];
-				NSString	*	title			=	[show objectForKey:@"T"];
-				NSString	*	isKATGTV		=	[show objectForKey:@"TV"];
-				
-				if (!guests || guests.length == 0 || [guests isEqualToString:@"NULL"])
-					guests	=	@"No Guest";
-				
-				if ([guests rangeOfString:@","].location != NSNotFound)
+				NSArray	*	guestArray		=	[guests componentsSeparatedByString:@","];
+				if (guestArray && guestArray.count > 0)
 				{
-					NSArray	*	guestArray	=	[guests componentsSeparatedByString:@","];
-					if (guestArray && guestArray.count > 0)
+					for (NSString *guest in guestArray)
 					{
-						for (NSString *guest in guestArray)
-						{
-							Guest	*	managedGuest	=
-							(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
-																   inManagedObjectContext:self.managedObjectContext];
-							
-							[managedGuest addShowObject:managedShow];
-							
-							[managedGuest setGuest:guest];
-							
-							[managedShow addGuestsObject:managedGuest];
-							
-							NSError	*	error;
-							if (![self.managedObjectContext save:&error])
-							{	// Handle Error
-								ESLog(@"Core Data Error %@", error);
-							}
+						Guest	*	managedGuest	=
+						(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
+															   inManagedObjectContext:showContext];
+						
+						[managedGuest addShowObject:managedShow];
+						
+						[managedGuest setGuest:guest];
+						
+						[managedShow addGuestsObject:managedGuest];
+						
+						NSError	*	error;
+						if (![showContext save:&error])
+						{	// Handle Error
+							ESLog(@"Core Data Error %@", error);
 						}
 					}
 				}
-				else
-				{
-					Guest	*	managedGuest	=
-					(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
-														   inManagedObjectContext:self.managedObjectContext];
-					
-					[managedGuest addShowObject:managedShow];
-					
-					[managedGuest setGuest:guests];
-					
-					[managedShow addGuestsObject:managedGuest];
-					
-					NSError	*	error;
-					if (![self.managedObjectContext save:&error])
-					{	// Handle Error
-						ESLog(@"Core Data Error %@", error);
-					}
-				}
+			}
+			else
+			{
+				Guest	*	managedGuest	=
+				(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
+													   inManagedObjectContext:showContext];
 				
-				if (ID)
-				{
-					NSInteger	idInt	=	[ID intValue];
-					[managedShow setID:[NSNumber numberWithInt:idInt]];
-				}
-				if (number)
-				{
-					NSInteger	numInt	=	[number intValue];
-					[managedShow setNumber:[NSNumber numberWithInt:numInt]];
-				}
-				if (pictureCount)
-				{
-					NSInteger	picCnt	=	[pictureCount intValue];
-					[managedShow setPictureCount:[NSNumber numberWithInt:picCnt]];
-				}
-				if (hasShowNotes)
-				{
-					BOOL	hasShwNts	=	[hasShowNotes boolValue];
-					[managedShow setHasNotes:[NSNumber numberWithBool:hasShwNts]];
-				}
-				if (title)
-				{
-					[managedShow setTitle:title];
-				}
-				if (isKATGTV)
-				{
-					BOOL	isTV	=	[isKATGTV boolValue];
-					[managedShow setTV:[NSNumber numberWithBool:isTV]];
-				}
+				[managedGuest addShowObject:managedShow];
+				
+				[managedGuest setGuest:guests];
+				
+				[managedShow addGuestsObject:managedGuest];
 				
 				NSError	*	error;
-				if (![self.managedObjectContext save:&error])
+				if (![showContext save:&error])
 				{	// Handle Error
 					ESLog(@"Core Data Error %@", error);
 				}
 			}
-			[self fetchShows];
-		}];
+			
+			if (ID)
+			{
+				NSInteger	idInt	=	[ID intValue];
+				[managedShow setID:[NSNumber numberWithInt:idInt]];
+			}
+			if (number)
+			{
+				NSInteger	numInt	=	[number intValue];
+				[managedShow setNumber:[NSNumber numberWithInt:numInt]];
+			}
+			if (pictureCount)
+			{
+				NSInteger	picCnt	=	[pictureCount intValue];
+				[managedShow setPictureCount:[NSNumber numberWithInt:picCnt]];
+			}
+			if (hasShowNotes)
+			{
+				BOOL	hasShwNts	=	[hasShowNotes boolValue];
+				[managedShow setHasNotes:[NSNumber numberWithBool:hasShwNts]];
+			}
+			if (title)
+			{
+				[managedShow setTitle:title];
+			}
+			if (isKATGTV)
+			{
+				BOOL	isTV	=	[isKATGTV boolValue];
+				[managedShow setTV:[NSNumber numberWithBool:isTV]];
+			}
+			
+			NSError	*	error;
+			if (![showContext save:&error])
+			{	// Handle Error
+				ESLog(@"Core Data Error %@", error);
+			}
+		}
 	}
 	[request release];
+	[showContext release];
 }
 - (BOOL)hasShow:(NSFetchRequest *)request forID:(NSNumber *)ID
 {
-	NSPredicate	*	predicate	=
-	[NSPredicate predicateWithFormat:@"ID == %@", ID];
+	NSPredicate	*	predicate		=	[NSPredicate predicateWithFormat:@"ID == %@", ID];
 	[request setPredicate:predicate];
 	NSError		*	error;
-	NSArray		*	fetchResults	=
-	[managedObjectContext executeFetchRequest:request 
-										 error:&error];
+	NSArray		*	fetchResults	=	[managedObjectContext executeFetchRequest:request 
+																  error:&error];
 	if (fetchResults == nil)
 	{	// Handle Error
 		NSLog(@"%@", error);
@@ -402,38 +411,6 @@ BOOL FutureTest(NSDate *date) {
 	if (fetchResults.count > 0)
 		return YES;
 	return NO;
-}
-- (void)fetchShows
-{
-	NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
-	NSEntityDescription	*	entity	=
-	[NSEntityDescription entityForName:@"Show" 
-				inManagedObjectContext:managedObjectContext];
-	[request setEntity:entity];
-	
-	NSSortDescriptor	*	sortDescriptor	=
-	[[NSSortDescriptor alloc] initWithKey:@"ID" ascending:NO];
-	NSArray				*	sortDescriptors	=
-	[[NSArray alloc] initWithObjects:sortDescriptor, nil];
-	[request setSortDescriptors:sortDescriptors];
-	[sortDescriptors release];
-	[sortDescriptor release];
-	
-	NSError				*	error;
-	NSMutableArray		*	fetchResults	=
-	[[managedObjectContext executeFetchRequest:request 
-										 error:&error] mutableCopy];
-	if (fetchResults == nil)
-	{	// Handle Error
-		NSLog(@"%@", error);
-	}
-	
-	[self performSelectorOnMainThread:@selector(notifyShows:) 
-						   withObject:(NSArray *)fetchResults
-						waitUntilDone:NO];
-	
-	[fetchResults release];
-	[request release];
 }
 /******************************************************************************/
 #pragma mark -

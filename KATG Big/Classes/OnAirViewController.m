@@ -29,6 +29,7 @@
 @interface OnAirViewController (Private)
 - (void)registerNotifications;
 - (void)findGuest:(NSString *)eventTitle;
+- (void)updateNextLiveShowLabel:(NSDate *)date;
 - (void)loadDefaults;
 - (void)writeDefaults;
 - (void)updateReachability:(Reachability*)curReach;
@@ -38,18 +39,22 @@
 @synthesize feedbackView, nameField, locationField, commentView, submitButton;
 @synthesize audioButton;
 @synthesize volumeView;
-@synthesize nextLiveShowLabel;
+@synthesize nextLiveShowLabel, nextLiveShowActivityIndicator;
 @synthesize live = _live;
-@synthesize liveShowStatusLabel;
-@synthesize guestLabel;
+@synthesize liveShowStatusLabel, liveShowStatusActivityIndicator;
+@synthesize guestLabel, guestActivityIndicator;
 
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
 	
+	[self.nextLiveShowActivityIndicator startAnimating];
+	[self.liveShowStatusActivityIndicator startAnimating];
+	[self.guestActivityIndicator startAnimating];
+	
 	[self setupAudioAssets];
 	
-	model			=	[DataModel sharedDataModel];
+	model	=	[DataModel sharedDataModel];
 	[model addDelegate:self];
 	
 	[model liveShowStatus];
@@ -75,7 +80,6 @@
 	 selector:@selector(reachabilityChanged:) 
 	 name:kReachabilityChangedNotification 
 	 object:nil];
-#ifdef __IPHONE_4_0
 	[[NSNotificationCenter defaultCenter] 
 	 addObserver:self
 	 selector:@selector(handleBackgroundNotification) 
@@ -86,13 +90,6 @@
 	 selector:@selector(handleForegroundNotification) 
 	 name:UIApplicationWillEnterForegroundNotification 
 	 object:nil];
-#elif __IPHONE_3_2
-	[[NSNotificationCenter defaultCenter] 
-	 addObserver:self
-	 selector:@selector(writeDefaults) 
-	 name:UIApplicationWillTerminateNotification 
-	 object:nil];
-#endif
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
@@ -105,9 +102,7 @@
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
-	
 	[model removeDelegate:self];
-	
 	self.feedbackView			=	nil;
 	self.nameField				=	nil;
 	self.locationField			=	nil;
@@ -116,8 +111,11 @@
 	self.audioButton			=	nil;
 	self.volumeView				=	nil;
 	self.nextLiveShowLabel		=	nil;
+	self.nextLiveShowActivityIndicator		=	nil;
 	self.liveShowStatusLabel	=	nil;
+	self.liveShowStatusActivityIndicator	=	nil;
 	self.guestLabel				=	nil;
+	self.guestActivityIndicator	=	nil;
 }
 - (void)dealloc 
 {
@@ -138,8 +136,11 @@
 	[volumeView release];
 	
 	[nextLiveShowLabel release];
+	[nextLiveShowActivityIndicator release];
 	[liveShowStatusLabel release];
+	[liveShowStatusActivityIndicator release];
 	[guestLabel release];
+	[guestActivityIndicator release];
 	
     [super dealloc];
 }
@@ -161,7 +162,7 @@
 {
 	[model liveShowStatus];
 	
-	liveShowTimer	=	
+	liveShowTimer	=
 	[[NSTimer scheduledTimerWithTimeInterval:180.0 
 									  target:self 
 									selector:@selector(updateLiveShowStatusTimer:) 
@@ -269,36 +270,24 @@
 {
 	if (events && events.count > 0)
 	{
+		NSLog(@"Events");
 		for (Event *event in events)
 		{
-			//
-			// Make sure event is a live show
-			// is scheduled within the
-			// last 12 hours or in the future,
-			// if in the past 
-			//
+			//	
+			//	Make sure event is a live show
+			//	is scheduled within the
+			//	last 12 hours or in the future,
+			//	if in the past 
+			//	
 			NSDate			*	date		=	[event DateTime];
 			NSInteger			since		=	[date timeIntervalSinceNow];
 			NSInteger			threshHold	=	-(60/*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/);
 			if (since > threshHold && [[event ShowType] boolValue])
 			{
-				NSString	*	timeString	=	nil;
-				if (since < 0 && self.live)
-				{
-					timeString				=	@"NOW!";
-				}
-				else if (since >= 0)
-				{
-					NSInteger	d			=	since / 86400;
-					NSInteger	h			=	since / 3600 - d * 24;
-					NSInteger	m			=	since / 60 - d * 1440 - h * 60;
-					timeString				=	[NSString stringWithFormat:@"%02d : %02d : %02d", d, h, m];
-				}
+				if ((since < 0 && self.live) || (since >= 0))
+					[self updateNextLiveShowLabel:date];
 				else
-				{
 					continue;
-				}
-				[[self nextLiveShowLabel] setText:timeString];
 				[NSTimer scheduledTimerWithTimeInterval:60.0 
 												 target:self 
 											   selector:@selector(updateTimeSince:) 
@@ -314,7 +303,10 @@
 }
 - (void)updateTimeSince:(NSTimer *)timer
 {
-	NSDate		*	date		=	[timer userInfo];
+	[self updateNextLiveShowLabel:(NSDate *)[timer userInfo]];
+}
+- (void)updateNextLiveShowLabel:(NSDate *)date
+{
 	NSString	*	timeString	=	nil;
 	NSInteger		since		=	[date timeIntervalSinceNow];
 	if (since < 0 && self.live)
@@ -328,33 +320,42 @@
 		NSInteger	m			=	since / 60 - d * 1440 - h * 60;
 		timeString				=	[NSString stringWithFormat:@"%02d : %02d : %02d", d, h, m];
 	}
-	[[self nextLiveShowLabel] setText:timeString];
+	self.nextLiveShowLabel.text	=	timeString;
+	[self.nextLiveShowActivityIndicator stopAnimating];
 }
 - (void)findGuest:(NSString *)eventTitle
 {
-	NSRange				range	=	[eventTitle rangeOfString:@"Live Show with " 
-										 options:(NSAnchoredSearch | 
-												  NSCaseInsensitiveSearch)];
+	if (self.guestLabel == nil)
+		NSLog(@"guests label is nil");
+	
+	NSString		*	guestText	=	nil;
+	NSRange				range		=	[eventTitle rangeOfString:@"Live Show with " 
+										  options:(NSAnchoredSearch | 
+												   NSCaseInsensitiveSearch)];
 	if (range.location != NSNotFound)
 	{
-		NSString	*	guest	=
+		NSString	*	guest		=
 		[eventTitle stringByReplacingOccurrencesOfString:@"Live Show with " 
 											  withString:@"" 
 												 options:(NSAnchoredSearch | 
 														  NSCaseInsensitiveSearch)
 												   range:NSMakeRange(0, eventTitle.length)];
 		if (guest)
-			[guestLabel setText:guest];
+			guestText				=	guest;
 	}
 	else
-	{
-		[guestLabel setText:@"No Guest(s)"];
-	}
+		guestText					=	@"No Guest(s)";
+	
+	NSLog(@"Guest %@", guestText);
+	self.guestLabel.text			=	guestText;
+	
+	[self.guestActivityIndicator stopAnimating];
 }
 - (void)liveShowStatus:(BOOL)live
 {
 	self.live					=	live;
 	liveShowStatusLabel.text	=	[NSString stringWithFormat:@"%@", self.live ? @"Live" : @"Not Live"];
+	[self.liveShowStatusActivityIndicator stopAnimating];
 }
 
 @end

@@ -1,6 +1,5 @@
 //
 //  DataModel.m
-//  KATG Big
 //
 //  Created by Doug Russell on 5/5/10.
 //  Copyright 2010 Doug Russell. All rights reserved.
@@ -38,22 +37,22 @@ static DataModel	*	sharedDataModel	=	nil;
 /******************************************************************************/
 + (DataModel *)sharedDataModel
 {
-	@synchronized(self)
+	@synchronized(sharedDataModel)
 	{
 		if (sharedDataModel == nil)
 		{
-			sharedDataModel = [[self alloc] init];
+			sharedDataModel	=	[[self alloc] init];
 		}
 	}
 	return sharedDataModel;
 }
 + (id)allocWithZone:(NSZone *)zone
 {
-	@synchronized(self)
+	@synchronized(sharedDataModel)
 	{
 		if (sharedDataModel == nil)
 		{
-			sharedDataModel = [super allocWithZone:zone];
+			sharedDataModel	=	[super allocWithZone:zone];
 			return sharedDataModel;
 		}
 	}
@@ -120,7 +119,7 @@ static DataModel	*	sharedDataModel	=	nil;
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark Data Methods
+#pragma mark Events
 #pragma mark -
 /******************************************************************************/
 - (void)events
@@ -134,9 +133,11 @@ static DataModel	*	sharedDataModel	=	nil;
 	//
 	DataOperation	*	op	=	[[DataOperation alloc] init];
 	[op setDelegate:self];
-	// Object setters are (nonatomic, copy)
+	//	
+	//	Object setters are (nonatomic, copy)
 	[op setCode:kEventsListCode];
 	[op setURI:kEventsFeedAddress];
+	[op setBufferDict:[NSDictionary dictionary]];
 	if (connected)
 		[operationQueue addOperation:op];
 	else
@@ -145,37 +146,48 @@ static DataModel	*	sharedDataModel	=	nil;
 }
 - (void)eventsNoPoll
 {
-	//
-	//  Retrieve events already in Core Data Store
-	//
-#ifdef __IPHONE_4_0
+	//	
+	//	Retrieve events already in Core Data Store
+	//	
 	[coreDataOperationQueue addOperationWithBlock:^{[[DataModel sharedDataModel] fetchEvents];}];
-#else
-	// write some 3.0 code :(
-#endif
 }
+/******************************************************************************/
+#pragma mark -
+#pragma mark Live Show Status
+#pragma mark -
+/******************************************************************************/
 - (void)liveShowStatus
 {
 	//
-	//  *UNREVISEDCOMMENTS*
+	//  Checks the Live Show Status
+	//	This is based on the hosts turning on
+	//	the live show indicator on the website
+	//	manually and does not directly poll the
+	//	shoutcast servers status
 	//
 	DataOperation	*	op	=	[[DataOperation alloc] init];
 	[op setDelegate:self];
 	// Object setters are (nonatomic, copy)
 	[op setCode:kLiveShowStatusCode];
 	[op setURI:kLiveShowStatusAddress];
+	[op setBufferDict:[NSDictionary dictionary]];
 	if (connected)
 		[operationQueue addOperation:op];
 	else
 		[delayedOperations addObject:op];
 	[op release];
 }
+/******************************************************************************/
+#pragma mark -
+#pragma mark Feedback
+#pragma mark -
+/******************************************************************************/
 - (void)feedback:(NSString *)name 
 		location:(NSString *)location 
 		 comment:(NSString *)comment
 {
 	//
-	//  *UNREVISEDCOMMENTS*
+	//  Send in feedback for hosts to read during live show
 	//
 	DataOperation	*	op	=	[[DataOperation alloc] init];
 	[op setDelegate:self];
@@ -183,21 +195,14 @@ static DataModel	*	sharedDataModel	=	nil;
 	[op setCode:kFeedbackCode];
 	[op setBaseURL:kFeedbackURLAddress];
 	[op setURI:kFeedbackURIAddress];
-	// Pretty sure these copies are unnecessary
-	NSString	*	nameCopy		=	[name copy];
-	NSString	*	locationCopy	=	[location copy];
-	NSString	*	commentCopy		=	[comment copy];
-	NSDictionary *bufferDict = 
+	NSDictionary	*	bufferDict	=
 	[NSDictionary dictionaryWithObjectsAndKeys:
-	 nameCopy, @"Name",
-	 locationCopy, @"Location",
-	 commentCopy, @"Comment",
-	 @"Send+Comment", @"ButtonSubmit",
-	 @"3", @"HiddenVoxbackId",
-	 @"IEOSE", @"HiddenMixerCode", nil];
-	[nameCopy release];
-	[locationCopy release];
-	[commentCopy release];
+	 [[name copy] autorelease],		@"Name",
+	 [[location copy] autorelease],	@"Location",
+	 [[comment copy] autorelease],	@"Comment",
+	 @"Send+Comment",				@"ButtonSubmit",
+	 @"3",							@"HiddenVoxbackId",
+	 @"IEOSE",						@"HiddenMixerCode", nil];
 	[op setBufferDict:bufferDict];
 	if (connected)
 		[operationQueue addOperation:op];
@@ -205,66 +210,47 @@ static DataModel	*	sharedDataModel	=	nil;
 		[delayedOperations addObject:op];
 	[op release];
 }
+/******************************************************************************/
+#pragma mark -
+#pragma mark Shows
+#pragma mark -
+/******************************************************************************/
 - (void)shows
 {
-	//
-	//  *UNREVISEDCOMMENTS*
-	//
-	[self showsNoPoll];
-	//
-	//  *UNREVISEDCOMMENTS*
-	//
+	//	
+	//	Retrieve full list of show archive
+	//	
 	DataOperation	*	op	=	[[DataOperation alloc] init];
 	[op setDelegate:self];
 	// Object setters are (nonatomic, copy)
 	[op setCode:kShowArchivesCode];
 	[op setURI:kShowListURIAddress];
+	[op setBufferDict:[NSDictionary dictionary]];
 	if (connected)
 		[operationQueue addOperation:op];
 	else
 		[delayedOperations addObject:op];
 	[op release];
 }
-- (void)showsNoPoll
-{
-	//
-	//  Retrieve shows already in Core Data Store
-	//
-#ifdef __IPHONE_4_0
-	[coreDataOperationQueue addOperationWithBlock:^{[[DataModel sharedDataModel] fetchShows];}];
-#else
-	// write some 3.0 code :(
-#endif
-}
 - (void)showDetails:(NSString *)ID
 {
-	//
-	//  *UNREVISEDCOMMENTS*
-	//
+	//	
+	//	Update given show with details
+	//	
 	DataOperation	*	op	=	[[DataOperation alloc] init];
 	[op setDelegate:self];
 	// Object setters are (nonatomic, copy)
 	[op setCode:kShowDetailsCode];
-	[op setBufferDict:[NSDictionary dictionaryWithObject:ID forKey:kShowIDKey]];
 	[op setURI:kShowDetailsURIAddress];
+	NSDictionary	*	bufferDict	=
+	[NSDictionary dictionaryWithObjectsAndKeys:
+	 [[ID copy] autorelease],	kShowIDKey, nil];
+	[op setBufferDict:bufferDict];
 	if (connected)
 		[operationQueue addOperation:op];
 	else
 		[delayedOperations addObject:op];
 	[op release];
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Data Operation Delegates
-#pragma mark -
-/******************************************************************************/
-- (void)dataOperationDidFinish:(DataOperation *)op
-{
-	
-}
-- (void)dataOperationDidFail:(DataOperation *)op withError:(NSError *)error
-{
-	
 }
 
 @end

@@ -10,7 +10,7 @@
 #import "DataModel.h"
 #import "Rounded.h"
 
-@class Show, MPMoviePlayerController;
+@class Show;
 @interface ArchiveDetailViewController : UIViewController 
 <DataModelDelegate>
 {
@@ -21,7 +21,6 @@
 	UILabel			*	showGuestsLabel;
 	UITextView		*	showNotesTextView;
 	UIButton		*	playButton;
-	MPMoviePlayerController	*	player;
 }
 
 @property (nonatomic, assign)				Show			*	show;
@@ -30,6 +29,7 @@
 @property (nonatomic, retain)	IBOutlet	UILabel			*	showGuestsLabel;
 @property (nonatomic, retain)	IBOutlet	UITextView		*	showNotesTextView;
 @property (nonatomic, retain)	IBOutlet	UIButton		*	playButton;
-@property (nonatomic, retain)				MPMoviePlayerController	*	player;
+
+- (IBAction)playButtonPressed:(id)sender;
 
 @end

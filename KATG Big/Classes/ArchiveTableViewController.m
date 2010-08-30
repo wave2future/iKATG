@@ -12,10 +12,16 @@
 #import "ArchiveTableViewCell.h"
 #import "UIViewController+Nib.h"
 #import "ArchiveDetailViewController.h"
+#import "PlayerController.h"
+
+@interface ArchiveTableViewController ()
+- (void)decorateCell:(ArchiveTableViewCell *)cell withIndexPath:(NSIndexPath *)indexPath;
+@end
 
 @implementation ArchiveTableViewController
-@synthesize shows				=	_shows;
-@synthesize filteredShows		=	_filteredShows;
+@synthesize fetchedResultsController	=	_fetchedResultsController;
+@synthesize	showContext					=	_showContext;
+@synthesize activityIndicator			=	_activityIndicator;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -23,29 +29,101 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-	
-	self.searchDisplayController.searchResultsTableView.rowHeight = self.tableView.rowHeight;
-	self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
-	
+	//	
+	//	Setup Model
+	//	
 	model	=	[DataModel sharedDataModel];
 	[model addDelegate:self];
-	
-	[model shows];
-	
-	NSMutableArray	*	filtered	=	[[NSMutableArray alloc] initWithCapacity:1200];
-	if (filtered)
+	//	
+	//	Set up a local managed object context
+	//	
+	NSPersistentStoreCoordinator	*	psc			=	[model.managedObjectContext persistentStoreCoordinator];
+	NSManagedObjectContext			*	showContext	=	[[NSManagedObjectContext alloc] init];
+	if (showContext)
 	{
-		self.filteredShows	=	filtered;
-		[filtered release];
+		self.showContext							=	showContext;
+		self.showContext.persistentStoreCoordinator	=	psc;
+		[showContext release];
 	}
+	//	
+	//	Setup Fetch Controller
+	//	
+	NSFetchRequest		*	request			=	[[NSFetchRequest alloc] init];
+	NSEntityDescription	*	entity			=	[NSEntityDescription 
+												 entityForName:@"Show" 
+												 inManagedObjectContext:self.showContext];
+	request.entity							=	entity;
+	NSSortDescriptor	*	sortDescriptor	=	[[NSSortDescriptor alloc] 
+												 initWithKey:@"ID" 
+												 ascending:NO];
+	NSArray				*	sortDescriptors	=	[[NSArray alloc] initWithObjects:sortDescriptor, nil];
+	request.sortDescriptors					=	sortDescriptors;
+	[sortDescriptors release];
+	[sortDescriptor release];
+	NSFetchedResultsController	*	fetchedResultsController	=	[[NSFetchedResultsController alloc] 
+																	 initWithFetchRequest:request 
+																	 managedObjectContext:self.showContext 
+																	 sectionNameKeyPath:nil 
+																	 cacheName:@"archives"];
+	fetchedResultsController.delegate		=	self;
+	self.fetchedResultsController			=	fetchedResultsController;
+	[fetchedResultsController release];
+	[request release];
+	
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self 
+	 selector:@selector(mergeChangesFromContextDidSaveNotification:) 
+	 name:NSManagedObjectContextDidSaveNotification 
+	 object:nil];
+	
+	UIActivityIndicatorView	*	activityIndicator	=	[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+	if (activityIndicator)
+	{
+		self.activityIndicator						=	activityIndicator;
+		[activityIndicator release];
+		[self.activityIndicator setHidesWhenStopped:YES];
+		self.activityIndicator.center				=	self.view.center;
+		[self.view addSubview:self.activityIndicator];
+	}
+	
+	NSError	*	error;
+	[self.fetchedResultsController performFetch:&error];
+	//if (error)
+	//	ESLog(@"Archive Fetch Failed: %@", error);
+	//	
+	//	Retrieve shows list from web api
+	//	
+	[model shows];
 }
-- (void)viewWillAppear:(BOOL)animated 
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+	[super viewWillAppear:animated];
+	if ([PlayerController sharedPlayerController].player != nil)
+	{
+		UIBarButtonItem	*	button	=
+		[[UIBarButtonItem alloc] 
+		 initWithTitle:@"Player" 
+		 style:UIBarButtonItemStyleBordered 
+		 target:self 
+		 action:@selector(presentPlayer)];
+		self.navigationItem.rightBarButtonItem	=	button;
+		[button release];
+	}
+	else
+		self.navigationItem.rightBarButtonItem	=	nil;
 }
-- (void)viewDidDisappear:(BOOL)animated 
+- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
 {
-    [super viewDidDisappear:animated];
+	if ([NSThread isMainThread])
+	{
+		[self.showContext mergeChangesFromContextDidSaveNotification:notification];
+	}
+	else
+	{
+		[self performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) 
+							   withObject:notification
+							waitUntilDone:NO];
+	}
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
@@ -62,53 +140,41 @@
 {
 	[super viewDidUnload];
 	[model removeDelegate:self];
+	self.activityIndicator	=	nil;
 }
 - (void)dealloc 
 {
-	[_shows release];
-	[_filteredShows release];
+	[_fetchedResultsController release];
+	[_showContext release];
+	[_activityIndicator release];
     [super dealloc];
 }
 #pragma mark -
-#pragma mark Table view data source
+#pragma mark Table View Data Source
 #pragma mark -
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-    return 1;
+	return [[self.fetchedResultsController sections] count];
 }
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.searchDisplayController.searchResultsTableView)
-	{
-		return self.filteredShows.count;
-	}
-	else
-	{
-		return self.shows.count;
-	}
+	return [(id <NSFetchedResultsSectionInfo>)[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	static NSString	*	CellIdentifier	=	@"ArchiveTableViewCell";
     static NSString	*	CellNibName		=	@"ArchiveTableViewCelliPhone";
 	// Load Nib
-    ArchiveTableViewCell	*	cell	=
-	(ArchiveTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-		cell	=	(ArchiveTableViewCell *)[ArchiveTableViewCell 
-											 loadFromNibName:CellNibName
-											 owner:self];
-    }
+    ArchiveTableViewCell	*	cell	=	(ArchiveTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
+		cell	=	(ArchiveTableViewCell *)[ArchiveTableViewCell loadFromNibName:CellNibName owner:self];
+	[self decorateCell:cell withIndexPath:indexPath];
+	return cell;
+}
+- (void)decorateCell:(ArchiveTableViewCell *)cell withIndexPath:(NSIndexPath *)indexPath
+{
 	// Get Show Object
-	Show	*	show	=	 nil;
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-	{
-		show	=	(Show *)[self.filteredShows objectAtIndex:indexPath.row];
-	}
-	else
-	{
-		show	=	(Show *)[self.shows objectAtIndex:indexPath.row];
-	}
+	Show			*	show	=	(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath];
 	// Set Number
 	cell.showNumberLabel.text	=	[[show Number] stringValue];
 	// Set Title
@@ -141,23 +207,14 @@
 		cell.showPicsImageView.image	=	[UIImage imageNamed:@"HasPics"];
 	else
 		cell.showPicsImageView.image	=	nil;
-	
-	return cell;
 }
 #pragma mark -
-#pragma mark Table view delegate
+#pragma mark Table View Delegate
 #pragma mark -
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	Show	*	show	=	nil;
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-	{
-		show			=	[self.filteredShows objectAtIndex:indexPath.row];
-	}
-	else
-	{
-		show			=	[self.shows objectAtIndex:indexPath.row];
-	}
+	show				=	(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath];
 	[model showDetails:[[show ID] stringValue]];
 	ArchiveDetailViewController	*	viewController	=
 	[[ArchiveDetailViewController alloc] initWithNibName:@"ArchiveDetailViewiPhone" 
@@ -167,77 +224,61 @@
 	[viewController release];
 }
 #pragma mark -
-#pragma mark Data Model Delgates
+#pragma mark Fetched Results Controller Delegates
 #pragma mark -
-- (void)shows:(NSArray *)shows
+- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
-	self.shows	=	shows;
-	[self.tableView reloadData];
+	[self.tableView beginUpdates];
 }
-#pragma mark -
-#pragma mark searchResultsTableView
-#pragma mark -
-#define kAll 0
-#define kTitle 1
-#define kNumber 2
-#define kGuests 3
-- (void)filterContentForSearchText:(NSString*)searchText
+- (void)controller:(NSFetchedResultsController*)controller 
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo 
+		   atIndex:(NSUInteger)sectionIndex 
+	 forChangeType:(NSFetchedResultsChangeType)type
 {
-	// Update the filtered array based on the search text and scope.
-	[self.filteredShows removeAllObjects]; // First clear the filtered array.
-	
-	// Search the main list for products whose type matches the scope (if selected) and whose name matches searchText; add items that match to the filtered array.
-	for (Show *show in self.shows)
+	NSIndexSet	*	set	=	[NSIndexSet indexSetWithIndex:sectionIndex];
+	switch(type) 
 	{
-		NSInteger	buttonIndex	=	self.searchDisplayController.searchBar.selectedScopeButtonIndex;
-		
-		BOOL	one	=	NO;
-		if (buttonIndex == kTitle || buttonIndex == kAll)
-		{
-			NSRange	result	=	[[show Title] rangeOfString:searchText options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch)];
-			one				=	(result.location != NSNotFound && result.length != 0);
-		}
-			
-		BOOL	two	=	NO;
-		if (buttonIndex == kNumber || buttonIndex == kAll)
-		{
-			NSRange	result	=	[[[show Number] stringValue] rangeOfString:searchText options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch)];
-			two				=	(result.location != NSNotFound && result.length != 0);
-		}
-		
-		BOOL	thr	=	NO;
-		if (buttonIndex == kGuests || buttonIndex == kAll)
-		{
-			for (Guest *guest in [show Guests])
-			{
-				NSRange	result	=	[[guest Guest] rangeOfString:searchText options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch)];
-				BOOL	match	=	(result.location != NSNotFound && result.length != 0);
-				if (match)
-					thr			=	YES;
-			}
-		}
-		
-		BOOL tot =  (one || two || thr);
-		
-		if (tot)
-			[self.filteredShows addObject:show];
+		case NSFetchedResultsChangeInsert:
+			[self.tableView insertSections:set withRowAnimation:UITableViewRowAnimationFade];
+			break; 
+		case NSFetchedResultsChangeDelete:
+			[self.tableView deleteSections:set withRowAnimation:UITableViewRowAnimationFade];
+			break;
 	}
 }
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+- (void)controller:(NSFetchedResultsController*)controller 
+   didChangeObject:(id)anObject
+	   atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type
+	  newIndexPath:(NSIndexPath*)newIndexPath
 {
-	self.searchDisplayController.searchResultsTableView.rowHeight = self.tableView.rowHeight;
-	self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
-    [self filterContentForSearchText:searchString];
-    // Return YES to cause the search result table view to be reloaded.
-    return YES;
+	switch(type) {
+		case NSFetchedResultsChangeInsert:
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		case NSFetchedResultsChangeDelete:
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		case NSFetchedResultsChangeUpdate:
+			[self decorateCell:(ArchiveTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath] withIndexPath:indexPath];
+			break;
+		case NSFetchedResultsChangeMove:
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+	}
 }
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
+- (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
 {
-	self.searchDisplayController.searchResultsTableView.rowHeight = self.tableView.rowHeight;
-	self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
-    [self filterContentForSearchText:[self.searchDisplayController.searchBar text]];
-    // Return YES to cause the search result table view to be reloaded.
-    return YES;
+	[[self tableView] endUpdates];
+}
+#pragma mark -
+#pragma mark Player
+#pragma mark -
+- (void)presentPlayer
+{
+	PlayerController	*	viewController	=	[PlayerController sharedPlayerController];
+	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;
+	[self presentModalViewController:viewController animated:YES];
 }
 
 @end

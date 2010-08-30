@@ -29,25 +29,11 @@
 #pragma mark -
 #pragma mark Singleton Methods
 #pragma mark -
-- (id)copyWithZone:(NSZone *)zone
-{
-	return self;
-}
-- (id)retain
-{
-	return self;
-}
-- (NSUInteger)retainCount
-{
-	return NSUIntegerMax;
-}
-- (void)release
-{
-}
-- (id)autorelease
-{
-	return self;
-}
+- (id)copyWithZone:(NSZone *)zone {return self;}
+- (id)retain {return self;}
+- (NSUInteger)retainCount {return NSUIntegerMax;}
+- (void)release {}
+- (id)autorelease {return self;}
 /******************************************************************************/
 #pragma mark -
 #pragma mark Setup
@@ -55,7 +41,7 @@
 /******************************************************************************/
 - (id)init
 {
-	if (self = [super init])
+	if ((self = [super init]))
 	{
 		// Non retaining array
 		// to prevent delegates
@@ -122,17 +108,23 @@
 }
 - (void)registerNotifications
 {
-	// Respond to changes in reachability
+	//	Respond to changes in reachability
 	[[NSNotificationCenter defaultCenter] 
 	 addObserver:self 
 	 selector:@selector(reachabilityChanged:) 
 	 name:kReachabilityChangedNotification 
 	 object:nil];
-	// When app is closed attempt to release object
+	//	When app is closed attempt to release object
 	[[NSNotificationCenter defaultCenter] 
 	 addObserver:self 
 	 selector:@selector(releaseSingleton) 
 	 name:UIApplicationWillTerminateNotification 
+	 object:nil];
+	//	
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self 
+	 selector:@selector(mergeChangesFromContextDidSaveNotification:) 
+	 name:NSManagedObjectContextDidSaveNotification 
 	 object:nil];
 }
 /******************************************************************************/

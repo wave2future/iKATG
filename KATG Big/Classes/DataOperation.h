@@ -61,7 +61,7 @@ GrabXMLFeed * CreateParserForXPath(NSInteger code, NSData *data, NSString *xPath
 
 - (void)processEventsList:(NSArray *)entries;
 - (void)processLiveShowStatus:(NSArray *)entries;
-- (void)procesShowsList:(NSArray *)entries;
+- (void)processShowsList:(NSArray *)entries;
 - (void)procesShowDetails:(NSArray *)entries withID:(NSString *)ID;
 
 @end

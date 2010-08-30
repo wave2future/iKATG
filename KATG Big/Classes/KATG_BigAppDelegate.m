@@ -1,6 +1,5 @@
 //
 //  KATG_BigAppDelegate.m
-//  KATG Big
 //
 //  Created by Doug Russell on 4/26/10.
 //  Copyright Doug Russell 2010. All rights reserved.
@@ -22,6 +21,8 @@
 #import "KATG_BigAppDelegate.h"
 #import "DataModel.h"
 #import "Reachability.h"
+#import "Push.h"
+#include <AudioToolbox/AudioToolbox.h>
 
 @interface KATG_BigAppDelegate (PrivateCoreDataStack)
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
@@ -38,7 +39,6 @@ void uncaughtExceptionHandler(NSException *exception)
 {
 	ESLog(@"Uncaught Exception: %@", exception);
 }
-
 #pragma mark -
 #pragma mark Application Lifecycle
 #pragma mark -
@@ -46,7 +46,7 @@ void uncaughtExceptionHandler(NSException *exception)
 {
 	NSLog(@"Application Launch With Options: %@", launchOptions);
 	
-	NSManagedObjectContext *context = [self managedObjectContext];
+	NSManagedObjectContext	*	context	=	[self managedObjectContext];
 	if (!context)
 	{	// error
 		
@@ -58,36 +58,48 @@ void uncaughtExceptionHandler(NSException *exception)
     [window addSubview:tabBarController.view];
     [window makeKeyAndVisible];
 	
-	NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithFile:AppDirectoryCachePathAppended(@"cookies")];
-	//NSLog(@"Cookies Startup :%@", cookies);
-	if (cookies != nil)
-	{
-		[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
-		for (NSHTTPCookie *cookie in cookies)
-		{
-			[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
-		}
-	}
+//	NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithFile:AppDirectoryCachePathAppended(@"cookies")];
+//	//NSLog(@"Cookies Startup :%@", cookies);
+//	if (cookies != nil)
+//	{
+//		[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+//		for (NSHTTPCookie *cookie in cookies)
+//		{
+//			[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
+//		}
+//	}
+	
 	// APNS
 	// Register for push notifications
-	[application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | 
-													 UIRemoteNotificationTypeBadge | 
-													 UIRemoteNotificationTypeSound)];
+	[[Push sharedPush] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | 
+														   UIRemoteNotificationTypeBadge | 
+														   UIRemoteNotificationTypeSound)];
+	[[Push sharedPush] setDelegate:self];
+	
 	// If app is launched from a notification, display that notification in an alertview
 	if ([launchOptions count] > 0) 
 	{
-		NSString *alertMessage = 
-		[[[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey] 
-		  objectForKey:@"aps"] 
-		 objectForKey:@"alert"];
+		NSString	*	alertMessage	=
+		[[[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey] objectForKey:@"aps"] objectForKey:@"alert"];
 		if (alertMessage)
-		{
 			BasicAlert(@"Notification", alertMessage, nil, @"Continue", nil);
-		}
 	}
+	
+	
+	
 	
 	// Register reachability object
 	[self checkReachability];
+	
+	AudioSessionInitialize (NULL,                          // 'NULL' to use the default (main) run loop
+							NULL,                          // 'NULL' to use the default run loop mode
+							NULL,  // a reference to your interruption callback
+							NULL);                      // data to pass to your interruption listener callback
+	UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+	AudioSessionSetProperty (kAudioSessionProperty_AudioCategory,
+							 sizeof (sessionCategory),
+							 &sessionCategory);
+	AudioSessionSetActive(true);
     
     return YES;
 }
@@ -98,6 +110,8 @@ void uncaughtExceptionHandler(NSException *exception)
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	NSLog(@"Application Termination");
+	
+	AudioSessionSetActive(false);
 	
 //	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 //	//NSLog(@"Cookies Shutdown :%@", cookies);
@@ -200,32 +214,34 @@ void uncaughtExceptionHandler(NSException *exception)
 #pragma mark -
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-	// This should be in the model and use DataOperation
-	NSString *token = [NSString stringWithFormat: @"%@", deviceToken];
-	[NSThread detachNewThreadSelector:@selector(sendProviderDeviceToken:) 
-							 toTarget:self 
-						   withObject:token];
-}
-- (void)sendProviderDeviceToken:(NSString *)token 
-{ // This needs some attention, seems awkward
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSString *myRequestString = 
-	@"http://app.keithandthegirl.com/app/tokenserver/tokenserver.php?dev=";
-	token = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)token, NULL, NULL, kCFStringEncodingUTF8);
-	myRequestString = [myRequestString stringByAppendingString:token];
-	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:myRequestString]]; 
-	[NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-	[request autorelease];
-	[token release];
-	[pool release];
+	if ([application enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone)
+	{	
+		NSLog(@"Notifications are disabled for this application. Not registering with Urban Airship");
+		return;
+	}
+	
+	[[Push sharedPush] setDeviceToken:deviceToken];
+	[[Push sharedPush] send];
+	
+	//BasicAlert(@"Token", [NSString stringWithFormat:@"%@", deviceToken], nil, @"ok", nil);
 }
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-	
+	NSLog(@"Remote Notification Register Failed: %@", error);
 }
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-	
+	NSString	*	alertMessage	=	[[[userInfo objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey] objectForKey:@"aps"] objectForKey:@"alert"];
+	if (alertMessage)
+		BasicAlert(@"Notification", alertMessage, nil, @"Continue", nil);
+}
+- (void)pushNotificationRegisterSucceeded:(Push *)push
+{
+	NSLog(@"Push Succeeded:\n%@", push.result);
+}
+- (void)pushNotificationRegisterFailed:(NSError *)error
+{
+	NSLog(@"Push Error Occured:\n%@", error);
 }
 #pragma mark -
 #pragma mark Memory Management

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme>
    <BuildAction
-      buildConfiguration = "Debug">
+      buildConfiguration = "Distro">
    </BuildAction>
    <TestAction>
    </TestAction>
    <LaunchAction
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB">
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB">
       <BuildableProductRunnable>
          <BuildableProductReference
             BuildableProductIdentifier = "KATG.com.app">

@@ -12,7 +12,6 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
-		28AD73880D9D96C1002E5188 /* MainWindowiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindowiPad.xib */; };
 		53056DE81195172A0057C912 /* OnAirViewController+Feedback.m in Sources */ = {isa = PBXBuildFile; fileRef = 53056DE71195172A0057C912 /* OnAirViewController+Feedback.m */; };
 		5307377811E14A0500B5F4AA /* Launch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5307377711E14A0500B5F4AA /* Launch@2x.png */; };
 		5307379211E14CE100B5F4AA /* AppIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5307379111E14CE100B5F4AA /* AppIcon@2x.png */; };
@@ -23,13 +22,39 @@
 		530737D911E1523A00B5F4AA /* TwitterTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 530737D511E1523A00B5F4AA /* TwitterTab@2x.png */; };
 		53132EFD11EA85110007D79F /* ArchiveTableViewControlleriPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 53132EFC11EA85110007D79F /* ArchiveTableViewControlleriPhone.m */; };
 		53132F2111EA87F20007D79F /* ArchiveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53132F2011EA87F20007D79F /* ArchiveTableViewCell.m */; };
-		53132F2A11EA88F10007D79F /* ArchiveTableViewCelliPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53132F2911EA88F10007D79F /* ArchiveTableViewCelliPhone.xib */; };
+		5317DAA11218BA5C004C7407 /* PlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5317DA9F1218BA5C004C7407 /* PlayerController.m */; };
+		5317DAA31218BA5C004C7407 /* PlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5317DA9F1218BA5C004C7407 /* PlayerController.m */; };
+		53284F661219FA580025DB3F /* ArchiveDetailViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F4C1219FA580025DB3F /* ArchiveDetailViewiPhone.xib */; };
+		53284F671219FA580025DB3F /* ArchiveTableViewCelliPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F4E1219FA580025DB3F /* ArchiveTableViewCelliPhone.xib */; };
+		53284F681219FA580025DB3F /* ArchiveViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F501219FA580025DB3F /* ArchiveViewiPhone.xib */; };
+		53284F691219FA580025DB3F /* EventsDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F521219FA580025DB3F /* EventsDetailView.xib */; };
+		53284F6A1219FA580025DB3F /* EventsTableViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F541219FA580025DB3F /* EventsTableViewiPhone.xib */; };
+		53284F6B1219FA580025DB3F /* EventTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F561219FA580025DB3F /* EventTableCellView.xib */; };
+		53284F6C1219FA580025DB3F /* MainWindowiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F581219FA580025DB3F /* MainWindowiPad.xib */; };
+		53284F6D1219FA580025DB3F /* MainWindowiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F5A1219FA580025DB3F /* MainWindowiPhone.xib */; };
+		53284F6E1219FA580025DB3F /* ModalWebViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F5C1219FA580025DB3F /* ModalWebViewiPad.xib */; };
+		53284F6F1219FA580025DB3F /* ModalWebViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F5E1219FA580025DB3F /* ModalWebViewiPhone.xib */; };
+		53284F701219FA580025DB3F /* OnAirViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F601219FA580025DB3F /* OnAirViewiPad.xib */; };
+		53284F711219FA580025DB3F /* OnAirViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F621219FA580025DB3F /* OnAirViewiPhone.xib */; };
+		53284F721219FA580025DB3F /* PlayerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F641219FA580025DB3F /* PlayerController.xib */; };
+		53284F731219FA580025DB3F /* ArchiveDetailViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F4C1219FA580025DB3F /* ArchiveDetailViewiPhone.xib */; };
+		53284F741219FA580025DB3F /* ArchiveTableViewCelliPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F4E1219FA580025DB3F /* ArchiveTableViewCelliPhone.xib */; };
+		53284F751219FA580025DB3F /* ArchiveViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F501219FA580025DB3F /* ArchiveViewiPhone.xib */; };
+		53284F761219FA580025DB3F /* EventsDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F521219FA580025DB3F /* EventsDetailView.xib */; };
+		53284F771219FA580025DB3F /* EventsTableViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F541219FA580025DB3F /* EventsTableViewiPhone.xib */; };
+		53284F781219FA580025DB3F /* EventTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F561219FA580025DB3F /* EventTableCellView.xib */; };
+		53284F791219FA580025DB3F /* MainWindowiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F581219FA580025DB3F /* MainWindowiPad.xib */; };
+		53284F7A1219FA580025DB3F /* MainWindowiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F5A1219FA580025DB3F /* MainWindowiPhone.xib */; };
+		53284F7B1219FA580025DB3F /* ModalWebViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F5C1219FA580025DB3F /* ModalWebViewiPad.xib */; };
+		53284F7C1219FA580025DB3F /* ModalWebViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F5E1219FA580025DB3F /* ModalWebViewiPhone.xib */; };
+		53284F7D1219FA580025DB3F /* OnAirViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F601219FA580025DB3F /* OnAirViewiPad.xib */; };
+		53284F7E1219FA580025DB3F /* OnAirViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F621219FA580025DB3F /* OnAirViewiPhone.xib */; };
+		53284F7F1219FA580025DB3F /* PlayerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53284F641219FA580025DB3F /* PlayerController.xib */; };
 		532DA2B911EBFFFF00E380E2 /* Phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 532DA2B711EBFFFF00E380E2 /* Phone.png */; };
 		532DA2BA11EBFFFF00E380E2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 532DA2B811EBFFFF00E380E2 /* Phone@2x.png */; };
 		532DA2BB11EBFFFF00E380E2 /* Phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 532DA2B711EBFFFF00E380E2 /* Phone.png */; };
 		532DA2BC11EBFFFF00E380E2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 532DA2B811EBFFFF00E380E2 /* Phone@2x.png */; };
 		532DA47711929AEC00293EBA /* ModalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA47511929AEC00293EBA /* ModalWebViewController.m */; };
-		532DA47811929AEC00293EBA /* ModalWebViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 532DA47611929AEC00293EBA /* ModalWebViewiPad.xib */; };
 		532DA5C311EE6C2900E380E2 /* CellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 532DA5C111EE6C2900E380E2 /* CellBackground.png */; };
 		532DA5C411EE6C2900E380E2 /* CellBackgroundSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 532DA5C211EE6C2900E380E2 /* CellBackgroundSelected.png */; };
 		532DA5C511EE6C2900E380E2 /* CellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 532DA5C111EE6C2900E380E2 /* CellBackground.png */; };
@@ -37,7 +62,6 @@
 		532DA6AC11EE85AE00E380E2 /* NSArray+MyAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66411EE85AE00E380E2 /* NSArray+MyAdditions.m */; };
 		532DA6AD11EE85AE00E380E2 /* NSMutableArray+MyAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66611EE85AE00E380E2 /* NSMutableArray+MyAdditions.m */; };
 		532DA6AE11EE85AE00E380E2 /* NSString+Regex.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66811EE85AE00E380E2 /* NSString+Regex.m */; };
-		532DA6AF11EE85AE00E380E2 /* UIColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66A11EE85AE00E380E2 /* UIColor+Additions.m */; };
 		532DA6B011EE85AE00E380E2 /* UIImage+MyAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66C11EE85AE00E380E2 /* UIImage+MyAdditions.m */; };
 		532DA6B111EE85AE00E380E2 /* UIViewController+Nib.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66E11EE85AE00E380E2 /* UIViewController+Nib.m */; };
 		532DA6B211EE85AE00E380E2 /* ESLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA67011EE85AE00E380E2 /* ESLogger.m */; };
@@ -61,7 +85,6 @@
 		532DA6CC11EE85AE00E380E2 /* NSArray+MyAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66411EE85AE00E380E2 /* NSArray+MyAdditions.m */; };
 		532DA6CD11EE85AE00E380E2 /* NSMutableArray+MyAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66611EE85AE00E380E2 /* NSMutableArray+MyAdditions.m */; };
 		532DA6CE11EE85AE00E380E2 /* NSString+Regex.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66811EE85AE00E380E2 /* NSString+Regex.m */; };
-		532DA6CF11EE85AE00E380E2 /* UIColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66A11EE85AE00E380E2 /* UIColor+Additions.m */; };
 		532DA6D011EE85AE00E380E2 /* UIImage+MyAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66C11EE85AE00E380E2 /* UIImage+MyAdditions.m */; };
 		532DA6D111EE85AE00E380E2 /* UIViewController+Nib.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA66E11EE85AE00E380E2 /* UIViewController+Nib.m */; };
 		532DA6D211EE85AE00E380E2 /* ESLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA67011EE85AE00E380E2 /* ESLogger.m */; };
@@ -82,11 +105,11 @@
 		532DA6E111EE85AE00E380E2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA69411EE85AE00E380E2 /* Reachability.m */; };
 		532DA6E211EE85AE00E380E2 /* Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA69611EE85AE00E380E2 /* Request.m */; };
 		532DA6EB11EE85AE00E380E2 /* UtilityFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA6AB11EE85AE00E380E2 /* UtilityFunctions.m */; };
+		53349C1D122C6F8B0079AA59 /* PushKeys.h.example in Resources */ = {isa = PBXBuildFile; fileRef = 53349C1C122C6F8B0079AA59 /* PushKeys.h.example */; };
 		533CF9F411A8BD27003C7A0B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 533CF9F311A8BD27003C7A0B /* CoreData.framework */; };
 		533CFA2A11A8C2D9003C7A0B /* KATG.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 533CFA2811A8C2D9003C7A0B /* KATG.xcdatamodeld */; };
 		533CFC5211A90937003C7A0B /* iPadEntitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 533CFC5111A90937003C7A0B /* iPadEntitlements.plist */; };
 		534A6CED11D1D78000C17A83 /* ModalWebViewControlleriPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 534A6CEC11D1D78000C17A83 /* ModalWebViewControlleriPhone.m */; };
-		5354967511924268006A7859 /* EventTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5354967411924268006A7859 /* EventTableCellView.xib */; };
 		5354967F11924398006A7859 /* EventTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5354967E11924398006A7859 /* EventTableCellView.m */; };
 		5354969A11924496006A7859 /* EventIconTrans.png in Resources */ = {isa = PBXBuildFile; fileRef = 5354969811924496006A7859 /* EventIconTrans.png */; };
 		5354969B11924496006A7859 /* LiveShowIconTrans.png in Resources */ = {isa = PBXBuildFile; fileRef = 5354969911924496006A7859 /* LiveShowIconTrans.png */; };
@@ -98,7 +121,6 @@
 		5354973411924B8B006A7859 /* RightSlide.png in Resources */ = {isa = PBXBuildFile; fileRef = 5354973211924B8B006A7859 /* RightSlide.png */; };
 		5354975111924C2F006A7859 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5354975011924C2F006A7859 /* MediaPlayer.framework */; };
 		535497991192630A006A7859 /* EventsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 535497971192630A006A7859 /* EventsDetailViewController.m */; };
-		5354979A1192630A006A7859 /* EventsDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 535497981192630A006A7859 /* EventsDetailView.xib */; };
 		535497EA11926BC7006A7859 /* OnAirViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 535497E911926BC7006A7859 /* OnAirViewController.m */; };
 		535497ED11926D9D006A7859 /* UIWebViewOpaque.m in Sources */ = {isa = PBXBuildFile; fileRef = 535497EC11926D9D006A7859 /* UIWebViewOpaque.m */; };
 		5361639A11FBFAFF00E859FC /* ArchiveDetailBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 5361638811FBFAFF00E859FC /* ArchiveDetailBG.png */; };
@@ -137,9 +159,7 @@
 		536163BB11FBFAFF00E859FC /* TVShow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5361639711FBFAFF00E859FC /* TVShow@2x.png */; };
 		536163BC11FBFAFF00E859FC /* TVShowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5361639811FBFAFF00E859FC /* TVShowSelected.png */; };
 		536163BD11FBFAFF00E859FC /* TVShowSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5361639911FBFAFF00E859FC /* TVShowSelected@2x.png */; };
-		536163D011FBFE8900E859FC /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 536163CF11FBFE8800E859FC /* iAd.framework */; };
 		5366EA1811863AE0001A99D8 /* OnAirViewControlleriPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 5366EA1611863AE0001A99D8 /* OnAirViewControlleriPad.m */; };
-		5366EA1911863AE0001A99D8 /* OnAirViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5366EA1711863AE0001A99D8 /* OnAirViewiPad.xib */; };
 		5366EA2211863B8D001A99D8 /* SettingsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5366EA1E11863B8D001A99D8 /* SettingsIcon.png */; };
 		5366EA2311863B8D001A99D8 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5366EA1F11863B8D001A99D8 /* AppIcon.png */; };
 		5366EA2411863B8D001A99D8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 5366EA2011863B8D001A99D8 /* Icon-72.png */; };
@@ -162,7 +182,6 @@
 		538DD95011988F3800E40CBB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 535496D01192496C006A7859 /* AudioToolbox.framework */; };
 		538DD95111988F3800E40CBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53549708119249B2006A7859 /* CFNetwork.framework */; };
 		538DD95211988F3800E40CBB /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5354975011924C2F006A7859 /* MediaPlayer.framework */; };
-		538DD95611988FAB00E40CBB /* MainWindowiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 538DD95511988FAB00E40CBB /* MainWindowiPhone.xib */; };
 		538DD95A11988FF600E40CBB /* KATG_BigAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* KATG_BigAppDelegate.m */; };
 		538DD968119890E800E40CBB /* OnAirTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 5366EA2911863BF1001A99D8 /* OnAirTab.png */; };
 		538DD969119890E800E40CBB /* EventsTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 5366EA2811863BF1001A99D8 /* EventsTab.png */; };
@@ -182,14 +201,13 @@
 		538DD9FA1198955B00E40CBB /* DataModel+SetupCleanup.m in Sources */ = {isa = PBXBuildFile; fileRef = 53CBFEE611921C0900D08D09 /* DataModel+SetupCleanup.m */; };
 		538DD9FC1198955B00E40CBB /* DataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 53CBFD81119218F600D08D09 /* DataOperation.m */; };
 		53AD765911E8487200D72FB0 /* ArchiveTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AD765711E8487200D72FB0 /* ArchiveTableViewController.m */; };
-		53AD765A11E8487200D72FB0 /* ArchiveViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53AD765811E8487200D72FB0 /* ArchiveViewiPhone.xib */; };
 		53AD765B11E8487200D72FB0 /* ArchiveTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53AD765711E8487200D72FB0 /* ArchiveTableViewController.m */; };
-		53AD765C11E8487200D72FB0 /* ArchiveViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53AD765811E8487200D72FB0 /* ArchiveViewiPhone.xib */; };
 		53B0A50611F40BF300C6E883 /* AccView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53B0A50511F40BF300C6E883 /* AccView.m */; };
 		53B0A50711F40BF300C6E883 /* AccView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53B0A50511F40BF300C6E883 /* AccView.m */; };
 		53B29C7F1198B6680029CA3E /* LeftSlide.png in Resources */ = {isa = PBXBuildFile; fileRef = 5354973111924B8B006A7859 /* LeftSlide.png */; };
 		53B29C801198B6680029CA3E /* RightSlide.png in Resources */ = {isa = PBXBuildFile; fileRef = 5354973211924B8B006A7859 /* RightSlide.png */; };
-		53C743CD11F970850037B0F7 /* OnAirViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53C743CE11F970850037B0F7 /* OnAirViewiPhone.xib */; };
+		53C4A6F21208FDFD00B41950 /* Push.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C4A6F11208FDFD00B41950 /* Push.m */; };
+		53C4A6F31208FDFD00B41950 /* Push.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C4A6F11208FDFD00B41950 /* Push.m */; };
 		53CBFD5C119217B700D08D09 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 53CBFD5B119217B700D08D09 /* Logo.png */; };
 		53CBFD7A119218CA00D08D09 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53CBFD79119218CA00D08D09 /* DataModel.m */; };
 		53CBFD7D119218D900D08D09 /* DataModel+Processing.m in Sources */ = {isa = PBXBuildFile; fileRef = 53CBFD7C119218D900D08D09 /* DataModel+Processing.m */; };
@@ -210,9 +228,7 @@
 		53D8AE6B11F7B32900032FE0 /* Picture.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D8AE6211F7B32900032FE0 /* Picture.m */; };
 		53D8AE6C11F7B32900032FE0 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D8AE6411F7B32900032FE0 /* Event.m */; };
 		53D8AE9B11F7B75A00032FE0 /* ArchiveDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D8AE9911F7B75A00032FE0 /* ArchiveDetailViewController.m */; };
-		53D8AE9C11F7B75A00032FE0 /* ArchiveDetailViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53D8AE9A11F7B75A00032FE0 /* ArchiveDetailViewiPhone.xib */; };
 		53D8AE9D11F7B75A00032FE0 /* ArchiveDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D8AE9911F7B75A00032FE0 /* ArchiveDetailViewController.m */; };
-		53D8AE9E11F7B75A00032FE0 /* ArchiveDetailViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53D8AE9A11F7B75A00032FE0 /* ArchiveDetailViewiPhone.xib */; };
 		53E188F511F151360055ADE3 /* BGBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E188F111F151360055ADE3 /* BGBottom.png */; };
 		53E188F611F151360055ADE3 /* BGBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E188F211F151360055ADE3 /* BGBottom@2x.png */; };
 		53E188F711F151360055ADE3 /* BGTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E188F311F151360055ADE3 /* BGTop.png */; };
@@ -253,6 +269,13 @@
 		53E18ACD11F1FFBB0055ADE3 /* EventDetailBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E18ACB11F1FFBB0055ADE3 /* EventDetailBG@2x.png */; };
 		53E18ACE11F1FFBB0055ADE3 /* EventDetailBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E18ACA11F1FFBB0055ADE3 /* EventDetailBG.png */; };
 		53E18ACF11F1FFBB0055ADE3 /* EventDetailBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53E18ACB11F1FFBB0055ADE3 /* EventDetailBG@2x.png */; };
+		53EE6271120CF1FA0059D893 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53EE6270120CF1FA0059D893 /* AVFoundation.framework */; };
+		53F22CC51218D45600D8B55D /* BigHead.png in Resources */ = {isa = PBXBuildFile; fileRef = 53F22CC31218D45600D8B55D /* BigHead.png */; };
+		53F22CC61218D45600D8B55D /* BigHead@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53F22CC41218D45600D8B55D /* BigHead@2x.png */; };
+		53F22CC71218D45600D8B55D /* BigHead.png in Resources */ = {isa = PBXBuildFile; fileRef = 53F22CC31218D45600D8B55D /* BigHead.png */; };
+		53F22CC81218D45600D8B55D /* BigHead@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53F22CC41218D45600D8B55D /* BigHead@2x.png */; };
+		53F22D671218DCE700D8B55D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F22D661218DCE700D8B55D /* CoreMedia.framework */; };
+		53F22D691218DCE700D8B55D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F22D681218DCE700D8B55D /* iAd.framework */; };
 		53FF455B11FBDEF900C761A9 /* CellButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 53FF454711FBDEF900C761A9 /* CellButton.m */; };
 		53FF455C11FBDEF900C761A9 /* CellButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 53FF454711FBDEF900C761A9 /* CellButton.m */; };
 		53FF455D11FBDEF900C761A9 /* GradButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 53FF454911FBDEF900C761A9 /* GradButton.m */; };
@@ -278,14 +301,10 @@
 		C59144A511C02B0500BD0BDF /* TwitterTab.png in Resources */ = {isa = PBXBuildFile; fileRef = C59144A411C02B0500BD0BDF /* TwitterTab.png */; };
 		C59144A611C02B0500BD0BDF /* TwitterTab.png in Resources */ = {isa = PBXBuildFile; fileRef = C59144A411C02B0500BD0BDF /* TwitterTab.png */; };
 		C59144AF11C02D0100BD0BDF /* EventsTableViewControlleriPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C59144AD11C02D0100BD0BDF /* EventsTableViewControlleriPhone.m */; };
-		C59144B011C02D0100BD0BDF /* EventsTableViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C59144AE11C02D0100BD0BDF /* EventsTableViewiPhone.xib */; };
 		C59144D911C032A200BD0BDF /* EventsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 535497971192630A006A7859 /* EventsDetailViewController.m */; };
 		C59144DB11C032A200BD0BDF /* ModalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 532DA47511929AEC00293EBA /* ModalWebViewController.m */; };
 		C59144F711C0336400BD0BDF /* EventTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5354967E11924398006A7859 /* EventTableCellView.m */; };
-		C59144F811C0336A00BD0BDF /* EventTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5354967411924268006A7859 /* EventTableCellView.xib */; };
-		C59144F911C0336A00BD0BDF /* EventsDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 535497981192630A006A7859 /* EventsDetailView.xib */; };
 		C59144FF11C0341300BD0BDF /* EventsDetailViewControlleriPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C59144FE11C0341300BD0BDF /* EventsDetailViewControlleriPhone.m */; };
-		C591450F11C0358A00BD0BDF /* ModalWebViewiPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C591450E11C0358A00BD0BDF /* ModalWebViewiPhone.xib */; };
 		C5982201118E8403004E56D5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5982200118E8403004E56D5 /* QuartzCore.framework */; };
 		C5A263B811B999820091BB9F /* KATG.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 533CFA2811A8C2D9003C7A0B /* KATG.xcdatamodeld */; };
 		C5A263CF11B99A820091BB9F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 533CF9F311A8BD27003C7A0B /* CoreData.framework */; };
@@ -299,7 +318,6 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765070DF74369002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28A0AB4B0D9B1048005BE974 /* KATG_Big_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KATG_Big_Prefix.pch; sourceTree = "<group>"; };
-		28AD73870D9D96C1002E5188 /* MainWindowiPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindowiPad.xib; path = ../MainWindowiPad.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		53056DE61195172A0057C912 /* OnAirViewController+Feedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OnAirViewController+Feedback.h"; sourceTree = "<group>"; };
 		53056DE71195172A0057C912 /* OnAirViewController+Feedback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OnAirViewController+Feedback.m"; sourceTree = "<group>"; };
@@ -322,12 +340,25 @@
 		53132EFC11EA85110007D79F /* ArchiveTableViewControlleriPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveTableViewControlleriPhone.m; sourceTree = "<group>"; };
 		53132F1F11EA87F20007D79F /* ArchiveTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveTableViewCell.h; sourceTree = "<group>"; };
 		53132F2011EA87F20007D79F /* ArchiveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveTableViewCell.m; sourceTree = "<group>"; };
-		53132F2911EA88F10007D79F /* ArchiveTableViewCelliPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArchiveTableViewCelliPhone.xib; sourceTree = "<group>"; };
+		5317DA9E1218BA5C004C7407 /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
+		5317DA9F1218BA5C004C7407 /* PlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerController.m; sourceTree = "<group>"; };
+		53284F4D1219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ArchiveDetailViewiPhone.xib; sourceTree = "<group>"; };
+		53284F4F1219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ArchiveTableViewCelliPhone.xib; sourceTree = "<group>"; };
+		53284F511219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ArchiveViewiPhone.xib; sourceTree = "<group>"; };
+		53284F531219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = EventsDetailView.xib; sourceTree = "<group>"; };
+		53284F551219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = EventsTableViewiPhone.xib; sourceTree = "<group>"; };
+		53284F571219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = EventTableCellView.xib; sourceTree = "<group>"; };
+		53284F591219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = MainWindowiPad.xib; sourceTree = "<group>"; };
+		53284F5B1219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = MainWindowiPhone.xib; sourceTree = "<group>"; };
+		53284F5D1219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ModalWebViewiPad.xib; sourceTree = "<group>"; };
+		53284F5F1219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ModalWebViewiPhone.xib; sourceTree = "<group>"; };
+		53284F611219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = OnAirViewiPad.xib; sourceTree = "<group>"; };
+		53284F631219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = OnAirViewiPhone.xib; sourceTree = "<group>"; };
+		53284F651219FA580025DB3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = PlayerController.xib; sourceTree = "<group>"; };
 		532DA2B711EBFFFF00E380E2 /* Phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Phone.png; path = Images/OnAirView/Phone.png; sourceTree = "<group>"; };
 		532DA2B811EBFFFF00E380E2 /* Phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Phone@2x.png"; path = "Images/OnAirView/Phone@2x.png"; sourceTree = "<group>"; };
 		532DA47411929AEC00293EBA /* ModalWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalWebViewController.h; sourceTree = "<group>"; };
 		532DA47511929AEC00293EBA /* ModalWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalWebViewController.m; sourceTree = "<group>"; };
-		532DA47611929AEC00293EBA /* ModalWebViewiPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModalWebViewiPad.xib; sourceTree = "<group>"; };
 		532DA5C111EE6C2900E380E2 /* CellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellBackground.png; sourceTree = "<group>"; };
 		532DA5C211EE6C2900E380E2 /* CellBackgroundSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellBackgroundSelected.png; sourceTree = "<group>"; };
 		532DA66211EE85AE00E380E2 /* MyAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAdditions.h; sourceTree = "<group>"; };
@@ -337,8 +368,6 @@
 		532DA66611EE85AE00E380E2 /* NSMutableArray+MyAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+MyAdditions.m"; sourceTree = "<group>"; };
 		532DA66711EE85AE00E380E2 /* NSString+Regex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Regex.h"; sourceTree = "<group>"; };
 		532DA66811EE85AE00E380E2 /* NSString+Regex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Regex.m"; sourceTree = "<group>"; };
-		532DA66911EE85AE00E380E2 /* UIColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Additions.h"; sourceTree = "<group>"; };
-		532DA66A11EE85AE00E380E2 /* UIColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Additions.m"; sourceTree = "<group>"; };
 		532DA66B11EE85AE00E380E2 /* UIImage+MyAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+MyAdditions.h"; sourceTree = "<group>"; };
 		532DA66C11EE85AE00E380E2 /* UIImage+MyAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MyAdditions.m"; sourceTree = "<group>"; };
 		532DA66D11EE85AE00E380E2 /* UIViewController+Nib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Nib.h"; sourceTree = "<group>"; };
@@ -381,12 +410,13 @@
 		532DA6A911EE85AE00E380E2 /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
 		532DA6AA11EE85AE00E380E2 /* UtilityFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UtilityFunctions.h; sourceTree = "<group>"; };
 		532DA6AB11EE85AE00E380E2 /* UtilityFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UtilityFunctions.m; sourceTree = "<group>"; };
+		53349C1B122C6F8B0079AA59 /* PushKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushKeys.h; sourceTree = "<group>"; };
+		53349C1C122C6F8B0079AA59 /* PushKeys.h.example */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PushKeys.h.example; sourceTree = "<group>"; };
 		533CF9F311A8BD27003C7A0B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		533CFA2911A8C2D9003C7A0B /* KATG.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = KATG.xcdatamodel; sourceTree = "<group>"; };
 		533CFC5111A90937003C7A0B /* iPadEntitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = iPadEntitlements.plist; sourceTree = "<group>"; };
 		534A6CEB11D1D78000C17A83 /* ModalWebViewControlleriPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalWebViewControlleriPhone.h; sourceTree = "<group>"; };
 		534A6CEC11D1D78000C17A83 /* ModalWebViewControlleriPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalWebViewControlleriPhone.m; sourceTree = "<group>"; };
-		5354967411924268006A7859 /* EventTableCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventTableCellView.xib; sourceTree = "<group>"; };
 		5354967D11924398006A7859 /* EventTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableCellView.h; sourceTree = "<group>"; };
 		5354967E11924398006A7859 /* EventTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableCellView.m; sourceTree = "<group>"; };
 		5354969811924496006A7859 /* EventIconTrans.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EventIconTrans.png; path = Images/EventsView/ShowIcons/EventIconTrans.png; sourceTree = "<group>"; };
@@ -402,7 +432,6 @@
 		5354975011924C2F006A7859 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		535497961192630A006A7859 /* EventsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsDetailViewController.h; sourceTree = "<group>"; };
 		535497971192630A006A7859 /* EventsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsDetailViewController.m; sourceTree = "<group>"; };
-		535497981192630A006A7859 /* EventsDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventsDetailView.xib; sourceTree = "<group>"; };
 		535497E811926BC7006A7859 /* OnAirViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnAirViewController.h; sourceTree = "<group>"; };
 		535497E911926BC7006A7859 /* OnAirViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnAirViewController.m; sourceTree = "<group>"; };
 		535497EB11926D9D006A7859 /* UIWebViewOpaque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWebViewOpaque.h; sourceTree = "<group>"; };
@@ -425,10 +454,8 @@
 		5361639711FBFAFF00E859FC /* TVShow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TVShow@2x.png"; sourceTree = "<group>"; };
 		5361639811FBFAFF00E859FC /* TVShowSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TVShowSelected.png; sourceTree = "<group>"; };
 		5361639911FBFAFF00E859FC /* TVShowSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TVShowSelected@2x.png"; sourceTree = "<group>"; };
-		536163CF11FBFE8800E859FC /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		5366EA1511863AE0001A99D8 /* OnAirViewControlleriPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnAirViewControlleriPad.h; sourceTree = "<group>"; };
 		5366EA1611863AE0001A99D8 /* OnAirViewControlleriPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnAirViewControlleriPad.m; sourceTree = "<group>"; };
-		5366EA1711863AE0001A99D8 /* OnAirViewiPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnAirViewiPad.xib; sourceTree = "<group>"; };
 		5366EA1E11863B8D001A99D8 /* SettingsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SettingsIcon.png; path = Images/Icons/SettingsIcon.png; sourceTree = "<group>"; };
 		5366EA1F11863B8D001A99D8 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppIcon.png; path = Images/Icons/AppIcon.png; sourceTree = "<group>"; };
 		5366EA2011863B8D001A99D8 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Images/Icons/Icon-72.png"; sourceTree = "<group>"; };
@@ -445,15 +472,14 @@
 		538DD82B11988DA500E40CBB /* KATG.com.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KATG.com.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		538DD82D11988DA500E40CBB /* KATG.com-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KATG.com-Info.plist"; sourceTree = "<group>"; };
 		538DD84611988EEF00E40CBB /* iPhoneEntitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = iPhoneEntitlements.plist; sourceTree = "<group>"; };
-		538DD95511988FAB00E40CBB /* MainWindowiPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindowiPhone.xib; sourceTree = "<group>"; };
 		538DD9A11198929C00E40CBB /* OnAirViewControlleriPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnAirViewControlleriPhone.h; sourceTree = "<group>"; };
 		538DD9A21198929C00E40CBB /* OnAirViewControlleriPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnAirViewControlleriPhone.m; sourceTree = "<group>"; };
 		53AD765611E8487200D72FB0 /* ArchiveTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveTableViewController.h; sourceTree = "<group>"; };
 		53AD765711E8487200D72FB0 /* ArchiveTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveTableViewController.m; sourceTree = "<group>"; };
-		53AD765811E8487200D72FB0 /* ArchiveViewiPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArchiveViewiPhone.xib; sourceTree = "<group>"; };
 		53B0A50411F40BF300C6E883 /* AccView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccView.h; sourceTree = "<group>"; };
 		53B0A50511F40BF300C6E883 /* AccView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccView.m; sourceTree = "<group>"; };
-		53C743CE11F970850037B0F7 /* OnAirViewiPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnAirViewiPhone.xib; sourceTree = "<group>"; };
+		53C4A6F01208FDFD00B41950 /* Push.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Push.h; sourceTree = "<group>"; };
+		53C4A6F11208FDFD00B41950 /* Push.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Push.m; sourceTree = "<group>"; };
 		53CBFD5B119217B700D08D09 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo.png; path = Images/Icons/Logo.png; sourceTree = "<group>"; };
 		53CBFD77119218A300D08D09 /* DataModelDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModelDelegate.h; sourceTree = "<group>"; };
 		53CBFD78119218CA00D08D09 /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
@@ -483,7 +509,6 @@
 		53D8AE6411F7B32900032FE0 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		53D8AE9811F7B75A00032FE0 /* ArchiveDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveDetailViewController.h; sourceTree = "<group>"; };
 		53D8AE9911F7B75A00032FE0 /* ArchiveDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveDetailViewController.m; sourceTree = "<group>"; };
-		53D8AE9A11F7B75A00032FE0 /* ArchiveDetailViewiPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArchiveDetailViewiPhone.xib; sourceTree = "<group>"; };
 		53E188F111F151360055ADE3 /* BGBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BGBottom.png; path = Images/OnAirView/BGBottom.png; sourceTree = "<group>"; };
 		53E188F211F151360055ADE3 /* BGBottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BGBottom@2x.png"; path = "Images/OnAirView/BGBottom@2x.png"; sourceTree = "<group>"; };
 		53E188F311F151360055ADE3 /* BGTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BGTop.png; path = Images/OnAirView/BGTop.png; sourceTree = "<group>"; };
@@ -504,6 +529,11 @@
 		53E1897311F164020055ADE3 /* RightSlide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "RightSlide@2x.png"; path = "Images/OnAirView/VolumeSlider/RightSlide@2x.png"; sourceTree = "<group>"; };
 		53E18ACA11F1FFBB0055ADE3 /* EventDetailBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EventDetailBG.png; sourceTree = "<group>"; };
 		53E18ACB11F1FFBB0055ADE3 /* EventDetailBG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EventDetailBG@2x.png"; sourceTree = "<group>"; };
+		53EE6270120CF1FA0059D893 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		53F22CC31218D45600D8B55D /* BigHead.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BigHead.png; sourceTree = "<group>"; };
+		53F22CC41218D45600D8B55D /* BigHead@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BigHead@2x.png"; sourceTree = "<group>"; };
+		53F22D661218DCE700D8B55D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		53F22D681218DCE700D8B55D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		53FF454611FBDEF900C761A9 /* CellButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellButton.h; sourceTree = "<group>"; };
 		53FF454711FBDEF900C761A9 /* CellButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellButton.m; sourceTree = "<group>"; };
 		53FF454811FBDEF900C761A9 /* GradButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradButton.h; sourceTree = "<group>"; };
@@ -530,10 +560,8 @@
 		C59144A411C02B0500BD0BDF /* TwitterTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TwitterTab.png; path = Images/TabsIcons/TwitterTab.png; sourceTree = "<group>"; };
 		C59144AC11C02D0100BD0BDF /* EventsTableViewControlleriPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsTableViewControlleriPhone.h; sourceTree = "<group>"; };
 		C59144AD11C02D0100BD0BDF /* EventsTableViewControlleriPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsTableViewControlleriPhone.m; sourceTree = "<group>"; };
-		C59144AE11C02D0100BD0BDF /* EventsTableViewiPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventsTableViewiPhone.xib; sourceTree = "<group>"; };
 		C59144FD11C0341300BD0BDF /* EventsDetailViewControlleriPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsDetailViewControlleriPhone.h; sourceTree = "<group>"; };
 		C59144FE11C0341300BD0BDF /* EventsDetailViewControlleriPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsDetailViewControlleriPhone.m; sourceTree = "<group>"; };
-		C591450E11C0358A00BD0BDF /* ModalWebViewiPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModalWebViewiPhone.xib; sourceTree = "<group>"; };
 		C5982200118E8403004E56D5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -569,7 +597,9 @@
 				538DD95011988F3800E40CBB /* AudioToolbox.framework in Frameworks */,
 				538DD95111988F3800E40CBB /* CFNetwork.framework in Frameworks */,
 				538DD95211988F3800E40CBB /* MediaPlayer.framework in Frameworks */,
-				536163D011FBFE8900E859FC /* iAd.framework in Frameworks */,
+				53EE6271120CF1FA0059D893 /* AVFoundation.framework in Frameworks */,
+				53F22D671218DCE700D8B55D /* CoreMedia.framework in Frameworks */,
+				53F22D691218DCE700D8B55D /* iAd.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +612,10 @@
 				53CBFE0E11921B8F00D08D09 /* Logging */,
 				1D3623240D0F684500981E51 /* KATG_BigAppDelegate.h */,
 				1D3623250D0F684500981E51 /* KATG_BigAppDelegate.m */,
+				53349C1B122C6F8B0079AA59 /* PushKeys.h */,
+				53349C1C122C6F8B0079AA59 /* PushKeys.h.example */,
+				53C4A6F01208FDFD00B41950 /* Push.h */,
+				53C4A6F11208FDFD00B41950 /* Push.m */,
 				5366EA0D118639A5001A99D8 /* Model */,
 				5366EA1A11863AE3001A99D8 /* iPad */,
 				5366EA1B11863AF3001A99D8 /* iPhone */,
@@ -625,6 +659,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				53284FE5121A10620025DB3F /* de.lproj */,
+				53284F4B1219FA580025DB3F /* en.lproj */,
 				5366EA0C1186398F001A99D8 /* Images */,
 				8D1107310486CEB800E47090 /* KATG_Big-Info.plist */,
 				538DD82D11988DA500E40CBB /* KATG.com-Info.plist */,
@@ -647,7 +683,9 @@
 				53549708119249B2006A7859 /* CFNetwork.framework */,
 				5354975011924C2F006A7859 /* MediaPlayer.framework */,
 				53CBFDC811921AE400D08D09 /* libxml2.2.dylib */,
-				536163CF11FBFE8800E859FC /* iAd.framework */,
+				53EE6270120CF1FA0059D893 /* AVFoundation.framework */,
+				53F22D661218DCE700D8B55D /* CoreMedia.framework */,
+				53F22D681218DCE700D8B55D /* iAd.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -663,6 +701,40 @@
 				53056E0C11951E750057C912 /* underline.png */,
 			);
 			name = Chat;
+			sourceTree = "<group>";
+		};
+		53284F3E1219FA2F0025DB3F /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		53284F4B1219FA580025DB3F /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				53284F4C1219FA580025DB3F /* ArchiveDetailViewiPhone.xib */,
+				53284F4E1219FA580025DB3F /* ArchiveTableViewCelliPhone.xib */,
+				53284F501219FA580025DB3F /* ArchiveViewiPhone.xib */,
+				53284F521219FA580025DB3F /* EventsDetailView.xib */,
+				53284F541219FA580025DB3F /* EventsTableViewiPhone.xib */,
+				53284F561219FA580025DB3F /* EventTableCellView.xib */,
+				53284F581219FA580025DB3F /* MainWindowiPad.xib */,
+				53284F5A1219FA580025DB3F /* MainWindowiPhone.xib */,
+				53284F5C1219FA580025DB3F /* ModalWebViewiPad.xib */,
+				53284F5E1219FA580025DB3F /* ModalWebViewiPhone.xib */,
+				53284F601219FA580025DB3F /* OnAirViewiPad.xib */,
+				53284F621219FA580025DB3F /* OnAirViewiPhone.xib */,
+				53284F641219FA580025DB3F /* PlayerController.xib */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		53284FE5121A10620025DB3F /* de.lproj */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = de.lproj;
 			sourceTree = "<group>";
 		};
 		532DA5C011EE6C2900E380E2 /* TableCells */ = {
@@ -703,8 +775,6 @@
 				532DA66611EE85AE00E380E2 /* NSMutableArray+MyAdditions.m */,
 				532DA66711EE85AE00E380E2 /* NSString+Regex.h */,
 				532DA66811EE85AE00E380E2 /* NSString+Regex.m */,
-				532DA66911EE85AE00E380E2 /* UIColor+Additions.h */,
-				532DA66A11EE85AE00E380E2 /* UIColor+Additions.m */,
 				532DA66B11EE85AE00E380E2 /* UIImage+MyAdditions.h */,
 				532DA66C11EE85AE00E380E2 /* UIImage+MyAdditions.m */,
 				532DA66D11EE85AE00E380E2 /* UIViewController+Nib.h */,
@@ -896,6 +966,8 @@
 		5361638711FBFAFF00E859FC /* Archives */ = {
 			isa = PBXGroup;
 			children = (
+				53F22CC31218D45600D8B55D /* BigHead.png */,
+				53F22CC41218D45600D8B55D /* BigHead@2x.png */,
 				5361638811FBFAFF00E859FC /* ArchiveDetailBG.png */,
 				5361638911FBFAFF00E859FC /* ArchiveDetailBG@2x.png */,
 				5361638A11FBFAFF00E859FC /* AudioShow.png */,
@@ -961,9 +1033,6 @@
 			children = (
 				535497EB11926D9D006A7859 /* UIWebViewOpaque.h */,
 				535497EC11926D9D006A7859 /* UIWebViewOpaque.m */,
-				28AD73870D9D96C1002E5188 /* MainWindowiPad.xib */,
-				5366EA1711863AE0001A99D8 /* OnAirViewiPad.xib */,
-				532DA47611929AEC00293EBA /* ModalWebViewiPad.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -989,7 +1058,7 @@
 		5366EA1B11863AF3001A99D8 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				538DD99B1198923800E40CBB /* View */,
+				53284F3E1219FA2F0025DB3F /* View */,
 				538DD9A4119892A400E40CBB /* Controller */,
 			);
 			name = iPhone;
@@ -1041,20 +1110,6 @@
 				538DD70E11976B1300E40CBB /* Default-Portrait.png */,
 			);
 			name = LaunchImages;
-			sourceTree = "<group>";
-		};
-		538DD99B1198923800E40CBB /* View */ = {
-			isa = PBXGroup;
-			children = (
-				538DD95511988FAB00E40CBB /* MainWindowiPhone.xib */,
-				53C743CE11F970850037B0F7 /* OnAirViewiPhone.xib */,
-				C59144AE11C02D0100BD0BDF /* EventsTableViewiPhone.xib */,
-				C591450E11C0358A00BD0BDF /* ModalWebViewiPhone.xib */,
-				53AD765811E8487200D72FB0 /* ArchiveViewiPhone.xib */,
-				53132F2911EA88F10007D79F /* ArchiveTableViewCelliPhone.xib */,
-				53D8AE9A11F7B75A00032FE0 /* ArchiveDetailViewiPhone.xib */,
-			);
-			name = View;
 			sourceTree = "<group>";
 		};
 		538DD9A4119892A400E40CBB /* Controller */ = {
@@ -1114,10 +1169,8 @@
 			children = (
 				5354967D11924398006A7859 /* EventTableCellView.h */,
 				5354967E11924398006A7859 /* EventTableCellView.m */,
-				5354967411924268006A7859 /* EventTableCellView.xib */,
 				53B0A50411F40BF300C6E883 /* AccView.h */,
 				53B0A50511F40BF300C6E883 /* AccView.m */,
-				535497981192630A006A7859 /* EventsDetailView.xib */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -1147,6 +1200,8 @@
 				53AD765711E8487200D72FB0 /* ArchiveTableViewController.m */,
 				53D8AE9811F7B75A00032FE0 /* ArchiveDetailViewController.h */,
 				53D8AE9911F7B75A00032FE0 /* ArchiveDetailViewController.m */,
+				5317DA9E1218BA5C004C7407 /* PlayerController.h */,
+				5317DA9F1218BA5C004C7407 /* PlayerController.m */,
 			);
 			name = Archive;
 			sourceTree = "<group>";
@@ -1232,6 +1287,9 @@
 			knownRegions = (
 				en,
 				"de-DE",
+				German,
+				French,
+				de,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* KATG Big */;
 			projectDirPath = "";
@@ -1248,11 +1306,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28AD73880D9D96C1002E5188 /* MainWindowiPad.xib in Resources */,
-				5366EA1911863AE0001A99D8 /* OnAirViewiPad.xib in Resources */,
-				5354967511924268006A7859 /* EventTableCellView.xib in Resources */,
-				5354979A1192630A006A7859 /* EventsDetailView.xib in Resources */,
-				532DA47811929AEC00293EBA /* ModalWebViewiPad.xib in Resources */,
 				5366EA2211863B8D001A99D8 /* SettingsIcon.png in Resources */,
 				5366EA2311863B8D001A99D8 /* AppIcon.png in Resources */,
 				5366EA2411863B8D001A99D8 /* Icon-72.png in Resources */,
@@ -1270,7 +1323,6 @@
 				533CFC5211A90937003C7A0B /* iPadEntitlements.plist in Resources */,
 				C591434A11C020C500BD0BDF /* ArchiveTab.png in Resources */,
 				C59144A511C02B0500BD0BDF /* TwitterTab.png in Resources */,
-				53AD765C11E8487200D72FB0 /* ArchiveViewiPhone.xib in Resources */,
 				532DA2BB11EBFFFF00E380E2 /* Phone.png in Resources */,
 				532DA2BC11EBFFFF00E380E2 /* Phone@2x.png in Resources */,
 				532DA5C511EE6C2900E380E2 /* CellBackground.png in Resources */,
@@ -1296,7 +1348,6 @@
 				53E18ACE11F1FFBB0055ADE3 /* EventDetailBG.png in Resources */,
 				53E18ACF11F1FFBB0055ADE3 /* EventDetailBG@2x.png in Resources */,
 				53D8AE2B11F7ACDC00032FE0 /* DataModelKeys.h in Resources */,
-				53D8AE9C11F7B75A00032FE0 /* ArchiveDetailViewiPhone.xib in Resources */,
 				5361639A11FBFAFF00E859FC /* ArchiveDetailBG.png in Resources */,
 				5361639B11FBFAFF00E859FC /* ArchiveDetailBG@2x.png in Resources */,
 				5361639C11FBFAFF00E859FC /* AudioShow.png in Resources */,
@@ -1315,6 +1366,21 @@
 				536163A911FBFAFF00E859FC /* TVShow@2x.png in Resources */,
 				536163AA11FBFAFF00E859FC /* TVShowSelected.png in Resources */,
 				536163AB11FBFAFF00E859FC /* TVShowSelected@2x.png in Resources */,
+				53F22CC71218D45600D8B55D /* BigHead.png in Resources */,
+				53F22CC81218D45600D8B55D /* BigHead@2x.png in Resources */,
+				53284F731219FA580025DB3F /* ArchiveDetailViewiPhone.xib in Resources */,
+				53284F741219FA580025DB3F /* ArchiveTableViewCelliPhone.xib in Resources */,
+				53284F751219FA580025DB3F /* ArchiveViewiPhone.xib in Resources */,
+				53284F761219FA580025DB3F /* EventsDetailView.xib in Resources */,
+				53284F771219FA580025DB3F /* EventsTableViewiPhone.xib in Resources */,
+				53284F781219FA580025DB3F /* EventTableCellView.xib in Resources */,
+				53284F791219FA580025DB3F /* MainWindowiPad.xib in Resources */,
+				53284F7A1219FA580025DB3F /* MainWindowiPhone.xib in Resources */,
+				53284F7B1219FA580025DB3F /* ModalWebViewiPad.xib in Resources */,
+				53284F7C1219FA580025DB3F /* ModalWebViewiPhone.xib in Resources */,
+				53284F7D1219FA580025DB3F /* OnAirViewiPad.xib in Resources */,
+				53284F7E1219FA580025DB3F /* OnAirViewiPhone.xib in Resources */,
+				53284F7F1219FA580025DB3F /* PlayerController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1324,8 +1390,6 @@
 			files = (
 				538DD969119890E800E40CBB /* EventsTab.png in Resources */,
 				530737D711E1523A00B5F4AA /* EventsTab@2x.png in Resources */,
-				C59144F811C0336A00BD0BDF /* EventTableCellView.xib in Resources */,
-				C59144F911C0336A00BD0BDF /* EventsDetailView.xib in Resources */,
 				C591438411C0295000BD0BDF /* ArchiveTab.png in Resources */,
 				53B29C7F1198B6680029CA3E /* LeftSlide.png in Resources */,
 				53B29C801198B6680029CA3E /* RightSlide.png in Resources */,
@@ -1334,21 +1398,15 @@
 				538DD96B119890E800E40CBB /* AppIcon.png in Resources */,
 				538DD96C119890E800E40CBB /* Icon-72.png in Resources */,
 				538DD96D119890E800E40CBB /* iTunesArtwork in Resources */,
-				538DD95611988FAB00E40CBB /* MainWindowiPhone.xib in Resources */,
-				53C743CD11F970850037B0F7 /* OnAirViewiPhone.xib in Resources */,
 				5387CBFD1198A78400AD8854 /* Launch.png in Resources */,
 				5383DC9E119D0FCF00D2230F /* Apache2.0.txt in Resources */,
 				C59144A611C02B0500BD0BDF /* TwitterTab.png in Resources */,
-				C59144B011C02D0100BD0BDF /* EventsTableViewiPhone.xib in Resources */,
-				C591450F11C0358A00BD0BDF /* ModalWebViewiPhone.xib in Resources */,
 				5307377811E14A0500B5F4AA /* Launch@2x.png in Resources */,
 				5307379211E14CE100B5F4AA /* AppIcon@2x.png in Resources */,
 				530737BC11E14EDB00B5F4AA /* SettingsIcon@2x.png in Resources */,
 				530737D611E1523A00B5F4AA /* ArchiveTab@2x.png in Resources */,
 				530737D811E1523A00B5F4AA /* OnAirTab@2x.png in Resources */,
 				530737D911E1523A00B5F4AA /* TwitterTab@2x.png in Resources */,
-				53AD765A11E8487200D72FB0 /* ArchiveViewiPhone.xib in Resources */,
-				53132F2A11EA88F10007D79F /* ArchiveTableViewCelliPhone.xib in Resources */,
 				532DA2B911EBFFFF00E380E2 /* Phone.png in Resources */,
 				532DA2BA11EBFFFF00E380E2 /* Phone@2x.png in Resources */,
 				532DA5C311EE6C2900E380E2 /* CellBackground.png in Resources */,
@@ -1374,7 +1432,6 @@
 				53E18ACC11F1FFBB0055ADE3 /* EventDetailBG.png in Resources */,
 				53E18ACD11F1FFBB0055ADE3 /* EventDetailBG@2x.png in Resources */,
 				53D8AE2C11F7ACDC00032FE0 /* DataModelKeys.h in Resources */,
-				53D8AE9E11F7B75A00032FE0 /* ArchiveDetailViewiPhone.xib in Resources */,
 				536163AC11FBFAFF00E859FC /* ArchiveDetailBG.png in Resources */,
 				536163AD11FBFAFF00E859FC /* ArchiveDetailBG@2x.png in Resources */,
 				536163AE11FBFAFF00E859FC /* AudioShow.png in Resources */,
@@ -1393,6 +1450,22 @@
 				536163BB11FBFAFF00E859FC /* TVShow@2x.png in Resources */,
 				536163BC11FBFAFF00E859FC /* TVShowSelected.png in Resources */,
 				536163BD11FBFAFF00E859FC /* TVShowSelected@2x.png in Resources */,
+				53F22CC51218D45600D8B55D /* BigHead.png in Resources */,
+				53F22CC61218D45600D8B55D /* BigHead@2x.png in Resources */,
+				53284F661219FA580025DB3F /* ArchiveDetailViewiPhone.xib in Resources */,
+				53284F671219FA580025DB3F /* ArchiveTableViewCelliPhone.xib in Resources */,
+				53284F681219FA580025DB3F /* ArchiveViewiPhone.xib in Resources */,
+				53284F691219FA580025DB3F /* EventsDetailView.xib in Resources */,
+				53284F6A1219FA580025DB3F /* EventsTableViewiPhone.xib in Resources */,
+				53284F6B1219FA580025DB3F /* EventTableCellView.xib in Resources */,
+				53284F6C1219FA580025DB3F /* MainWindowiPad.xib in Resources */,
+				53284F6D1219FA580025DB3F /* MainWindowiPhone.xib in Resources */,
+				53284F6E1219FA580025DB3F /* ModalWebViewiPad.xib in Resources */,
+				53284F6F1219FA580025DB3F /* ModalWebViewiPhone.xib in Resources */,
+				53284F701219FA580025DB3F /* OnAirViewiPad.xib in Resources */,
+				53284F711219FA580025DB3F /* OnAirViewiPhone.xib in Resources */,
+				53284F721219FA580025DB3F /* PlayerController.xib in Resources */,
+				53349C1D122C6F8B0079AA59 /* PushKeys.h.example in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1424,7 +1497,6 @@
 				532DA6CC11EE85AE00E380E2 /* NSArray+MyAdditions.m in Sources */,
 				532DA6CD11EE85AE00E380E2 /* NSMutableArray+MyAdditions.m in Sources */,
 				532DA6CE11EE85AE00E380E2 /* NSString+Regex.m in Sources */,
-				532DA6CF11EE85AE00E380E2 /* UIColor+Additions.m in Sources */,
 				532DA6D011EE85AE00E380E2 /* UIImage+MyAdditions.m in Sources */,
 				532DA6D111EE85AE00E380E2 /* UIViewController+Nib.m in Sources */,
 				532DA6D211EE85AE00E380E2 /* ESLogger.m in Sources */,
@@ -1462,6 +1534,8 @@
 				53FF456B11FBDEF900C761A9 /* RoundedTextView.m in Sources */,
 				53FF456D11FBDEF900C761A9 /* RoundedView.m in Sources */,
 				536E671211FBE26000A71F00 /* ESAlertView.m in Sources */,
+				53C4A6F21208FDFD00B41950 /* Push.m in Sources */,
+				5317DAA31218BA5C004C7407 /* PlayerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1495,7 +1569,6 @@
 				532DA6AC11EE85AE00E380E2 /* NSArray+MyAdditions.m in Sources */,
 				532DA6AD11EE85AE00E380E2 /* NSMutableArray+MyAdditions.m in Sources */,
 				532DA6AE11EE85AE00E380E2 /* NSString+Regex.m in Sources */,
-				532DA6AF11EE85AE00E380E2 /* UIColor+Additions.m in Sources */,
 				532DA6B011EE85AE00E380E2 /* UIImage+MyAdditions.m in Sources */,
 				532DA6B111EE85AE00E380E2 /* UIViewController+Nib.m in Sources */,
 				532DA6B211EE85AE00E380E2 /* ESLogger.m in Sources */,
@@ -1533,10 +1606,119 @@
 				53FF456C11FBDEF900C761A9 /* RoundedTextView.m in Sources */,
 				53FF456E11FBDEF900C761A9 /* RoundedView.m in Sources */,
 				536E671311FBE26000A71F00 /* ESAlertView.m in Sources */,
+				53C4A6F31208FDFD00B41950 /* Push.m in Sources */,
+				5317DAA11218BA5C004C7407 /* PlayerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		53284F4C1219FA580025DB3F /* ArchiveDetailViewiPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F4D1219FA580025DB3F /* en */,
+			);
+			name = ArchiveDetailViewiPhone.xib;
+			sourceTree = "<group>";
+		};
+		53284F4E1219FA580025DB3F /* ArchiveTableViewCelliPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F4F1219FA580025DB3F /* en */,
+			);
+			name = ArchiveTableViewCelliPhone.xib;
+			sourceTree = "<group>";
+		};
+		53284F501219FA580025DB3F /* ArchiveViewiPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F511219FA580025DB3F /* en */,
+			);
+			name = ArchiveViewiPhone.xib;
+			sourceTree = "<group>";
+		};
+		53284F521219FA580025DB3F /* EventsDetailView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F531219FA580025DB3F /* en */,
+			);
+			name = EventsDetailView.xib;
+			sourceTree = "<group>";
+		};
+		53284F541219FA580025DB3F /* EventsTableViewiPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F551219FA580025DB3F /* en */,
+			);
+			name = EventsTableViewiPhone.xib;
+			sourceTree = "<group>";
+		};
+		53284F561219FA580025DB3F /* EventTableCellView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F571219FA580025DB3F /* en */,
+			);
+			name = EventTableCellView.xib;
+			sourceTree = "<group>";
+		};
+		53284F581219FA580025DB3F /* MainWindowiPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F591219FA580025DB3F /* en */,
+			);
+			name = MainWindowiPad.xib;
+			sourceTree = "<group>";
+		};
+		53284F5A1219FA580025DB3F /* MainWindowiPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F5B1219FA580025DB3F /* en */,
+			);
+			name = MainWindowiPhone.xib;
+			sourceTree = "<group>";
+		};
+		53284F5C1219FA580025DB3F /* ModalWebViewiPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F5D1219FA580025DB3F /* en */,
+			);
+			name = ModalWebViewiPad.xib;
+			sourceTree = "<group>";
+		};
+		53284F5E1219FA580025DB3F /* ModalWebViewiPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F5F1219FA580025DB3F /* en */,
+			);
+			name = ModalWebViewiPhone.xib;
+			sourceTree = "<group>";
+		};
+		53284F601219FA580025DB3F /* OnAirViewiPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F611219FA580025DB3F /* en */,
+			);
+			name = OnAirViewiPad.xib;
+			sourceTree = "<group>";
+		};
+		53284F621219FA580025DB3F /* OnAirViewiPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F631219FA580025DB3F /* en */,
+			);
+			name = OnAirViewiPhone.xib;
+			sourceTree = "<group>";
+		};
+		53284F641219FA580025DB3F /* PlayerController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				53284F651219FA580025DB3F /* en */,
+			);
+			name = PlayerController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
@@ -1617,7 +1799,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_ENTITLEMENTS = "~/Dropbox/DEV/Active/Objective-C/iKATG/KATG Big/iPhoneEntitlements.plist";
+				CODE_SIGN_ENTITLEMENTS = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Doug Russell (U77D7975SM)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1631,10 +1813,10 @@
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
 				PRODUCT_NAME = KATG.com;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "AB72709B-EF64-4D70-AA28-B7A882BDD1DB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C5496404-EF2A-4287-B083-DF2FCBFE156A";
 				SDKROOT = iphoneos4.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 i386";
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Debug;
 		};
@@ -1642,7 +1824,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				CODE_SIGN_ENTITLEMENTS = "~/Dropbox/DEV/Active/Objective-C/iKATG/KATG Big/iPhoneEntitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Doug Russell (U77D7975SM)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Doug Russell (U77D7975SM)";
@@ -1662,7 +1844,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3B537230-ABF4-434A-9BB5-C0D84E0E4148";
 				SDKROOT = iphoneos4.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 i386";
+				VALID_ARCHS = armv7;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1676,17 +1858,18 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Doug Russell";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = KATG_Big_Prefix.pch;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = "KATG.com-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
 				PRODUCT_NAME = KATG.com;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DF70CD55-2EDE-4CD1-9DDF-C817D7710813";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "067FBF83-5499-44BC-AC97-7C0B33664E16";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos4.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 i386";
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Distro;
 		};

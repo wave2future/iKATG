@@ -10,14 +10,16 @@
 #import "DataModel.h"
 
 @interface ArchiveTableViewController : UITableViewController 
-<DataModelDelegate>
+<DataModelDelegate, NSFetchedResultsControllerDelegate>
 {
-	DataModel		*	model;
-	NSArray			*	_shows;
-	NSMutableArray	*	_filteredShows;
+	DataModel					*	model;
+	NSFetchedResultsController	*	_fetchedResultsController;
+	NSManagedObjectContext		*	_showContext;
+	UIActivityIndicatorView		*	_activityIndicator;
 }
 
-@property (nonatomic, retain)	NSArray					*	shows;
-@property (nonatomic, retain)	NSMutableArray			*	filteredShows;
+@property (nonatomic, retain)	NSFetchedResultsController	*	fetchedResultsController;
+@property (nonatomic, retain)	NSManagedObjectContext		*	showContext;
+@property (nonatomic, retain)	UIActivityIndicatorView		*	activityIndicator;
 
 @end

@@ -1,78 +1,51 @@
-//
-//  AudioStreamer.m
-//  StreamingAudioPlayer
-//
-//  Created by Matt Gallagher on 27/09/08.
-//  Copyright 2008 Matt Gallagher. All rights reserved.
-//
-//  Permission is given to use this source code file, free of charge, in any
-//  project, commercial or otherwise, entirely at your risk, with the condition
-//  that any redistribution (in part or whole) of source code must retain
-//  this copyright and permission notice. Attribution in compiled projects is
-//  appreciated but not required.
-//
+//	
+//	AudioStreamer.m
+//	StreamingAudioPlayer
+//	
+//	Created by Matt Gallagher on 27/09/08.
+//	Copyright 2008 Matt Gallagher. All rights reserved.
+//	
+//	Permission is given to use this source code file, free of charge, in any
+//	project, commercial or otherwise, entirely at your risk, with the condition
+//	that any redistribution (in part or whole) of source code must retain
+//	this copyright and permission notice. Attribution in compiled projects is
+//	appreciated but not required.
+//	
 
 #import "AudioStreamer.h"
-#ifdef TARGET_OS_IPHONE			
+#ifdef TARGET_OS_IPHONE
 #import <CFNetwork/CFNetwork.h>
 #endif
 
-#define LOG 0
+#define LOG 1
 #define VERBOSE_ERRORS 1
 
-NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
-
-#if VERBOSE_ERRORS
-NSString * const AS_NO_ERROR_STRING = @"No error.";
-NSString * const AS_FILE_STREAM_GET_PROPERTY_FAILED_STRING = @"File stream get property failed.";
-NSString * const AS_FILE_STREAM_SEEK_FAILED_STRING = @"File stream seek failed.";
-NSString * const AS_FILE_STREAM_PARSE_BYTES_FAILED_STRING = @"Parse bytes failed.";
-NSString * const AS_FILE_STREAM_OPEN_FAILED_STRING = @"Open audio file stream failed.";
-NSString * const AS_FILE_STREAM_CLOSE_FAILED_STRING = @"Close audio file stream failed.";
-NSString * const AS_AUDIO_QUEUE_CREATION_FAILED_STRING = @"Audio queue creation failed.";
-NSString * const AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED_STRING = @"Audio buffer allocation failed.";
-NSString * const AS_AUDIO_QUEUE_ENQUEUE_FAILED_STRING = @"Queueing of audio buffer failed.";
-NSString * const AS_AUDIO_QUEUE_ADD_LISTENER_FAILED_STRING = @"Audio queue add listener failed.";
-NSString * const AS_AUDIO_QUEUE_REMOVE_LISTENER_FAILED_STRING = @"Audio queue remove listener failed.";
-NSString * const AS_AUDIO_QUEUE_START_FAILED_STRING = @"Audio queue start failed.";
-NSString * const AS_AUDIO_QUEUE_BUFFER_MISMATCH_STRING = @"Audio queue buffers don't match.";
-NSString * const AS_AUDIO_QUEUE_DISPOSE_FAILED_STRING = @"Audio queue dispose failed.";
-NSString * const AS_AUDIO_QUEUE_PAUSE_FAILED_STRING = @"Audio queue pause failed.";
-NSString * const AS_AUDIO_QUEUE_STOP_FAILED_STRING = @"Audio queue stop failed.";
-NSString * const AS_AUDIO_DATA_NOT_FOUND_STRING = @"No audio data found.";
-NSString * const AS_AUDIO_QUEUE_FLUSH_FAILED_STRING = @"Audio queue flush failed.";
-NSString * const AS_GET_AUDIO_TIME_FAILED_STRING = @"Audio queue get current time failed.";
-NSString * const AS_AUDIO_STREAMER_FAILED_STRING = @"Audio playback failed";
-NSString * const AS_NETWORK_CONNECTION_FAILED_STRING = @"Network connection failed";
-NSString * const AS_AUDIO_BUFFER_TOO_SMALL_STRING = @"Audio packets are larger than kAQBufSize.";
-#else
-NSString * const AS_NO_ERROR_STRING = @"No error.";
-NSString * const AS_FILE_STREAM_GET_PROPERTY_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_FILE_STREAM_SEEK_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_FILE_STREAM_PARSE_BYTES_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_FILE_STREAM_OPEN_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_FILE_STREAM_CLOSE_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_CREATION_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_ENQUEUE_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_ADD_LISTENER_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_REMOVE_LISTENER_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_START_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_BUFFER_MISMATCH_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_DISPOSE_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_PAUSE_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_STOP_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_DATA_NOT_FOUND_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_QUEUE_FLUSH_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_GET_AUDIO_TIME_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_STREAMER_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_NETWORK_CONNECTION_FAILED_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-NSString * const AS_AUDIO_BUFFER_TOO_SMALL_STRING = @"Streaming audio failed. Stream not currently live or bad connection.";
-#endif
+NSString	*	const	ASStatusChangedNotification						=	@"ASStatusChangedNotification";
+NSString	*	const	AS_NO_ERROR_STRING								=	@"No error.";
+NSString	*	const	AS_FILE_STREAM_GET_PROPERTY_FAILED_STRING		=	@"File stream get property failed.";
+NSString	*	const	AS_FILE_STREAM_SEEK_FAILED_STRING				=	@"File stream seek failed.";
+NSString	*	const	AS_FILE_STREAM_PARSE_BYTES_FAILED_STRING		=	@"Parse bytes failed.";
+NSString	*	const	AS_FILE_STREAM_OPEN_FAILED_STRING				=	@"Open audio file stream failed.";
+NSString	*	const	AS_FILE_STREAM_CLOSE_FAILED_STRING				=	@"Close audio file stream failed.";
+NSString	*	const	AS_AUDIO_QUEUE_CREATION_FAILED_STRING			=	@"Audio queue creation failed.";
+NSString	*	const	AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED_STRING	=	@"Audio buffer allocation failed.";
+NSString	*	const	AS_AUDIO_QUEUE_ENQUEUE_FAILED_STRING			=	@"Queueing of audio buffer failed.";
+NSString	*	const	AS_AUDIO_QUEUE_ADD_LISTENER_FAILED_STRING		=	@"Audio queue add listener failed.";
+NSString	*	const	AS_AUDIO_QUEUE_REMOVE_LISTENER_FAILED_STRING	=	@"Audio queue remove listener failed.";
+NSString	*	const	AS_AUDIO_QUEUE_START_FAILED_STRING				=	@"Audio queue start failed.";
+NSString	*	const	AS_AUDIO_QUEUE_BUFFER_MISMATCH_STRING			=	@"Audio queue buffers don't match.";
+NSString	*	const	AS_AUDIO_QUEUE_DISPOSE_FAILED_STRING			=	@"Audio queue dispose failed.";
+NSString	*	const	AS_AUDIO_QUEUE_PAUSE_FAILED_STRING				=	@"Audio queue pause failed.";
+NSString	*	const	AS_AUDIO_QUEUE_STOP_FAILED_STRING				=	@"Audio queue stop failed.";
+NSString	*	const	AS_AUDIO_DATA_NOT_FOUND_STRING					=	@"No audio data found.";
+NSString	*	const	AS_AUDIO_QUEUE_FLUSH_FAILED_STRING				=	@"Audio queue flush failed.";
+NSString	*	const	AS_GET_AUDIO_TIME_FAILED_STRING					=	@"Audio queue get current time failed.";
+NSString	*	const	AS_AUDIO_STREAMER_FAILED_STRING					=	@"Audio playback failed";
+NSString	*	const	AS_NETWORK_CONNECTION_FAILED_STRING				=	@"Network connection failed";
+NSString	*	const	AS_AUDIO_BUFFER_TOO_SMALL_STRING				=	@"Audio packets are larger than kAQBufSize.";
 
 @interface AudioStreamer ()
-@property (readwrite) AudioStreamerState state;
-
+@property (readwrite)	AudioStreamerState	state;
 - (void)handlePropertyChangeForFileStream:(AudioFileStreamID)inAudioFileStream
 					 fileStreamPropertyID:(AudioFileStreamPropertyID)inPropertyID
 								  ioFlags:(UInt32 *)ioFlags;
@@ -84,181 +57,184 @@ NSString * const AS_AUDIO_BUFFER_TOO_SMALL_STRING = @"Streaming audio failed. St
 							  buffer:(AudioQueueBufferRef)inBuffer;
 - (void)handlePropertyChangeForQueue:(AudioQueueRef)inAQ
 						  propertyID:(AudioQueuePropertyID)inID;
-
 #ifdef TARGET_OS_IPHONE
 - (void)handleInterruptionChangeToState:(AudioQueuePropertyID)inInterruptionState;
 #endif
-
 - (void)enqueueBuffer;
 - (void)handleReadFromStream:(CFReadStreamRef)aStream
 				   eventType:(CFStreamEventType)eventType;
-
 @end
-
+#pragma mark -
 #pragma mark Audio Callback Function Prototypes
-
-void MyAudioQueueOutputCallback(void* inClientData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer);
-void MyAudioQueueIsRunningCallback(void *inUserData, AudioQueueRef inAQ, AudioQueuePropertyID inID);
-void MyPropertyListenerProc(	void *							inClientData,
-							AudioFileStreamID				inAudioFileStream,
-							AudioFileStreamPropertyID		inPropertyID,
-							UInt32 *						ioFlags);
-void MyPacketsProc(				void *							inClientData,
+#pragma mark -
+void MyAudioQueueOutputCallback(void		*		inClientData,
+								AudioQueueRef		inAQ,
+								AudioQueueBufferRef	inBuffer);
+void MyAudioQueueIsRunningCallback(void		*			inUserData,
+								   AudioQueueRef		inAQ,
+								   AudioQueuePropertyID	inID);
+void MyPropertyListenerProc(void	*					inClientData,
+							AudioFileStreamID			inAudioFileStream,
+							AudioFileStreamPropertyID	inPropertyID,
+							UInt32 *					ioFlags);
+void MyPacketsProc(void			*					inClientData,
 				   UInt32							inNumberBytes,
 				   UInt32							inNumberPackets,
-				   const void *					inInputData,
-				   AudioStreamPacketDescription	*inPacketDescriptions);
-OSStatus MyEnqueueBuffer(AudioStreamer* myData);
-
-#ifdef TARGET_OS_IPHONE			
-void MyAudioSessionInterruptionListener(void *inClientData, UInt32 inInterruptionState);
+				   const void	*					inInputData,
+				   AudioStreamPacketDescription	*	inPacketDescriptions);
+OSStatus MyEnqueueBuffer(AudioStreamer	*	myData);
+#ifdef TARGET_OS_IPHONE
+void MyAudioSessionInterruptionListener(void	*	inClientData,
+										UInt32		inInterruptionState);
 #endif
-
+#pragma mark -
 #pragma mark Audio Callback Function Implementations
-
-//
-// MyPropertyListenerProc
-//
-// Receives notification when the AudioFileStream has audio packets to be
-// played. In response, this function creates the AudioQueue, getting it
-// ready to begin playback (playback won't begin until audio packets are
-// sent to the queue in MyEnqueueBuffer).
-//
-// This function is adapted from Apple's example in AudioFileStreamExample with
-// kAudioQueueProperty_IsRunning listening added.
-//
-void MyPropertyListenerProc(	void *							inClientData,
-							AudioFileStreamID				inAudioFileStream,
-							AudioFileStreamPropertyID		inPropertyID,
-							UInt32 *						ioFlags)
-{	
-	// this is called by audio file stream when it finds property values
-	AudioStreamer* streamer = (AudioStreamer *)inClientData;
-	[streamer
-	 handlePropertyChangeForFileStream:inAudioFileStream
-	 fileStreamPropertyID:inPropertyID
-	 ioFlags:ioFlags];
+#pragma mark -
+//	
+//	MyPropertyListenerProc
+//	
+//	Receives notification when the AudioFileStream has audio packets to be
+//	played. In response, this function creates the AudioQueue, getting it
+//	ready to begin playback (playback won't begin until audio packets are
+//	sent to the queue in MyEnqueueBuffer).
+//	
+//	This function is adapted from Apple's example in AudioFileStreamExample with
+//	kAudioQueueProperty_IsRunning listening added.
+//	
+void MyPropertyListenerProc(void	*					inClientData,
+							AudioFileStreamID			inAudioFileStream,
+							AudioFileStreamPropertyID	inPropertyID,
+							UInt32 *					ioFlags)
+{
+	//	This is called by the audio file stream when it finds property values
+	AudioStreamer	*	streamer	=	(AudioStreamer *)inClientData;
+	[streamer handlePropertyChangeForFileStream:inAudioFileStream 
+						   fileStreamPropertyID:inPropertyID 
+										ioFlags:ioFlags];
 }
-
-//
-// MyPacketsProc
-//
-// When the AudioStream has packets to be played, this function gets an
-// idle audio buffer and copies the audio packets into it. The calls to
-// MyEnqueueBuffer won't return until there are buffers available (or the
-// playback has been stopped).
-//
-// This function is adapted from Apple's example in AudioFileStreamExample with
-// CBR functionality added.
-//
-void MyPacketsProc(				void *							inClientData,
+//	
+//	MyPacketsProc
+//	
+//	When the AudioStream has packets to be played, this function gets an
+//	idle audio buffer and copies the audio packets into it. The calls to
+//	MyEnqueueBuffer won't return until there are buffers available (or the
+//	playback has been stopped).
+//	
+//	This function is adapted from Apple's example in AudioFileStreamExample with
+//	CBR functionality added.
+//	
+void MyPacketsProc(void			*					inClientData,
 				   UInt32							inNumberBytes,
 				   UInt32							inNumberPackets,
-				   const void *					inInputData,
-				   AudioStreamPacketDescription	*inPacketDescriptions)
+				   const void	*					inInputData,
+				   AudioStreamPacketDescription	*	inPacketDescriptions)
 {
-	// this is called by audio file stream when it finds packets of audio
-	AudioStreamer* streamer = (AudioStreamer *)inClientData;
-	[streamer
-	 handleAudioPackets:inInputData
-	 numberBytes:inNumberBytes
-	 numberPackets:inNumberPackets
-	 packetDescriptions:inPacketDescriptions];
+	//	This is called by audio file stream when it finds packets of audio
+	AudioStreamer	*	streamer	=	(AudioStreamer *)inClientData;
+	[streamer handleAudioPackets:inInputData
+					 numberBytes:inNumberBytes
+				   numberPackets:inNumberPackets
+			  packetDescriptions:inPacketDescriptions];
 }
-
-//
-// MyAudioQueueOutputCallback
-//
-// Called from the AudioQueue when playback of specific buffers completes. This
-// function signals from the AudioQueue thread to the AudioStream thread that
-// the buffer is idle and available for copying data.
-//
-// This function is unchanged from Apple's example in AudioFileStreamExample.
-//
-void MyAudioQueueOutputCallback(	void*					inClientData, 
-								AudioQueueRef			inAQ, 
-								AudioQueueBufferRef		inBuffer)
+//	
+//	MyAudioQueueOutputCallback
+//	
+//	Called from the AudioQueue when playback of specific buffers completes. This
+//	function signals from the AudioQueue thread to the AudioStream thread that
+//	the buffer is idle and available for copying data.
+//	
+//	This function is unchanged from Apple's example in AudioFileStreamExample.
+//	
+void MyAudioQueueOutputCallback(void		*		inClientData,
+								AudioQueueRef		inAQ,
+								AudioQueueBufferRef	inBuffer)
 {
-	// this is called by the audio queue when it has finished decoding our data. 
-	// The buffer is now free to be reused.
-	AudioStreamer* streamer = (AudioStreamer*)inClientData;
-	[streamer handleBufferCompleteForQueue:inAQ buffer:inBuffer];
+	//	This is called by the audio queue when it has finished decoding our data.
+	//	The buffer is now free to be reused.
+	AudioStreamer	*	streamer	=	(AudioStreamer*)inClientData;
+	[streamer handleBufferCompleteForQueue:inAQ
+									buffer:inBuffer];
 }
-
-//
-// MyAudioQueueIsRunningCallback
-//
-// Called from the AudioQueue when playback is started or stopped. This
-// information is used to toggle the observable "isPlaying" property and
-// set the "finished" flag.
-//
-void MyAudioQueueIsRunningCallback(void *inUserData, AudioQueueRef inAQ, AudioQueuePropertyID inID)
+//	
+//	MyAudioQueueIsRunningCallback
+//	
+//	Called from the AudioQueue when playback is started or stopped. This
+//	information is used to toggle the observable "isPlaying" property and
+//	set the "finished" flag.
+//	
+void MyAudioQueueIsRunningCallback(void		*			inUserData,
+								   AudioQueueRef		inAQ,
+								   AudioQueuePropertyID	inID)
 {
-	AudioStreamer* streamer = (AudioStreamer *)inUserData;
-	[streamer handlePropertyChangeForQueue:inAQ propertyID:inID];
+	AudioStreamer	*	streamer	=	(AudioStreamer *)inUserData;
+	[streamer handlePropertyChangeForQueue:inAQ
+								propertyID:inID];
 }
-
-#ifdef TARGET_OS_IPHONE			
-//
-// MyAudioSessionInterruptionListener
-//
-// Invoked if the audio session is interrupted (like when the phone rings)
-//
-void MyAudioSessionInterruptionListener(void *inClientData, UInt32 inInterruptionState)
+#ifdef TARGET_OS_IPHONE
+//	
+//	MyAudioSessionInterruptionListener
+//	
+//	Invoked if the audio session is interrupted (like when the phone rings)
+//	
+void MyAudioSessionInterruptionListener(void	*	inClientData,
+										UInt32		inInterruptionState)
 {
-	AudioStreamer* streamer = (AudioStreamer *)inClientData;
+	AudioStreamer	*	streamer	=	(AudioStreamer *)inClientData;
 	[streamer handleInterruptionChangeToState:inInterruptionState];
 }
 #endif
-
+#pragma mark -
 #pragma mark CFReadStream Callback Function Implementations
-
-//
-// ReadStreamCallBack
-//
-// This is the callback for the CFReadStream from the network connection. This
-// is where all network data is passed to the AudioFileStream.
-//
-// Invoked when an error occurs, the stream ends or we have data to read.
-//
-void ASReadStreamCallBack
-(
- CFReadStreamRef aStream,
- CFStreamEventType eventType,
- void* inClientInfo
- )
+#pragma mark -
+//	
+//	ReadStreamCallBack
+//	
+//	This is the callback for the CFReadStream from the network connection. This
+//	is where all network data is passed to the AudioFileStream.
+//	
+//	Invoked when an error occurs, the stream ends or we have data to read.
+//	
+void ASReadStreamCallBack (CFReadStreamRef		aStream,
+						   CFStreamEventType	eventType,
+						   void		*			inClientInfo)
 {
-	AudioStreamer* streamer = (AudioStreamer *)inClientInfo;
-	[streamer handleReadFromStream:aStream eventType:eventType];
+//	CFHTTPMessageRef		response	=	CFReadStreamCopyProperty(stream, kCFStreamPropertyHTTPResponseHeader);
+//	if (CFHTTPMessageIsHeaderComplete(response)) {
+//		CFDictionaryRef		header		=	CFHTTPMessageCopyAllHeaderFields(response);
+//		NSString		*	contentType	=	[[(NSDictionary *)header objectForKey:@"content-type"] retain];
+//		NSString		*	bR			=	[[(NSDictionary *)header objectForKey:@"icy-br"] retain];
+//		if (contentType)
+//			NSLog(@"%@ %@", contentType, bR);
+//		[contentType release];
+//		[bR release];
+//		CFRelease(header);
+//	}
+//	CFRelease(response);
+	AudioStreamer	*	streamer	=	(AudioStreamer *)inClientInfo;
+	[streamer handleReadFromStream:aStream
+						 eventType:eventType];
 }
-
 @implementation AudioStreamer
-
-@synthesize errorCode;
-@synthesize state;
-@synthesize bitRate;
-@dynamic progress;
-
-//
-// initWithURL
-//
-// Init method for the object.
-//
+@synthesize	errorCode;
+@synthesize	state;
+@synthesize	bitRate;
+@dynamic	progress;
+//	
+//	initWithURL
+//	
+//	Init method for the object.
+//	
 - (id)initWithURL:(NSURL *)aURL
 {
-	self = [super init];
-	if (self != nil)
-	{
-		url = [aURL retain];
-	}
+	if ((self = [super init]))
+		url	=	[aURL retain];
 	return self;
 }
-
-//
-// dealloc
-//
-// Releases instance memory.
-//
+//	
+//	dealloc
+//	
+//	Releases instance memory.
+//	
 - (void)dealloc
 {
 	[self stop];
@@ -266,60 +242,54 @@ void ASReadStreamCallBack
 	[url release];
 	[super dealloc];
 }
-
-//
-// isFinishing
-//
-// returns YES if the audio has reached a stopping condition.
-//
+//	
+//	isFinishing
+//	
+//	returns YES if the audio has reached a stopping condition.
+//	
 - (BOOL)isFinishing
 {
 	@synchronized (self)
 	{
 		if ((errorCode != AS_NO_ERROR && state != AS_INITIALIZED) ||
-			((state == AS_STOPPING || state == AS_STOPPED) &&
-			 stopReason != AS_STOPPING_TEMPORARILY))
+			((state == AS_STOPPING || state == AS_STOPPED) && stopReason != AS_STOPPING_TEMPORARILY))
 		{
 			return YES;
 		}
 	}
-	
 	return NO;
 }
-
-//
-// runLoopShouldExit
-//
-// returns YES if the run loop should exit.
-//
+//	
+//	runLoopShouldExit
+//	
+//	returns YES if the run loop should exit.
+//	
 - (BOOL)runLoopShouldExit
 {
 	@synchronized(self)
 	{
 		if (errorCode != AS_NO_ERROR ||
-			(state == AS_STOPPED &&
-			 stopReason != AS_STOPPING_TEMPORARILY))
+			(state == AS_STOPPED && stopReason != AS_STOPPING_TEMPORARILY))
 		{
 			return YES;
 		}
 	}
-	
 	return NO;
 }
-
-//
-// stringForErrorCode:
-//
-// Converts an error code to a string that can be localized or presented
-// to the user.
-//
-// Parameters:
-//    anErrorCode - the error code to convert
-//
-// returns the string representation of the error code
-//
+//	
+//	stringForErrorCode:
+//	
+//	Converts an error code to a string that can be
+//	localized or presented to the user.
+//	
+//	Parameters:
+//		anErrorCode - the error code to convert
+//	
+//	Returns the string representation of the error code
+//	
 + (NSString *)stringForErrorCode:(AudioStreamerErrorCode)anErrorCode
 {
+#if VERBOSE_ERRORS
 	switch (anErrorCode)
 	{
 		case AS_NO_ERROR:
@@ -369,34 +339,32 @@ void ASReadStreamCallBack
 		default:
 			return AS_AUDIO_STREAMER_FAILED_STRING;
 	}
-	
 	return AS_AUDIO_STREAMER_FAILED_STRING;
+#else
+	return @"Streaming audio failed. Stream not currently live or bad connection.";
+#endif
 }
-
-//
-// failWithErrorCode:
-//
-// Sets the playback state to failed and logs the error.
-//
-// Parameters:
-//    anErrorCode - the error condition
-//
+//	
+//	failWithErrorCode:
+//	
+//	Sets the playback state to failed and logs the error.
+//	
+//	Parameters:
+//		anErrorCode - the error condition
+//	
 - (void)failWithErrorCode:(AudioStreamerErrorCode)anErrorCode
 {
 	@synchronized(self)
 	{
-		if (errorCode != AS_NO_ERROR)
-		{
-			// Only set the error once.
+		if (errorCode != AS_NO_ERROR) // Only set the error once.
 			return;
-		}
 		
 		errorCode = anErrorCode;
 		
 #if LOG
 		if (err)
 		{
-			char *errChars = (char *)&err;
+			char	*	errChars	=	(char *)&err;
 			NSLog(@"%@ err: %c%c%c%c %d\n",
 				  [AudioStreamer stringForErrorCode:anErrorCode],
 				  errChars[3], errChars[2], errChars[1], errChars[0],
@@ -412,8 +380,8 @@ void ASReadStreamCallBack
 			state == AS_PAUSED ||
 			state == AS_BUFFERING)
 		{
-			self.state = AS_STOPPING;
-			stopReason = AS_STOPPING_ERROR;
+			self.state	=	AS_STOPPING;
+			stopReason	=	AS_STOPPING_ERROR;
 			AudioQueueStop(audioQueue, true);
 		}
 		
@@ -439,74 +407,49 @@ void ASReadStreamCallBack
 #endif
 	}
 }
-
-//
-// setState:
-//
-// Sets the state and sends a notification that the state has changed.
-//
-// This method
-//
-// Parameters:
-//    anErrorCode - the error condition
-//
+//	
+//	setState:
+//	
+//	Sets the state and sends a notification that the state has changed.
+//	
+//	Parameters:
+//		anErrorCode - the error condition
+//	
 - (void)setState:(AudioStreamerState)aStatus
 {
 	@synchronized(self)
 	{
 		if (state != aStatus)
 		{
-			state = aStatus;
+			state	=	aStatus;
 			
-			NSNotification *notification =
-			[NSNotification
-			 notificationWithName:ASStatusChangedNotification
-			 object:self];
-			[notificationCenter
-			 performSelector:@selector(postNotification:)
-			 onThread:[NSThread mainThread]
-			 withObject:notification
-			 waitUntilDone:NO];
+			NSNotification	*	notification	=
+			[NSNotification notificationWithName:ASStatusChangedNotification 
+										  object:self];
+			[notificationCenter performSelector:@selector(postNotification:) 
+									   onThread:[NSThread mainThread]
+									 withObject:notification
+								  waitUntilDone:NO];
 		}
 	}
 }
-
-//
-// isPlaying
-//
-// returns YES if the audio currently playing.
-//
+//	
+//	isPlaying
+//	
+//	returns YES if the audio currently playing.
+//	
 - (BOOL)isPlaying
 {
 	if (state == AS_PLAYING)
-	{
 		return YES;
-	}
-	
 	return NO;
 }
-
-//
-// isPaused
-//
-// returns YES if the audio currently playing.
-//
-- (BOOL)isPaused
-{
-	if (state == AS_PAUSED)
-	{
-		return YES;
-	}
-	
-	return NO;
-}
-
-//
-// isWaiting
-//
-// returns YES if the AudioStreamer is waiting for a state transition of some
-// kind.
-//
+//	
+//	isWaiting
+//	
+//	returns YES if the AudioStreamer is waiting for 
+//	a state transition of some kind.
+//	
 - (BOOL)isWaiting
 {
 	@synchronized(self)
@@ -520,23 +463,20 @@ void ASReadStreamCallBack
 			return YES;
 		}
 	}
-	
 	return NO;
 }
-
-//
-// isIdle
-//
-// returns YES if the AudioStream is in the AS_INITIALIZED state (i.e.
-// isn't doing anything).
-//
+//	
+//	isIdle
+//	
+//	returns YES if the AudioStream is in the AS_INITIALIZED state
+//	(i.e. isn't doing anything).
+//	
 - (BOOL)isIdle
 {
 	if (state == AS_INITIALIZED)
 	{
 		return YES;
 	}
-	
 	return NO;
 }
 
@@ -552,48 +492,31 @@ void ASReadStreamCallBack
 	{
 		NSAssert(stream == nil && audioFileStream == nil,
 				 @"audioFileStream already initialized");
-		
-		//
-		// Attempt to guess the file type from the URL. Reading the MIME type
-		// from the CFReadStream would be a better approach since lots of
-		// URL's don't have the right extension.
-		//
-		// If you have a fixed file-type, you may want to hardcode this.
-		//
-		AudioFileTypeID fileTypeHint = kAudioFileMP3Type;
-		NSString *fileExtension = [[url path] pathExtension];
+		//	
+		//	Attempt to guess the file type from the URL. Reading the MIME type
+		//	from the CFReadStream would be a better approach since lots of
+		//	URL's don't have the right extension.
+		//	
+		//	If you have a fixed file-type, you may want to hardcode this.
+		//	
+		AudioFileTypeID	fileTypeHint	=	kAudioFileMP3Type;
+		NSString	*	fileExtension	=	[[url path] pathExtension];
 		if ([fileExtension isEqual:@"mp3"])
-		{
 			fileTypeHint = kAudioFileMP3Type;
-		}
 		else if ([fileExtension isEqual:@"wav"])
-		{
 			fileTypeHint = kAudioFileWAVEType;
-		}
 		else if ([fileExtension isEqual:@"aifc"])
-		{
 			fileTypeHint = kAudioFileAIFCType;
-		}
 		else if ([fileExtension isEqual:@"aiff"])
-		{
 			fileTypeHint = kAudioFileAIFFType;
-		}
 		else if ([fileExtension isEqual:@"m4a"])
-		{
 			fileTypeHint = kAudioFileM4AType;
-		}
 		else if ([fileExtension isEqual:@"mp4"])
-		{
 			fileTypeHint = kAudioFileMPEG4Type;
-		}
 		else if ([fileExtension isEqual:@"caf"])
-		{
 			fileTypeHint = kAudioFileCAFType;
-		}
 		else if ([fileExtension isEqual:@"aac"])
-		{
 			fileTypeHint = kAudioFileAAC_ADTSType;
-		}
 		
 		// create an audio file stream parser
 		err = AudioFileStreamOpen(self, MyPropertyListenerProc, MyPacketsProc, 
@@ -607,15 +530,18 @@ void ASReadStreamCallBack
 		//
 		// Create the GET request
 		//
-		CFHTTPMessageRef message= CFHTTPMessageCreateRequest(NULL, (CFStringRef)@"GET", (CFURLRef)url, kCFHTTPVersion1_1);
-		stream = CFReadStreamCreateForHTTPRequest(NULL, message);
+		CFHTTPMessageRef	message	=	CFHTTPMessageCreateRequest(NULL, 
+																   (CFStringRef)@"GET", 
+																   (CFURLRef)url, 
+																   kCFHTTPVersion1_1);
+		stream						=	CFReadStreamCreateForHTTPRequest(NULL, 
+																		 message);
 		CFRelease(message);
 		
 		//
 		// Enable stream redirection
 		//
-		if (CFReadStreamSetProperty(
-									stream,
+		if (CFReadStreamSetProperty(stream,
 									kCFStreamPropertyHTTPShouldAutoredirect,
 									kCFBooleanTrue) == false)
 		{
@@ -693,8 +619,7 @@ void ASReadStreamCallBack
 		// Set our callback function to receive the data
 		//
 		CFStreamClientContext context = {0, self, NULL, NULL, NULL};
-		CFReadStreamSetClient(
-							  stream,
+		CFReadStreamSetClient(stream,
 							  kCFStreamEventHasBytesAvailable | kCFStreamEventErrorOccurred | kCFStreamEventEndEncountered,
 							  ASReadStreamCallBack,
 							  &context);
@@ -754,18 +679,14 @@ void ASReadStreamCallBack
 		// Set the audio session category so that we continue to play if the
 		// iPhone/iPod auto-locks.
 		//
-		AudioSessionInitialize (
-								NULL,                          // 'NULL' to use the default (main) run loop
+		AudioSessionInitialize (NULL,                          // 'NULL' to use the default (main) run loop
 								NULL,                          // 'NULL' to use the default run loop mode
 								MyAudioSessionInterruptionListener,  // a reference to your interruption callback
-								self                       // data to pass to your interruption listener callback
-								);
+								self);                       // data to pass to your interruption listener callback
 		UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
-		AudioSessionSetProperty (
-								 kAudioSessionProperty_AudioCategory,
+		AudioSessionSetProperty (kAudioSessionProperty_AudioCategory,
 								 sizeof (sessionCategory),
-								 &sessionCategory
-								 );
+								 &sessionCategory);
 		AudioSessionSetActive(true);
 #endif
 		
@@ -1037,17 +958,13 @@ cleanup:
 				   eventType:(CFStreamEventType)eventType
 {
 	if (eventType == kCFStreamEventErrorOccurred)
-	{
 		[self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
-	}
 	else if (eventType == kCFStreamEventEndEncountered)
 	{
 		@synchronized(self)
 		{
 			if ([self isFinishing])
-			{
 				return;
-			}
 		}
 		
 		//
@@ -1055,16 +972,12 @@ cleanup:
 		// processing
 		//
 		if (bytesFilled)
-		{
 			[self enqueueBuffer];
-		}
 		
 		@synchronized(self)
 		{
 			if (state == AS_WAITING_FOR_DATA)
-			{
 				[self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
-			}
 			
 			//
 			// We left the synchronized section to enqueue the buffer so we

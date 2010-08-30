@@ -1,6 +1,5 @@
 //
 //  DataModel.h
-//  KATG Big
 //
 //  Created by Doug Russell on 5/5/10.
 //  Copyright 2010 Doug Russell. All rights reserved.
@@ -25,7 +24,7 @@
 #import "DataModelKeys.h"
 #import "DataOperationCodes.h"
 
-@interface DataModel : NSObject <DataOperationDelegate>
+@interface DataModel : NSObject
 {
 	//
 	//  Delegate array for returning data asynchronously
@@ -179,7 +178,6 @@
 //	@property (nonatomic, retain) NSSet* Pictures;
 //
 - (void)shows;
-- (void)showsNoPoll;
 //
 //	Updates existing instance of 
 //  NSManagedObject subclass Show

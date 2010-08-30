@@ -100,7 +100,6 @@ extern NSString * const ASStatusChangedNotification;
 @interface AudioStreamer : NSObject
 {
 	NSURL *url;
-	
 	//
 	// Special threading consideration:
 	//	The audioQueue property should only ever be accessed inside a

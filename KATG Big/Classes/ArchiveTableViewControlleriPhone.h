@@ -1,5 +1,5 @@
 //
-//  ArchiveViewControlleriPhone.h
+//  ArchiveTableViewControlleriPhone.h
 //  KATG Big
 //
 //  Created by Doug Russell on 7/11/10.
@@ -10,9 +10,7 @@
 
 @interface ArchiveTableViewControlleriPhone : ArchiveTableViewController 
 {
-	UIActivityIndicatorView	*	_activityIndicator;
+	
 }
-
-@property (nonatomic, retain)	UIActivityIndicatorView	*	activityIndicator;
 
 @end

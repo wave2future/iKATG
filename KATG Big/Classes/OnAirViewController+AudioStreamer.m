@@ -47,25 +47,20 @@ static NSString *urlString = @"http://liveshow.keithandthegirl.com:8004";
 {
 	[self.audioButton.imageView stopAnimating];
 	if (!image)
-	{
 		[audioButton setImage:[UIImage imageNamed:@"Play"] forState:0];
-	}
 	else
 	{
 		[audioButton setImage:image forState:0];
-		
 		if ([audioButton.currentImage isEqual:[UIImage imageNamed:@"LoadStage0"]])
-		{
 			[self pulseButton];
-		}
 	}
 }
-//
-//
-//
+//	
+//	
+//	
 - (void)pulseButton
 {
-	if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+	if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
 	{
 		if (self.audioButton.imageView.animationImages == nil)
 		{
@@ -82,16 +77,16 @@ static NSString *urlString = @"http://liveshow.keithandthegirl.com:8004";
 		[self.audioButton.imageView startAnimating];
 	}
 }
-//
-// buttonPressed:
-//
-// Handles the play/stop button. Creates, observes and starts the
-// audio streamer when it is a play button. Stops the audio streamer when
-// it isn't.
-//
-// Parameters:
-//    sender - normally, the play/stop button.
-//
+//	
+//	buttonPressed:
+//	
+//	Handles the play/stop button. Creates, observes and starts the
+//	audio streamer when it is a play button. Stops the audio streamer when
+//	it isn't.
+//	
+//	Parameters:
+//		sender - normally, the play/stop button.
+//	
 - (void)_audioButtonPressed:(id)sender
 {
 	if ([audioButton.currentImage isEqual:[UIImage imageNamed:@"Play"]])
@@ -153,15 +148,13 @@ static NSString *urlString = @"http://liveshow.keithandthegirl.com:8004";
 - (void)createStreamer
 {
 	if (streamer)
-	{
 		return;
-	}
 	
 	[self destroyStreamer];
 	
-	NSURL *url = [NSURL URLWithString:urlString];
+	NSURL	*	url	=	[NSURL URLWithString:urlString];
 	
-	streamer = [[AudioStreamer alloc] initWithURL:url];
+	streamer		=	[[AudioStreamer alloc] initWithURL:url];
 	
 	[[NSNotificationCenter defaultCenter]
 	 addObserver:self
@@ -179,7 +172,6 @@ static NSString *urlString = @"http://liveshow.keithandthegirl.com:8004";
 	for (UIView *view in [volumeView subviews]) 
 	{
 		if ([view isKindOfClass:NSClassFromString(@"MPVolumeSlider")])
-		//if ([[[view class] description] isEqualToString:@"MPVolumeSlider"]) 
 			volumeViewSlider			=	(UISlider *)view;
 	}
 	UIImage		*	left				=	[UIImage imageNamed:@"LeftSlide"];
