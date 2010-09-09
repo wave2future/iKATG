@@ -11,14 +11,16 @@
 #import <iAd/iAd.h>
 
 @interface EventsTableViewControlleriPhone : UITableViewController 
-<DataModelDelegate, ADBannerViewDelegate>
+<DataModelDelegate, ADBannerViewDelegate, NSFetchedResultsControllerDelegate>
 {
-	DataModel		*	model;
-	NSArray			*	eventsList;
-	ADBannerView	*	adView;
+	DataModel					*	model;
+	ADBannerView				*	adView;
+	NSFetchedResultsController	*	_fetchedResultsController;
+	NSManagedObjectContext		*	_eventContext;
 }
 
-@property (nonatomic, retain)	NSArray			*	eventsList;
-@property (nonatomic, retain)	ADBannerView	*	adView;
+@property (nonatomic, retain)	IBOutlet	ADBannerView	*	adView;
+@property (nonatomic, retain)	NSFetchedResultsController	*	fetchedResultsController;
+@property (nonatomic, retain)	NSManagedObjectContext		*	eventContext;
 
 @end

@@ -19,6 +19,7 @@
 	UILabel			*	showTitleLabel;
 	UILabel			*	showNumberLabel;
 	UILabel			*	showGuestsLabel;
+	RoundedView		*	showNotesContainer;
 	UITextView		*	showNotesTextView;
 	UIButton		*	playButton;
 }
@@ -27,6 +28,7 @@
 @property (nonatomic, retain)	IBOutlet	UILabel			*	showTitleLabel;
 @property (nonatomic, retain)	IBOutlet	UILabel			*	showNumberLabel;
 @property (nonatomic, retain)	IBOutlet	UILabel			*	showGuestsLabel;
+@property (nonatomic, retain)	IBOutlet	RoundedView		*	showNotesContainer;
 @property (nonatomic, retain)	IBOutlet	UITextView		*	showNotesTextView;
 @property (nonatomic, retain)	IBOutlet	UIButton		*	playButton;
 

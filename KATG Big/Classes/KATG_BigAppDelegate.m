@@ -44,7 +44,9 @@ void uncaughtExceptionHandler(NSException *exception)
 #pragma mark -
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
-	NSLog(@"Application Launch With Options: %@", launchOptions);
+#if DebugBuild
+	NSLog(@"Test");
+#endif
 	
 	NSManagedObjectContext	*	context	=	[self managedObjectContext];
 	if (!context)
@@ -57,17 +59,6 @@ void uncaughtExceptionHandler(NSException *exception)
 	
     [window addSubview:tabBarController.view];
     [window makeKeyAndVisible];
-	
-//	NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithFile:AppDirectoryCachePathAppended(@"cookies")];
-//	//NSLog(@"Cookies Startup :%@", cookies);
-//	if (cookies != nil)
-//	{
-//		[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
-//		for (NSHTTPCookie *cookie in cookies)
-//		{
-//			[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
-//		}
-//	}
 	
 	// APNS
 	// Register for push notifications
@@ -84,9 +75,6 @@ void uncaughtExceptionHandler(NSException *exception)
 		if (alertMessage)
 			BasicAlert(@"Notification", alertMessage, nil, @"Continue", nil);
 	}
-	
-	
-	
 	
 	// Register reachability object
 	[self checkReachability];
@@ -109,7 +97,7 @@ void uncaughtExceptionHandler(NSException *exception)
 }
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	NSLog(@"Application Termination");
+	application.applicationIconBadgeNumber = 0;
 	
 	AudioSessionSetActive(false);
 	
@@ -127,13 +115,7 @@ void uncaughtExceptionHandler(NSException *exception)
 	{
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) 
 		{
-			/*
-			 Replace this implementation with code to handle the error appropriately.
-			 
-			 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-			 */
 			ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
-			abort();
         } 
     }
 }
@@ -179,18 +161,7 @@ void uncaughtExceptionHandler(NSException *exception)
     
 	if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) 
 	{
-		/*
-		 Replace this implementation with code to handle the error appropriately.
-		 
-		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-		 
-		 Typical reasons for an error here include:
-		 * The persistent store is not accessible
-		 * The schema for the persistent store is incompatible with current managed object model
-		 Check the error message to determine what the actual problem was.
-		 */
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
     }    
 	
     return persistentStoreCoordinator;
@@ -219,30 +190,52 @@ void uncaughtExceptionHandler(NSException *exception)
 		NSLog(@"Notifications are disabled for this application. Not registering with Urban Airship");
 		return;
 	}
-	
-	[[Push sharedPush] setDeviceToken:deviceToken];
+	[[Push sharedPush] setDeviceToken:[Push stringWithHexBytes:deviceToken]];
 	[[Push sharedPush] send];
-	
-	//BasicAlert(@"Token", [NSString stringWithFormat:@"%@", deviceToken], nil, @"ok", nil);
 }
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-	NSLog(@"Remote Notification Register Failed: %@", error);
+#ifdef DEVELOPMENTBUILD
+	ESLog(@"Remote Notification Register Failed: %@", error);
+#endif
 }
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-	NSString	*	alertMessage	=	[[[userInfo objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey] objectForKey:@"aps"] objectForKey:@"alert"];
+	NSString	*	alertMessage	=	[[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
 	if (alertMessage)
 		BasicAlert(@"Notification", alertMessage, nil, @"Continue", nil);
 }
 - (void)pushNotificationRegisterSucceeded:(Push *)push
 {
-	NSLog(@"Push Succeeded:\n%@", push.result);
+#ifdef DEVELOPMENTBUILD
+	ESLog(@"Push Registration Succeeded");
+#endif
 }
 - (void)pushNotificationRegisterFailed:(NSError *)error
 {
-	NSLog(@"Push Error Occured:\n%@", error);
+#ifdef DEVELOPMENTBUILD
+	ESLog(@"Push Registration Error Occured:\n%@", error);
+#endif
 }
+#ifdef DEVELOPMENTBUILD
+- (void)tagRegisterSucceeded:(Push *)push
+{
+	NSLog(@"Tag Registration Succeeded");
+}
+- (void)tagRegisterFailed:(NSError *)error
+{
+	NSLog(@"Tag Registration Error Occured:\n%@", error);
+}
+- (void)tagUnregisterSucceeded:(Push *)push
+{
+	NSLog(@"Tag Unregistration Succeeded");
+}
+- (void)tagUnregisterFailed:(NSError *)error
+{
+	NSLog(@"Tag Unregistration Error Occured:\n%@", error);
+}
+#endif
+
 #pragma mark -
 #pragma mark Memory Management
 #pragma mark -

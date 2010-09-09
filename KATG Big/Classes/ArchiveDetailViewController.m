@@ -14,12 +14,13 @@
 @interface ArchiveDetailViewController ()
 - (void)presentPlayer:(NSURL *)URL;
 - (void)presentPlayer;
+- (void)updateFields;
 @end
-
 
 @implementation ArchiveDetailViewController
 @synthesize show;
 @synthesize showTitleLabel, showNumberLabel, showGuestsLabel, showNotesTextView, playButton;
+@synthesize	showNotesContainer;
 
 #pragma mark -
 #pragma mark View Life Cycle
@@ -27,11 +28,13 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-	
-	//[(UIScrollView *)self.view setContentSize:CGSizeMake(320, 660)];
-	
+		
 	model	=	[DataModel sharedDataModel];
 	
+	[self updateFields];
+}
+- (void)updateFields
+{
 	self.showTitleLabel.text	=	[self.show Title];
 	self.showNumberLabel.text	=	[NSString stringWithFormat:@"Show %@", [self.show Number]];
 	NSMutableString	*	guests	=	[NSMutableString string];
@@ -45,14 +48,22 @@
 			[guests appendFormat:@"%@, ", [guest Guest]];
 	}
 	self.showGuestsLabel.text	=	guests;
-	if ([self.show Notes])
-	{
-		self.showNotesTextView.text	=	[self.show Notes];
-		self.showNotesTextView.font	=	[UIFont systemFontOfSize:15];
-	}
 	
 	if ([self.show URL])
 		self.playButton.hidden		=	NO;
+	
+	CGRect	notesFrame;
+	if ([self.show Notes])
+	{
+		self.showNotesTextView.text	=	[self.show Notes];
+		CGSize	contentSize			=	self.showNotesTextView.contentSize;
+		notesFrame					=	self.showNotesContainer.frame;
+		notesFrame.size.height		=	contentSize.height + 30;
+		self.showNotesContainer.frame	=	notesFrame;
+	}
+	
+	notesFrame						=	self.showNotesContainer.frame;
+	[(UIScrollView *)self.view setContentSize:CGSizeMake(320, notesFrame.origin.y + notesFrame.size.height + 30)];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -61,7 +72,7 @@
 	{
 		UIBarButtonItem	*	button	=
 		[[UIBarButtonItem alloc] 
-		 initWithTitle:@"Player" 
+		 initWithTitle:[NSString stringWithFormat:@"Now Playing: Show %@", [PlayerController sharedPlayerController].showNumber] 
 		 style:UIBarButtonItemStyleBordered 
 		 target:self 
 		 action:@selector(presentPlayer)];
@@ -89,6 +100,7 @@
 	self.showTitleLabel		=	nil;
 	self.showNumberLabel	=	nil;
 	self.showGuestsLabel	=	nil;
+	self.showNotesContainer	=	nil;
 	self.showNotesTextView	=	nil;
 	self.playButton			=	nil;
 }
@@ -104,6 +116,7 @@
 	[showTitleLabel release];
 	[showNumberLabel release];
 	[showGuestsLabel release];
+	[showNotesContainer release];
 	[showNotesTextView release];
 	[playButton release];
     [super dealloc];
@@ -123,6 +136,7 @@
 {
 	[self presentPlayer];
 	[[PlayerController sharedPlayerController] preparePlayer:URL];
+	[[PlayerController sharedPlayerController] setShowNumber:[self.show Number]];
 }
 - (void)presentPlayer
 {
@@ -135,9 +149,7 @@
 #pragma mark -
 - (void)showDetailsAvailable:(NSString *)ID
 {
-	self.showNotesTextView.text	=	[self.show Notes];
-	if ([self.show URL])
-		self.playButton.hidden	=	NO;
+	[self updateFields];
 }
 
 @end

@@ -62,11 +62,6 @@
 	//
 	NSOperationQueue  *operationQueue;
 	//
-	//  Operation Queue with max operations set to
-	//  to allow core data to operate off main thread
-	//
-	NSOperationQueue  *coreDataOperationQueue;
-	//
 	//  When connectivity is not available, operations are added to
 	//  delayedOperations and then when connectivity returns delayedOperations
 	//  contents is added to the operationQueue
@@ -134,8 +129,7 @@
 /******************************************************************************/
 //
 //	Retrieve list of events
-//  Returns on - (void)events:(NSArray *)events;
-//  NSArray of 
+//  Stores results in core data store as
 //  NSManagedObject subclass Event:
 //  @property (nonatomic, retain) NSString * Title;
 //  @property (nonatomic, retain) NSString * EventID;
@@ -146,8 +140,7 @@
 //  @property (nonatomic, retain) NSNumber * ShowType; (BOOL: YES for Show, No for Event)
 //  @property (nonatomic, retain) NSString * Details;
 //
-- (void)events;			// Events from coredata store initially, then updated from web
-- (void)eventsNoPoll;	// Events only from coredata store
+- (void)events;	//	Update events in core data store from the wb
 //
 //  Check live show status 
 //  (this is set by the hosts, not an actual check of the shoutcast feeds status)

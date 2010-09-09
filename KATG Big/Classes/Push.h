@@ -31,29 +31,35 @@ typedef enum {
 {
 @public
 	id<PushDelegate>	_delegate;
-	NSData			*	_deviceToken;
+	NSString		*	_deviceToken;
 	NSString		*	_deviceAlias;
-	NSString		*	_result;
 @private
 	NSString		*	_applicationKey;
 	NSString		*	_applicationSecret;
 	NSURLConnection	*	_tokenConnection;
-	NSMutableData	*	_tokenConnectionData;
+	NSURLConnection	*	_tagConnection;
+	NSURLConnection	*	_untagConnection;
 }
 
 @property (nonatomic, assign)	id<PushDelegate>	delegate;
 @property (nonatomic, retain)	NSString		*	deviceAlias;
-@property (nonatomic, retain)	NSData			*	deviceToken;
-@property (nonatomic, retain)	NSString		*	result;
+@property (nonatomic, retain)	NSString		*	deviceToken;
 
 + (Push *)sharedPush;
 - (void)registerForRemoteNotificationTypes:(UIRemoteNotificationType)types;
 - (void)unregisterForRemoteNotifications;
 - (void)send;
+- (void)tag:(NSString *)tag;
++ (NSString *)stringWithHexBytes:(NSData *)bytes;
 
 @end
 
 @protocol PushDelegate
 - (void)pushNotificationRegisterSucceeded:(Push *)push;
 - (void)pushNotificationRegisterFailed:(NSError *)error;
+@optional
+- (void)tagRegisterSucceeded:(Push *)push;
+- (void)tagRegisterFailed:(NSError *)error;
+- (void)tagUnregisterSucceeded:(Push *)push;
+- (void)tagUnregisterFailed:(NSError *)error;
 @end

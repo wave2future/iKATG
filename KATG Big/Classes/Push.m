@@ -16,8 +16,6 @@
 //  limitations under the License.
 //  
 
-#define DEVELOPMENTBUILD 1
-
 #import "Push.h"
 #import "PushKeys.h"
 
@@ -27,12 +25,14 @@ static	Push	*	sharedPush	=	nil;
 @property (nonatomic, retain)	NSString		*	applicationKey;
 @property (nonatomic, retain)	NSString		*	applicationSecret;
 @property (nonatomic, retain)	NSURLConnection	*	tokenConnection;
-@property (nonatomic, retain)	NSMutableData	*	tokenConnectionData;
+@property (nonatomic, retain)	NSURLConnection	*	tagConnection;
+@property (nonatomic, retain)	NSURLConnection	*	untagConnection;
 @end
 
 @interface Push (Private)
 - (NSURLRequest *)sendRequest;
-- (NSString *)stringWithHexBytes:(NSData *)bytes;
+- (NSURLRequest *)tagRequest:(NSString *)tag;
+- (NSURLRequest *)untagRequest:(NSString *)tag;
 - (NSString *)deviceUUID;
 - (NSString *)bundleIdentifier;
 - (NSString *)bundleVersion;
@@ -46,10 +46,15 @@ static	Push	*	sharedPush	=	nil;
 @synthesize	applicationSecret	=	_applicationSecret;
 @synthesize	deviceAlias			=	_deviceAlias;
 @synthesize	deviceToken			=	_deviceToken;
-@synthesize	result				=	_result;
 @synthesize	tokenConnection		=	_tokenConnection;
-@synthesize	tokenConnectionData	=	_tokenConnectionData;
+@synthesize	tagConnection		=	_tagConnection;
+@synthesize	untagConnection		=	_untagConnection;
 
+/******************************************************************************/
+#pragma mark -
+#pragma mark Setup
+#pragma mark -
+/******************************************************************************/
 + (Push *)sharedPush
 {
 	@synchronized(self)
@@ -61,34 +66,27 @@ static	Push	*	sharedPush	=	nil;
 }
 - (void)registerForRemoteNotificationTypes:(UIRemoteNotificationType)types
 {
-#if DEVELOPMENTBUILD
+#ifdef DEVELOPMENTBUILD
 	if ([[[UIDevice currentDevice] model] compare: @"iPhone Simulator"] == NSOrderedSame)
-	{
 		NSLog(@"ERROR: Remote notifications are not supported in the simulator.");
-	}
 	else
-	{
 #endif
 		[[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
-#if DEVELOPMENTBUILD
-	}
-#endif
 }
 - (void)unregisterForRemoteNotifications
 {
-#if DEVELOPMENTBUILD
+#ifdef DEVELOPMENTBUILD
 	if ([[[UIDevice currentDevice] model] compare: @"iPhone Simulator"] == NSOrderedSame)
-	{
 		NSLog(@"ERROR: Remote notifications are not supported in the simulator.");
-	}
 	else
-	{
 #endif
 		[[UIApplication sharedApplication] unregisterForRemoteNotifications];
-#if DEVELOPMENTBUILD
-	}
-#endif
 }
+/******************************************************************************/
+#pragma mark -
+#pragma mark Send Registration
+#pragma mark -
+/******************************************************************************/
 - (void)send
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible	=	YES;
@@ -102,10 +100,7 @@ static	Push	*	sharedPush	=	nil;
 		if (connection != nil)
 		{
 			self.tokenConnection					=	connection;
-			if (self.tokenConnectionData == nil)
-				self.tokenConnectionData			=	[NSMutableData data];
-			[self.tokenConnectionData setLength:0];
-			[connection start];
+			[self.tokenConnection start];
 		}
 		else
 		{ // Unable to make connection
@@ -114,6 +109,73 @@ static	Push	*	sharedPush	=	nil;
 				[self.delegate pushNotificationRegisterFailed:error];
 		}
 	}
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Tagging
+#pragma mark -
+/******************************************************************************/
+- (void)tag:(NSString *)tag
+{
+	NSURLRequest	*	request						=	[self tagRequest:tag];
+	
+	if ([NSURLConnection canHandleRequest:request])
+	{
+		NSURLConnection			*	connection		=	nil;
+		connection									=	[NSURLConnection connectionWithRequest:request delegate:self];
+		if (connection != nil)
+		{
+			self.tagConnection						=	connection;
+			[self.tagConnection start];
+		}
+		else
+		{ // Unable to make connection
+			NSError				*	error			=	[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
+			if ([(NSObject *)self.delegate respondsToSelector:@selector(tagRegisterFailed:)])
+				[self.delegate tagRegisterFailed:error];
+		}
+	}
+}
+- (void)untag:(NSString *)tag
+{
+	NSURLRequest	*	request						=	[self untagRequest:tag];
+	
+	if ([NSURLConnection canHandleRequest:request])
+	{
+		NSURLConnection			*	connection		=	nil;
+		connection									=	[NSURLConnection connectionWithRequest:request delegate:self];
+		if (connection != nil)
+		{
+			self.untagConnection					=	connection;
+			[self.untagConnection start];
+		}
+		else
+		{ // Unable to make connection
+			NSError				*	error			=	[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
+			if ([(NSObject *)self.delegate respondsToSelector:@selector(tagUnregisterFailed:)])
+				[self.delegate tagUnregisterFailed:error];
+		}
+	}
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Formatting
+#pragma mark -
+/******************************************************************************/
++ (NSString *)stringWithHexBytes:(NSData *)bytes 
+{
+	//
+	//c/o stephen joseph butler
+	//http://www.cocoabuilder.com/archive/cocoa/194181-convert-hex-values-in-an-nsdata-object-to-nsstring.html#194188
+	//
+	NSMutableString		*	stringBuffer	=	[NSMutableString stringWithCapacity:([bytes length] * 2)];
+	const unsigned char	*	dataBuffer		=	[bytes bytes];
+	int i;
+	for (i = 0; i < [bytes length]; ++i) 
+	{
+		[stringBuffer appendFormat:@"%02X", (unsigned long)dataBuffer[i]];
+	}
+	return [[stringBuffer copy] autorelease];
 }
 
 @end
@@ -145,10 +207,10 @@ static	Push	*	sharedPush	=	nil;
 	[_applicationSecret release];
 	[_applicationKey release];
 	[_deviceAlias release];
-	[_result release];
 	[_deviceToken release];
 	[_tokenConnection release];
-	[_tokenConnectionData release];
+	[_tagConnection release];
+	[_untagConnection release];
 	[super dealloc];
 }
 /******************************************************************************/
@@ -196,33 +258,22 @@ static	Push	*	sharedPush	=	nil;
 /******************************************************************************/
 - (NSURLRequest *)sendRequest
 {
-	NSString			*	tokenString	=	nil;
-	if (self.deviceToken != nil)
-	{
-		tokenString						=	[self stringWithHexBytes:self.deviceToken];
-		if (tokenString == nil || tokenString.length != 64)
-		{
-			[self.delegate pushNotificationRegisterFailed:[NSError errorWithDomain:@"deviceTokenReadFailedError" code:deviceTokenReadFailedError userInfo:nil]];
-			return nil;
-		}
-	}
-	else
+	if (self.deviceToken == nil || self.deviceToken.length != 64)
 	{
 		[self.delegate pushNotificationRegisterFailed:[NSError errorWithDomain:@"deviceTokenReadFailedError" code:deviceTokenReadFailedError userInfo:nil]];
 		return nil;
 	}
 	
 	NSString			*	server		=	@"https://go.urbanairship.com";
-	NSString			*	urlString	=	[NSString stringWithFormat:@"%@%@%@/", server, @"/api/device_tokens/", tokenString];
+	NSString			*	urlString	=	[NSString stringWithFormat:@"%@%@%@/", server, @"/api/device_tokens/", self.deviceToken];
 	NSURL				*	url			=	[NSURL URLWithString:urlString];
 	NSMutableURLRequest	*	request		=	[NSMutableURLRequest requestWithURL:url];
 	[request setHTTPMethod:@"PUT"];
 	
 	if (self.deviceAlias == nil && self.deviceAlias.length == 0)
-		self.deviceAlias						=	[NSString stringWithFormat:@"%@-%@-%@", [self bundleIdentifier], [self bundleVersion], [self deviceUUID]];
+		self.deviceAlias				=	[NSString stringWithFormat:@"%@-%@-%@", [self bundleIdentifier], [self bundleVersion], [self deviceUUID]];
 	[request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 	[request setHTTPBody:[[NSString stringWithFormat: @"{\"alias\": \"%@\"}", self.deviceAlias] dataUsingEncoding:NSUTF8StringEncoding]];
-
 	
 	if (self.applicationKey == nil || self.applicationKey.length == 0)
 	{
@@ -235,6 +286,43 @@ static	Push	*	sharedPush	=	nil;
 		[self.delegate pushNotificationRegisterFailed:[NSError errorWithDomain:@"applicationSecretReadFailedError" code:applicationSecretReadFailedError userInfo:nil]];
 		return nil;
 	}
+	[request addValue:[NSString stringWithFormat:@"Basic %@", 
+					   [Push base64forData:
+						[[NSString stringWithFormat:@"%@:%@", self.applicationKey, self.applicationSecret] 
+						 dataUsingEncoding: NSUTF8StringEncoding]]] 
+   forHTTPHeaderField:@"Authorization"];
+	
+	return (NSURLRequest *)request;
+}
+- (NSURLRequest *)tagRequest:(NSString *)tag
+{
+	if (self.deviceToken == nil || self.deviceToken.length != 64)
+	{
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagRegisterFailed:)])
+			[self.delegate tagRegisterFailed:[NSError errorWithDomain:@"deviceTokenReadFailedError" code:deviceTokenReadFailedError userInfo:nil]];
+		return nil;
+	}
+	
+	NSString			*	server		=	@"https://go.urbanairship.com";
+	NSString			*	urlString	=	[NSString stringWithFormat:@"%@%@%@%@%@", server, @"/api/device_tokens/", self.deviceToken, @"/tags/", tag];
+	NSURL				*	url			=	[NSURL URLWithString:urlString];
+	NSMutableURLRequest	*	request		=	[NSMutableURLRequest requestWithURL:url];
+	[request setHTTPMethod:@"PUT"];
+		
+	if (self.applicationKey == nil || self.applicationKey.length == 0)
+	{
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagRegisterFailed:)])
+			[self.delegate tagRegisterFailed:[NSError errorWithDomain:@"applicationKeyReadFailedError" code:applicationKeyReadFailedError userInfo:nil]];
+		return nil;
+	}
+	
+	if (self.applicationSecret == nil || self.applicationSecret.length == 0)
+	{
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagRegisterFailed:)])
+			[self.delegate tagRegisterFailed:[NSError errorWithDomain:@"applicationSecretReadFailedError" code:applicationSecretReadFailedError userInfo:nil]];
+		return nil;
+	}
+	
 	[request addValue:
 	 [NSString stringWithFormat:@"Basic %@", 
 	  [Push base64forData:
@@ -244,20 +332,43 @@ static	Push	*	sharedPush	=	nil;
 	
 	return (NSURLRequest *)request;
 }
-- (NSString *)stringWithHexBytes:(NSData *)bytes 
+- (NSURLRequest *)untagRequest:(NSString *)tag
 {
-	//
-	//c/o stephen joseph butler
-	//http://www.cocoabuilder.com/archive/cocoa/194181-convert-hex-values-in-an-nsdata-object-to-nsstring.html#194188
-	//
-	NSMutableString		*	stringBuffer	=	[NSMutableString stringWithCapacity:([bytes length] * 2)];
-	const unsigned char	*	dataBuffer		=	[bytes bytes];
-	int i;
-	for (i = 0; i < [bytes length]; ++i) 
+	if (self.deviceToken == nil || self.deviceToken.length != 64)
 	{
-		[stringBuffer appendFormat:@"%02x", (unsigned long)dataBuffer[i]];
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagUnregisterFailed:)])
+			[self.delegate tagUnregisterFailed:[NSError errorWithDomain:@"deviceTokenReadFailedError" code:deviceTokenReadFailedError userInfo:nil]];
+		return nil;
 	}
-	return [[stringBuffer copy] autorelease];
+	
+	NSString			*	server		=	@"https://go.urbanairship.com";
+	NSString			*	urlString	=	[NSString stringWithFormat:@"%@%@%@%@%@", server, @"/api/device_tokens/", self.deviceToken, @"/tags/", tag];
+	NSURL				*	url			=	[NSURL URLWithString:urlString];
+	NSMutableURLRequest	*	request		=	[NSMutableURLRequest requestWithURL:url];
+	[request setHTTPMethod:@"DELETE"];
+	
+	if (self.applicationKey == nil || self.applicationKey.length == 0)
+	{
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagUnregisterFailed:)])
+			[self.delegate tagUnregisterFailed:[NSError errorWithDomain:@"applicationKeyReadFailedError" code:applicationKeyReadFailedError userInfo:nil]];
+		return nil;
+	}
+	
+	if (self.applicationSecret == nil || self.applicationSecret.length == 0)
+	{
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagUnregisterFailed:)])
+			[self.delegate tagUnregisterFailed:[NSError errorWithDomain:@"applicationSecretReadFailedError" code:applicationSecretReadFailedError userInfo:nil]];
+		return nil;
+	}
+	
+	[request addValue:
+	 [NSString stringWithFormat:@"Basic %@", 
+	  [Push base64forData:
+	   [[NSString stringWithFormat:@"%@:%@", self.applicationKey, self.applicationSecret] 
+		dataUsingEncoding: NSUTF8StringEncoding]]] 
+   forHTTPHeaderField:@"Authorization"];
+	
+	return (NSURLRequest *)request;
 }
 - (NSString *)deviceUUID
 {
@@ -280,28 +391,84 @@ static	Push	*	sharedPush	=	nil;
 /******************************************************************************/
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	self.tokenConnection	=	nil;
-	[self.tokenConnectionData setLength:0];
-	if ([(NSObject *)self.delegate respondsToSelector:@selector(pushNotificationRegisterFailed:)])
-		[self.delegate pushNotificationRegisterFailed:error];
-	
+	if ([connection isEqual:self.tokenConnection])
+	{
+		self.tokenConnection	=	nil;
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(pushNotificationRegisterFailed:)])
+			[self.delegate pushNotificationRegisterFailed:error];
+	}
+	else if ([connection isEqual:self.tagConnection])
+	{
+		self.tagConnection	=	nil;
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagRegisterFailed:)])
+			[self.delegate tagRegisterFailed:error];
+	}
+	else if ([connection isEqual:self.untagConnection])
+	{
+		self.untagConnection	=	nil;
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagUnregisterFailed:)])
+			[self.delegate tagUnregisterFailed:error];
+	}
 }
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-	[self.tokenConnectionData appendData:data];
+	NSInteger	statusCode	=	[(NSHTTPURLResponse *)response statusCode];
+	if ([connection isEqual:self.tokenConnection])
+	{
+		[UIApplication sharedApplication].networkActivityIndicatorVisible	=	NO;
+		if (statusCode != 200 && statusCode != 201)
+		{// 201 token registered, 200 token already registered
+			if ([(NSObject *)self.delegate respondsToSelector:@selector(pushNotificationRegisterFailed:)])
+				[self.delegate pushNotificationRegisterFailed:nil];
+			return;
+		}
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(pushNotificationRegisterSucceeded:)])
+			[self.delegate pushNotificationRegisterSucceeded:self];
+#ifdef DEVELOPMENTBUILD
+		[self tag:@"DevelopmentDevice"];
+#endif
+	}
+	else if ([connection isEqual:self.tagConnection])
+	{// 201 tag added, 200 tag already associated with token
+		if (statusCode != 200 && statusCode != 201)
+		{
+			if ([(NSObject *)self.delegate respondsToSelector:@selector(tagRegisterFailed:)])
+				[self.delegate tagRegisterFailed:nil];
+			return;
+		}
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagRegisterSucceeded:)])
+			[self.delegate tagRegisterSucceeded:self];
+	}
+	else if ([connection isEqual:self.untagConnection])
+	{// 204 = tag removed, 404 = tag already not associated with token
+		if (statusCode != 204 && statusCode != 404)
+		{
+			if ([(NSObject *)self.delegate respondsToSelector:@selector(tagUnregisterFailed:)])
+				[self.delegate tagUnregisterFailed:nil];
+			return;
+		}
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(tagUnregisterSucceeded:)])
+			[self.delegate tagUnregisterSucceeded:self];
+	}
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	self.result				=	[[[NSString alloc] initWithData:self.tokenConnectionData encoding:NSUTF8StringEncoding] autorelease];
-	self.tokenConnection	=	nil;
-	[self.tokenConnectionData setLength:0];
-	if ([(NSObject *)self.delegate respondsToSelector:@selector(pushNotificationRegisterSucceeded:)])
-		[self.delegate pushNotificationRegisterSucceeded:self];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible	=	NO;
+	if ([connection isEqual:self.tokenConnection])
+	{
+		self.tokenConnection	=	nil;
+	}
+	else if ([connection isEqual:self.tagConnection])
+	{
+		self.tagConnection		=	nil;
+	}
+	else if ([connection isEqual:self.untagConnection])
+	{
+		self.untagConnection	=	nil;
+	}
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark Base 64
+#pragma mark Formatting
 #pragma mark -
 /******************************************************************************/
 // From: http://www.cocoadev.com/index.pl?BaseSixtyFour

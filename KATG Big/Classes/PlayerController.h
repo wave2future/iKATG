@@ -13,11 +13,13 @@
 {
 	MPMoviePlayerController	*	player;
 	UIActivityIndicatorView	*	activityIndicator;
+	NSString				*	showNumber;
 }
 
 @property (nonatomic, retain)				MPMoviePlayerController	*	player;
 @property (nonatomic, retain)	IBOutlet	UIActivityIndicatorView	*	activityIndicator;
 @property (nonatomic, readonly)				MPMoviePlaybackState		playbackState;
+@property (nonatomic, retain)				NSString				*	showNumber;
 
 + (PlayerController *)sharedPlayerController;
 - (void)preparePlayer:(NSURL *)URL;

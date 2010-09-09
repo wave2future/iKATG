@@ -2,7 +2,7 @@
 //  Event.h
 //  KATG Big
 //
-//  Created by Doug Russell on 9/8/10.
+//  Created by Doug Russell on 7/21/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
@@ -20,7 +20,6 @@
 @property (nonatomic, retain) NSString * Details;
 @property (nonatomic, retain) NSString * EventID;
 @property (nonatomic, retain) NSString * Title;
-@property (nonatomic, retain) NSNumber * Keep;
 @property (nonatomic, retain) NSString * Day;
 
 @end

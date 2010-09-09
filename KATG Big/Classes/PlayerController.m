@@ -17,6 +17,7 @@
 @implementation PlayerController
 @synthesize	player;
 @synthesize activityIndicator;
+@synthesize showNumber;
 @dynamic	playbackState;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(PlayerController);
@@ -116,6 +117,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PlayerController);
 	 object:nil];
 	[player release];
 	[activityIndicator release];
+	[showNumber release];
 	[super dealloc];
 }
 #pragma mark -

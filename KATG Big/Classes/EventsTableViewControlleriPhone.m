@@ -13,11 +13,18 @@
 #import "Event.h"
 #import "UIViewController+Nib.h"
 
+@interface EventsTableViewControlleriPhone ()
+- (void)decorateCell:(EventTableCellView *)cell withIndexPath:(NSIndexPath *)indexPath;
+@end
+
+
 @implementation EventsTableViewControlleriPhone
-@synthesize eventsList, adView;
+@synthesize adView;
+@synthesize fetchedResultsController	=	_fetchedResultsController;
+@synthesize	eventContext					=	_eventContext;
 
 #pragma mark -
-#pragma mark View lifecycle
+#pragma mark View Life Cycle
 #pragma mark -
 - (void)viewDidLoad 
 {
@@ -26,28 +33,82 @@
 	model	=	[DataModel sharedDataModel];
 	[model addDelegate:self];
 	
-	[model eventsNoPoll];
+	NSPersistentStoreCoordinator	*	psc				=	[model.managedObjectContext persistentStoreCoordinator];
+	NSManagedObjectContext			*	eventContext	=	[[NSManagedObjectContext alloc] init];
+	if (eventContext)
+	{
+		self.eventContext								=	eventContext;
+		self.eventContext.persistentStoreCoordinator	=	psc;
+		[eventContext release];
+	}
+	
+	//	
+	//	Setup Fetch Controller
+	//	
+	NSFetchRequest		*	request			=	[[NSFetchRequest alloc] init];
+	NSEntityDescription	*	entity			=	[NSEntityDescription 
+												 entityForName:@"Event" 
+												 inManagedObjectContext:self.eventContext];
+	request.entity							=	entity;
+	NSSortDescriptor	*	sortDescriptor	=	[[NSSortDescriptor alloc] 
+												 initWithKey:@"DateTime" 
+												 ascending:YES];
+	NSArray				*	sortDescriptors	=	[[NSArray alloc] initWithObjects:sortDescriptor, nil];
+	request.sortDescriptors					=	sortDescriptors;
+	[sortDescriptors release];
+	[sortDescriptor release];
+	NSFetchedResultsController	*	fetchedResultsController	=	[[NSFetchedResultsController alloc] 
+																	 initWithFetchRequest:request 
+																	 managedObjectContext:self.eventContext 
+																	 sectionNameKeyPath:nil 
+																	 cacheName:@"events"];
+	fetchedResultsController.delegate		=	self;
+	self.fetchedResultsController			=	fetchedResultsController;
+	[fetchedResultsController release];
+	[request release];
+	
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self 
+	 selector:@selector(mergeChangesFromContextDidSaveNotification:) 
+	 name:NSManagedObjectContextDidSaveNotification 
+	 object:nil];
+	
+	NSError	*	error;
+	[self.fetchedResultsController performFetch:&error];
+	//	
+	//	Retrieve events list from web api
+	//	
+	[model events];
+}
+- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
+{
+	if ([NSThread isMainThread])
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+	else
+		[self performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) 
+							   withObject:notification 
+							waitUntilDone:NO];
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+- (void)viewDidUnload 
+{
+    [model removeDelegate:self];
+	self.adView		=	nil;
+}
 #pragma mark -
-#pragma mark Memory management
+#pragma mark Memory Management
 #pragma mark -
 - (void)didReceiveMemoryWarning 
 {
     [super didReceiveMemoryWarning];
 }
-- (void)viewDidUnload 
-{
-    [model removeDelegate:self];
-	self.eventsList	=	nil;
-	self.adView		=	nil;
-}
 - (void)dealloc 
 {
-	[eventsList release];
+	[_fetchedResultsController release];
+	[_eventContext release];
 	[adView release];
     [super dealloc];
 }
@@ -56,24 +117,11 @@
 #pragma mark -
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	return 1;
+	return [[self.fetchedResultsController sections] count];
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return eventsList.count;
-}
-// Customize the appearance of table view cells.
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-	if (self.adView == nil)
-	{
-		self.adView									=	[[[ADBannerView alloc] 
-														  initWithFrame:CGRectZero] autorelease];
-		self.adView.requiredContentSizeIdentifiers	=	[NSSet setWithObject:ADBannerContentSizeIdentifier320x50];
-		self.adView.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifier320x50;
-		self.adView.delegate						=	self;
-	}
-	return self.adView;
+	return [(id <NSFetchedResultsSectionInfo>)[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -81,29 +129,35 @@
     static NSString	*	CellNibName		=	@"EventTableCellView";
 	
     EventTableCellView *cell = (EventTableCellView *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-		cell	=	(EventTableCellView *)[EventTableCellView loadFromNibName:CellNibName 
-																   owner:self];
-    }
+    if (cell == nil)
+		cell	=	(EventTableCellView *)[EventTableCellView loadFromNibName:CellNibName owner:self];
 	
-    [[cell eventTitleLabel] setText:[[eventsList objectAtIndex:indexPath.row] Title]];
-	[[cell eventDayLabel] setText:[[eventsList objectAtIndex:indexPath.row] Day]];
-	[[cell eventDateLabel] setText:[[eventsList objectAtIndex:indexPath.row] Date]];
-	[[cell eventTimeLabel] setText:[[eventsList objectAtIndex:indexPath.row] Time]];
-	
-	if ([[[eventsList objectAtIndex:indexPath.row] ShowType] boolValue])
-		[[cell eventTypeImageView] setImage:[UIImage imageNamed:@"LiveShowIconTrans"]];
-	else
-		[[cell eventTypeImageView] setImage:[UIImage imageNamed:@"EventIconTrans"]];
+	[self decorateCell:cell withIndexPath:indexPath];
 	
     return cell;
 }
+- (void)decorateCell:(EventTableCellView *)cell withIndexPath:(NSIndexPath *)indexPath
+{
+	Event	*	event	=	(Event *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+	
+    [[cell eventTitleLabel] setText:[event Title]];
+	[[cell eventDayLabel] setText:[event Day]];
+	[[cell eventDateLabel] setText:[event Date]];
+	[[cell eventTimeLabel] setText:[event Time]];
+	
+	if ([[event ShowType] boolValue])
+		[[cell eventTypeImageView] setImage:[UIImage imageNamed:@"LiveShowIconTrans"]];
+	else
+		[[cell eventTypeImageView] setImage:[UIImage imageNamed:@"EventIconTrans"]];
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+	Event	*	event	=	nil;
+	event				=	(Event *)[self.fetchedResultsController objectAtIndexPath:indexPath];
 	EventsDetailViewControlleriPhone *viewController = 
 	[[EventsDetailViewControlleriPhone alloc] initWithNibName:@"EventsDetailView" 
 													   bundle:nil];
-	[viewController setEvent:[eventsList objectAtIndex:indexPath.row]];
+	[viewController setEvent:event];
 	[self.navigationController pushViewController:viewController 
 										 animated:YES];
 	[viewController release];
@@ -111,29 +165,60 @@
 - (void)reloadTableView
 {
 	if ([NSThread isMainThread])
-	{
 		[self.tableView reloadData];
-	}
 	else
-	{
 		[self performSelectorOnMainThread:@selector(reloadTableView) 
 							   withObject:nil 
 							waitUntilDone:NO];
-	}
 }
 #pragma mark -
-#pragma mark DataModel
+#pragma mark Fetched Results Controller Delegates
 #pragma mark -
-- (void)events:(NSArray *)events
+- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
-	if (events && events.count > 0)
+	[self.tableView beginUpdates];
+}
+- (void)controller:(NSFetchedResultsController*)controller 
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo 
+		   atIndex:(NSUInteger)sectionIndex 
+	 forChangeType:(NSFetchedResultsChangeType)type
+{
+	NSIndexSet	*	set	=	[NSIndexSet indexSetWithIndex:sectionIndex];
+	switch(type) 
 	{
-		[self setEventsList:events];
-		[self reloadTableView];
+		case NSFetchedResultsChangeInsert:
+			[self.tableView insertSections:set withRowAnimation:UITableViewRowAnimationFade];
+			break; 
+		case NSFetchedResultsChangeDelete:
+			[self.tableView deleteSections:set withRowAnimation:UITableViewRowAnimationFade];
+			break;
 	}
 }
-
-
+- (void)controller:(NSFetchedResultsController*)controller 
+   didChangeObject:(id)anObject
+	   atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type
+	  newIndexPath:(NSIndexPath*)newIndexPath
+{
+	switch(type) {
+		case NSFetchedResultsChangeInsert:
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		case NSFetchedResultsChangeDelete:
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		case NSFetchedResultsChangeUpdate:
+			[self decorateCell:(EventTableCellView *)[self.tableView cellForRowAtIndexPath:indexPath] withIndexPath:indexPath];
+			break;
+		case NSFetchedResultsChangeMove:
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+	}
+}
+- (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
+{
+	[[self tableView] endUpdates];
+}
 
 @end
 

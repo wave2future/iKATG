@@ -24,7 +24,7 @@
 @synthesize activityIndicator			=	_activityIndicator;
 
 #pragma mark -
-#pragma mark View lifecycle
+#pragma mark View Life Cycle
 #pragma mark -
 - (void)viewDidLoad 
 {
@@ -102,7 +102,7 @@
 	{
 		UIBarButtonItem	*	button	=
 		[[UIBarButtonItem alloc] 
-		 initWithTitle:@"Player" 
+		 initWithTitle:[NSString stringWithFormat:@"Show %@", [PlayerController sharedPlayerController].showNumber] 
 		 style:UIBarButtonItemStyleBordered 
 		 target:self 
 		 action:@selector(presentPlayer)];
@@ -115,22 +115,18 @@
 - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
 {
 	if ([NSThread isMainThread])
-	{
 		[self.showContext mergeChangesFromContextDidSaveNotification:notification];
-	}
 	else
-	{
 		[self performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) 
 							   withObject:notification
 							waitUntilDone:NO];
-	}
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 #pragma mark -
-#pragma mark Memory management
+#pragma mark Memory Management
 #pragma mark -
 - (void)didReceiveMemoryWarning 
 {

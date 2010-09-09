@@ -20,7 +20,7 @@
 #import "DataModel.h"
 #import "DataModel+Processing.h"
 #import "DataModel+Notification.h"
-
+#import "Reachability.h"
 #import "DataModelURIList.h"
 #import "ModelLogging.h"
 
@@ -124,32 +124,32 @@ static DataModel	*	sharedDataModel	=	nil;
 /******************************************************************************/
 - (void)events
 {
-	//
-	//  Retrieve events already in Core Data Store
-	//
-	[self eventsNoPoll];
-	//
-	//  Break off thread to get updated events
-	//
+	//	
+	//	First make sure there isn't already an events operation happening
+	//	
+	NSMutableArray	*	ops	=	[NSMutableArray arrayWithArray:[operationQueue operations]];
+	[ops addObjectsFromArray:delayedOperations];
+	for (DataOperation	*anOp in ops)
+	{
+		if (anOp.code == kEventsListCode)
+			return;
+	}
+	//	
+	//	Then go get an updated events list
+	//	
 	DataOperation	*	op	=	[[DataOperation alloc] init];
 	[op setDelegate:self];
 	//	
 	//	Object setters are (nonatomic, copy)
 	[op setCode:kEventsListCode];
 	[op setURI:kEventsFeedAddress];
+//	[op setBaseURL:@"http://es.getitdownonpaper.com"];
 	[op setBufferDict:[NSDictionary dictionary]];
 	if (connected)
 		[operationQueue addOperation:op];
 	else
 		[delayedOperations addObject:op];
 	[op release];
-}
-- (void)eventsNoPoll
-{
-	//	
-	//	Retrieve events already in Core Data Store
-	//	
-	[coreDataOperationQueue addOperationWithBlock:^{[[DataModel sharedDataModel] fetchEvents];}];
 }
 /******************************************************************************/
 #pragma mark -
@@ -225,7 +225,10 @@ static DataModel	*	sharedDataModel	=	nil;
 	// Object setters are (nonatomic, copy)
 	[op setCode:kShowArchivesCode];
 	[op setURI:kShowListURIAddress];
-	[op setBufferDict:[NSDictionary dictionary]];
+	if (connectionType == ReachableViaWWAN)
+		[op setBufferDict:[NSDictionary dictionaryWithObject:@"50" forKey:@"ShowCount"]];
+	else 
+		[op setBufferDict:[NSDictionary dictionary]];
 	if (connected)
 		[operationQueue addOperation:op];
 	else

@@ -68,9 +68,6 @@
 		[operationQueue setMaxConcurrentOperationCount:[[NSProcessInfo processInfo] activeProcessorCount] + 1];
 		// Storage for operations waiting for connectivity
 		delayedOperations = [[NSMutableArray alloc] init];
-		// Operations queue for CoreData operations
-		coreDataOperationQueue = [[NSOperationQueue alloc] init];
-		[coreDataOperationQueue setMaxConcurrentOperationCount:1];
 		// NSNotifications for reachability and app termination
 		[self registerNotifications];
 		// User Defaults
@@ -158,8 +155,6 @@
 	[operationQueue cancelAllOperations];
 	[operationQueue release]; operationQueue = nil;
 	[delayedOperations release];
-	[coreDataOperationQueue cancelAllOperations];
-	[coreDataOperationQueue release]; coreDataOperationQueue = nil;
 }
 - (void)releaseSingleton
 {
@@ -184,21 +179,21 @@
 		{
 			//NSLog(@"Model Disconnected");
 			connected = NO;
-			connectionType = 0;
+			connectionType = NotReachable;
 			break;
 		}
 		case ReachableViaWWAN:
 		{
 			//NSLog(@"Model Connected");
 			connected = YES;
-			connectionType = 1;
+			connectionType = ReachableViaWWAN;
 			break;
 		}
 		case ReachableViaWiFi:
 		{
 			//NSLog(@"Model Connected");
 			connected = YES;
-			connectionType = 2;
+			connectionType = ReachableViaWiFi;
 			break;
 		}
 	}

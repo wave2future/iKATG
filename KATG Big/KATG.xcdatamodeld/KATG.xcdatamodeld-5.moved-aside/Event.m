@@ -2,12 +2,11 @@
 //  Event.m
 //  KATG Big
 //
-//  Created by Doug Russell on 9/8/10.
+//  Created by Doug Russell on 7/21/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import "Event.h"
-
 
 @implementation Event 
 
@@ -18,7 +17,6 @@
 @dynamic Details;
 @dynamic EventID;
 @dynamic Title;
-@dynamic Keep;
 @dynamic Day;
 
 @end

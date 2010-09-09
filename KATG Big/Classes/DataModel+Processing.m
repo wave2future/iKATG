@@ -23,19 +23,15 @@
 #import "Show.h"
 #import "Guest.h"
 
-BOOL (^FutureTest)(NSDate *date) = ^(NSDate *date) {
-	NSInteger	timeSince	=	[date timeIntervalSinceNow];
-	NSInteger	threshHold	=	-(60/*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/);
-	BOOL		inFuture	=	(timeSince > threshHold);
-	return inFuture;
-};
-
 @implementation DataModel (Processing)
 - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
 {
-	[coreDataOperationQueue addOperationWithBlock:^(void) {
+	if ([NSThread isMainThread])
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
-	}];
+	else
+		[self performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) 
+							   withObject:notification 
+							waitUntilDone:NO];
 }
 /******************************************************************************/
 #pragma mark -
@@ -63,72 +59,102 @@ BOOL (^FutureTest)(NSDate *date) = ^(NSDate *date) {
 	//	
 	if (entries && entries.count > 0)
 	{
-		NSDictionary * (^DateFormatters)(NSDictionary *event);
-		DateFormatters	=	^ (NSDictionary *event) {
-			NSDictionary	*	dateTimes = nil;
-			NSString		*	eventTimeString	=	[event objectForKey:@"StartDate"];
-			NSDate			*	eventDateTime	=	[formatter dateFromString:eventTimeString];
-			NSString		*	eventDay		=	[dayFormatter stringFromDate:eventDateTime];
-			NSString		*	eventDate		=	[dateFormatter stringFromDate:eventDateTime];
-			NSString		*	eventTime		=	[timeFormatter stringFromDate:eventDateTime];
-			if (eventDateTime &&
-				eventDay &&
-				eventDate &&
-				eventTime)
-			{
-				dateTimes =
-				[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
-													 eventDateTime, 
-													 eventDay, 
-													 eventDate, 
-													 eventTime, nil] 
-											forKeys:[NSArray arrayWithObjects:
-													 @"DateTime",
-													 @"Day",
-													 @"Date",
-													 @"Time", nil]];
-			}
-			else
-			{
-				ESLog(@"Date Formatting Failed");
-			}
-			return dateTimes;
-		};
-		NSNumber * (^DetectShowType)(NSDictionary *event);
-		DetectShowType	=	^(NSDictionary *event) {
-			if ([[event objectForKey:@"Title"] rangeOfString:@"Live Show"].location != NSNotFound)
-				return [NSNumber numberWithBool:YES];
-			else
-				return [NSNumber numberWithBool:NO];
-		};
-		BOOL (^HasEvent)(NSFetchRequest *request, NSString *eventID);
-		HasEvent		=	^(NSFetchRequest *request, NSString *eventID) {
-			if (eventID == nil)
-				return NO;
-			NSPredicate	*	predicate		=
-			[NSPredicate predicateWithFormat:@"EventID like %@", eventID];
-			[request setPredicate:predicate];
-			NSError		*	error;
-			NSArray		*	fetchResults	=
-			[managedObjectContext executeFetchRequest:request 
-												error:&error];
-			if (fetchResults == nil)
-			{	// Handle Error
-				ESLog(@"Core Data Error %@", error);
-			}
-			if (fetchResults.count > 0)
-				return YES;
-			return NO;
-		};
-		
-		NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
-		NSEntityDescription	*	entity	=
-		[NSEntityDescription entityForName:@"Event" 
-					inManagedObjectContext:managedObjectContext];
-		[request setEntity:entity];
-		[request setFetchLimit:1];
-		
-		[coreDataOperationQueue addOperationWithBlock:^(void) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			//	
+			//	Setup a few useful blocks
+			//	
+			NSDictionary * (^DateFormatters)(NSDictionary *event);
+			NSNumber * (^DetectShowType)(NSDictionary *event);
+			BOOL (^FutureTest)(NSDate *date);
+			NSArray * (^CurrentEvents)(NSManagedObjectContext * context);
+			Event * (^HasEvent)(NSArray * events, NSString * eventID);
+			
+			DateFormatters	=	^ (NSDictionary *event) {
+				NSDictionary	*	dateTimes = nil;
+				NSString		*	eventTimeString	=	[event objectForKey:@"StartDate"];
+				NSDate			*	eventDateTime	=	[formatter dateFromString:eventTimeString];
+				NSString		*	eventDay		=	[dayFormatter stringFromDate:eventDateTime];
+				NSString		*	eventDate		=	[dateFormatter stringFromDate:eventDateTime];
+				NSString		*	eventTime		=	[timeFormatter stringFromDate:eventDateTime];
+				if (eventDateTime &&
+					eventDay &&
+					eventDate &&
+					eventTime)
+				{
+					dateTimes =
+					[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
+														 eventDateTime, 
+														 eventDay, 
+														 eventDate, 
+														 eventTime, nil] 
+												forKeys:[NSArray arrayWithObjects:
+														 @"DateTime",
+														 @"Day",
+														 @"Date",
+														 @"Time", nil]];
+				}
+				else
+				{
+					ESLog(@"Date Formatting Failed");
+				}
+				return dateTimes;
+			};
+			DetectShowType	=	^(NSDictionary *event) {
+				if ([[event objectForKey:@"Title"] rangeOfString:@"Live Show"].location != NSNotFound)
+					return [NSNumber numberWithBool:YES];
+				else
+					return [NSNumber numberWithBool:NO];
+			};
+			FutureTest		=	^(NSDate *date) {
+				NSInteger	timeSince	=	[date timeIntervalSinceNow];
+				NSInteger	threshHold	=	-(60/*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/);
+				BOOL		inFuture	=	(timeSince > threshHold);
+				return inFuture;
+			};
+			CurrentEvents	=	^(NSManagedObjectContext * context) {
+				//	
+				//	Create a request for events
+				//	
+				NSFetchRequest		*	request	=	[[[NSFetchRequest alloc] init] autorelease];
+				NSEntityDescription	*	entity	=
+				[NSEntityDescription entityForName:@"Event" 
+							inManagedObjectContext:context];
+				[request setEntity:entity];
+				NSError		*	error;
+				NSArray		*	fetchResults	=
+				[context executeFetchRequest:request 
+									   error:&error];
+				[fetchResults makeObjectsPerformSelector:@selector(setKeep:) withObject:[NSNumber numberWithBool:NO]];
+				return fetchResults;
+			};
+			HasEvent		=	^(NSArray * events, NSString *eventID) {
+				if (eventID != nil)
+				{	
+					NSUInteger	index	=
+					[events indexOfObjectPassingTest: ^ BOOL (id obj, NSUInteger idx, BOOL *stop) {
+						return ([[(Event *)obj EventID] isEqualToString:eventID]);
+					}];
+					if (index != NSNotFound)
+						return (Event *)[events objectAtIndex:index];
+					else
+						return nil;
+				}
+				return nil;
+			};
+			//	
+			//	Create a context for use on this thread
+			//	
+			NSPersistentStoreCoordinator	*	psc				=	[self.managedObjectContext persistentStoreCoordinator];
+			NSManagedObjectContext			*	eventContext	=	[[NSManagedObjectContext alloc] init];
+			eventContext.persistentStoreCoordinator				=	psc;
+			[eventContext setPropagatesDeletesAtEndOfEvent:NO];
+			//	
+			//	Get Current Events for comparison later
+			//	
+			NSArray	*	currentEvents	=	CurrentEvents(eventContext);
+			//	
+			//	Decompose event dictionaries into managed objects
+			//	
 			for (NSDictionary *event in entries)
 			{
 				NSDictionary*	dateTimes		=	DateFormatters(event);
@@ -137,12 +163,13 @@ BOOL (^FutureTest)(NSDate *date) = ^(NSDate *date) {
 				NSString	*	eventID			=	[event objectForKey:@"EventId"];
 				
 				if (FutureTest(dateTime) &&
-					title != nil &&
-					!HasEvent(request, eventID))
+					title != nil)
 				{
-					Event		*	managedEvent	=
-					(Event *)[NSEntityDescription insertNewObjectForEntityForName:@"Event" 
-														   inManagedObjectContext:managedObjectContext];
+					Event	*	managedEvent	=	HasEvent(currentEvents, eventID);
+					if (managedEvent == nil)
+						managedEvent = (Event *)[NSEntityDescription insertNewObjectForEntityForName:@"Event" 
+																			  inManagedObjectContext:eventContext];
+					[managedEvent setKeep:[NSNumber numberWithBool:YES]];
 					[managedEvent setTitle:title];
 					[managedEvent setEventID:eventID];
 					[managedEvent setDateTime:dateTime];
@@ -168,81 +195,27 @@ BOOL (^FutureTest)(NSDate *date) = ^(NSDate *date) {
 					[managedEvent setShowType:showType];
 					
 					NSError *error;
-					if (![managedObjectContext save:&error])
+					if (![eventContext save:&error])
 					{	// Handle Error
 						NSLog(@"Core Data Error %@", error);
 					}
 				}
 			}
-		}];
-	}
-}
-- (void)fetchEvents
-{
-	//
-	// Setup fetch events from Core Data store
-	// sorted by NSDate object DateTime
-	//
-	NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
-	NSEntityDescription	*	entity	=	[NSEntityDescription 
-										 entityForName:@"Event" 
-										 inManagedObjectContext:managedObjectContext];
-	request.entity					=	entity;
-	
-	NSSortDescriptor	*	sortDescriptor	=	[[NSSortDescriptor alloc] 
-												 initWithKey:@"DateTime" 
-												 ascending:YES];
-	NSArray				*	sortDescriptors	=	[[NSArray alloc] initWithObjects:sortDescriptor, nil];
-	[request setSortDescriptors:sortDescriptors];
-	[sortDescriptors release];
-	[sortDescriptor release];
-	//	
-	//	Perform fetch and check for error
-	//	
-	NSError				*	error;
-	NSMutableArray		*	fetchResults	=	[[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
-	if (fetchResults == nil)
-	{	// Handle Error
-		NSLog(@"Core Data Error %@", error);
-	}
-	//	
-	//	Remove any past events
-	//	
-	NSArray				*	futureEvents	=	[self removePastEvents:fetchResults];
-	//	
-	//	Notify delegates that event data
-	//	is available
-	//	
-	[self performSelectorOnMainThread:@selector(notifyEvents:) 
-						   withObject:futureEvents 
-						waitUntilDone:NO];
-	[fetchResults release];
-	[request release];
-}
-- (NSArray *)removePastEvents:(NSMutableArray *)array
-{
-	//	
-	//	Remove any events prior to 12 hours before
-	//	current time
-	//	
-	NSMutableArray	*	futureEvents	=	[NSMutableArray array];
-	for (Event *event in array)
-	{
-		if (!FutureTest([event DateTime]))
-		{
-			[managedObjectContext deleteObject:event];
-			NSError	*	error;
-			if (![managedObjectContext save:&error])
-			{// Handle Error
-				NSLog(@"Core Data Error %@", error);
+			for (Event * event in currentEvents)
+			{
+				if (![[event Keep] boolValue])
+				{
+					[eventContext deleteObject:event];
+					NSError	*	error;
+					if (![eventContext save:&error])
+					{// Handle Error
+						NSLog(@"Core Data Error %@", error);
+					}
+				}
 			}
-		}
-		else
-		{
-			[futureEvents addObject:event];
-		}
+			[eventContext release];
+		});
 	}
-	return (NSArray *)futureEvents;
 }
 /******************************************************************************/
 #pragma mark -
@@ -421,62 +394,61 @@ BOOL (^FutureTest)(NSDate *date) = ^(NSDate *date) {
 {
 	if (entries && entries.count > 0)
 	{
+		// Create a MOC for this call
 		NSDictionary	*	details	=	[entries objectAtIndex:0];
-		[coreDataOperationQueue addOperationWithBlock: ^(void) {
-			NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
-			NSEntityDescription	*	entity	=
-			[NSEntityDescription entityForName:@"Show" 
-						inManagedObjectContext:managedObjectContext];
-			[request setEntity:entity];
-			[request setFetchLimit:1];
-			NSPredicate	*	predicate	=
-			[NSPredicate predicateWithFormat:@"ID == %@", ID];
-			[request setPredicate:predicate];
-			NSError		*	error;
-			NSArray		*	fetchResults	=
-			[managedObjectContext executeFetchRequest:request 
-												error:&error];
-			if (fetchResults == nil)
+		NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
+		NSEntityDescription	*	entity	=
+		[NSEntityDescription entityForName:@"Show" 
+					inManagedObjectContext:managedObjectContext];
+		[request setEntity:entity];
+		[request setFetchLimit:1];
+		NSPredicate	*	predicate	=
+		[NSPredicate predicateWithFormat:@"ID == %@", ID];
+		[request setPredicate:predicate];
+		NSError		*	error;
+		NSArray		*	fetchResults	=
+		[managedObjectContext executeFetchRequest:request 
+											error:&error];
+		if (fetchResults == nil)
+		{	// Handle Error
+			ESLog(@"%@", error);
+		}
+		if (fetchResults.count > 0)
+		{
+			Show		*	show	=	[fetchResults objectAtIndex:0];
+			
+			NSString	*	notes	=	[details objectForKey:@"Detail"];
+			if (!notes || notes.length == 0 || [notes isEqualToString:@"NULL"])
+				notes				=	@"No Show Notes";
+			else
+			{					
+				notes	=	[notes stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\n • "];
+			}
+			[show setNotes:[NSString stringWithFormat:@" • %@", notes]];
+			
+			NSString	*	quote	=	[details objectForKey:@"Description"];
+			if (!quote || quote.length == 0 || [quote isEqualToString:@"NULL"])
+				quote				=	@"No Quote";
+			[show setQuote:quote];
+			
+			NSString	*	URL		=	[details objectForKey:@"FileUrl"];
+			if (!URL || [URL isEqualToString:@"NULL"])
+				URL				=	@"";
+			[show setURL:URL];
+			
+			ESLog(@"%@", show);
+			
+			NSError	*	error;
+			if (![self.managedObjectContext save:&error])
 			{	// Handle Error
-				ESLog(@"%@", error);
+				ESLog(@"Core Data Error %@", error);
 			}
-			if (fetchResults.count > 0)
-			{
-				Show		*	show	=	[fetchResults objectAtIndex:0];
-				
-				NSString	*	notes	=	[details objectForKey:@"Detail"];
-				if (!notes || notes.length == 0 || [notes isEqualToString:@"NULL"])
-					notes				=	@"No Show Notes";
-				else
-				{					
-					notes	=	[notes stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\n • "];
-				}
-				[show setNotes:[NSString stringWithFormat:@" • %@", notes]];
-				
-				NSString	*	quote	=	[details objectForKey:@"Description"];
-				if (!quote || quote.length == 0 || [quote isEqualToString:@"NULL"])
-					quote				=	@"No Quote";
-				[show setQuote:quote];
-				
-				NSString	*	URL		=	[details objectForKey:@"FileUrl"];
-				if (!URL || [URL isEqualToString:@"NULL"])
-					URL				=	@"";
-				[show setURL:URL];
-				
-				ESLog(@"%@", show);
-				
-				NSError	*	error;
-				if (![self.managedObjectContext save:&error])
-				{	// Handle Error
-					ESLog(@"Core Data Error %@", error);
-				}
-				
-				[self performSelectorOnMainThread:@selector(notifyShowDetails:) 
-									   withObject:ID 
-									waitUntilDone:NO];
-			}
-			[request release];
-		}];
+			
+			[self performSelectorOnMainThread:@selector(notifyShowDetails:) 
+								   withObject:ID 
+								waitUntilDone:NO];
+		}
+		[request release];
 	}
 }
 

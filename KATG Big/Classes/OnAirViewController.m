@@ -67,7 +67,7 @@
 									userInfo:nil 
 									 repeats:YES] retain];
 	
-	[model events];
+	//[model events];
 	
 	[self registerNotifications];
 	
