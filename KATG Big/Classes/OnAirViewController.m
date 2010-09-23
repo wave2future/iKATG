@@ -67,9 +67,9 @@
 									userInfo:nil 
 									 repeats:YES] retain];
 	
-	//[model events];
-	
 	[self registerNotifications];
+	
+	[self events:[model nextLiveShowTime]];
 	
 	[self loadDefaults];
 }
@@ -270,7 +270,6 @@
 {
 	if (events && events.count > 0)
 	{
-		NSLog(@"Events");
 		for (Event *event in events)
 		{
 			//	
@@ -279,25 +278,21 @@
 			//	last 12 hours or in the future,
 			//	if in the past 
 			//	
-			NSDate			*	date		=	[event DateTime];
-			NSInteger			since		=	[date timeIntervalSinceNow];
-			NSInteger			threshHold	=	-(60/*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/);
-			if (since > threshHold && [[event ShowType] boolValue])
-			{
-				if ((since < 0 && self.live) || (since >= 0))
-					[self updateNextLiveShowLabel:date];
-				else
-					continue;
-				[NSTimer scheduledTimerWithTimeInterval:60.0 
-												 target:self 
-											   selector:@selector(updateTimeSince:) 
-											   userInfo:date 
-												repeats:YES];
-				NSString	*	title		=	[event Title];
-				if (title)
-					[self findGuest:title];
-				break;
-			}
+			NSDate		*	date		=	[event DateTime];
+			NSInteger		since		=	[date timeIntervalSinceNow];
+			if ((since < 0 && self.live) || (since >= 0))
+				[self updateNextLiveShowLabel:date];
+			else
+				continue;
+			[NSTimer scheduledTimerWithTimeInterval:60.0 
+											 target:self 
+										   selector:@selector(updateTimeSince:) 
+										   userInfo:date 
+											repeats:YES];
+			NSString	*	title		=	[event Title];
+			if (title)
+				[self findGuest:title];
+			break;
 		}
 	}
 }

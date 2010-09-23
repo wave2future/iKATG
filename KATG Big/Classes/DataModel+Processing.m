@@ -59,148 +59,68 @@
 	//	
 	if (entries && entries.count > 0)
 	{
-		dispatch_async(dispatch_get_main_queue(), ^{
-			//	
-			//	Setup a few useful blocks
-			//	
-			NSDictionary * (^DateFormatters)(NSDictionary *event);
-			NSNumber * (^DetectShowType)(NSDictionary *event);
-			BOOL (^FutureTest)(NSDate *date);
-			NSArray * (^CurrentEvents)(NSManagedObjectContext * context);
-			Event * (^HasEvent)(NSArray * events, NSString * eventID);
+		//	
+		//	Create a context for use on this thread
+		//	
+		NSPersistentStoreCoordinator	*	psc				=	[self.managedObjectContext persistentStoreCoordinator];
+		NSManagedObjectContext			*	eventContext	=	[[NSManagedObjectContext alloc] init];
+		eventContext.persistentStoreCoordinator				=	psc;
+		[eventContext setPropagatesDeletesAtEndOfEvent:NO];
+		//	
+		//	Get Current Events for comparison later
+		//	
+		NSArray	*	currentEvents	=	[self currentEvents:eventContext];
+		//	
+		//	Decompose event dictionaries into managed objects
+		//	
+		[entries enumerateObjectsWithOptions:NSEnumerationReverse 
+								  usingBlock: ^ void (id obj, NSUInteger idx, BOOL *stop) {
+			NSDictionary*	event			=	(NSDictionary *)obj;
+			NSDictionary*	dateTimes		=	[self dateFormatters:event];
+			NSDate		*	dateTime		=	[dateTimes objectForKey:@"DateTime"];
+			NSString	*	title			=	[event objectForKey:@"Title"];
+			NSString	*	eventID			=	[event objectForKey:@"EventId"];
 			
-			DateFormatters	=	^ (NSDictionary *event) {
-				NSDictionary	*	dateTimes = nil;
-				NSString		*	eventTimeString	=	[event objectForKey:@"StartDate"];
-				NSDate			*	eventDateTime	=	[formatter dateFromString:eventTimeString];
-				NSString		*	eventDay		=	[dayFormatter stringFromDate:eventDateTime];
-				NSString		*	eventDate		=	[dateFormatter stringFromDate:eventDateTime];
-				NSString		*	eventTime		=	[timeFormatter stringFromDate:eventDateTime];
-				if (eventDateTime &&
-					eventDay &&
-					eventDate &&
-					eventTime)
-				{
-					dateTimes =
-					[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
-														 eventDateTime, 
-														 eventDay, 
-														 eventDate, 
-														 eventTime, nil] 
-												forKeys:[NSArray arrayWithObjects:
-														 @"DateTime",
-														 @"Day",
-														 @"Date",
-														 @"Time", nil]];
-				}
-				else
-				{
-					ESLog(@"Date Formatting Failed");
-				}
-				return dateTimes;
-			};
-			DetectShowType	=	^(NSDictionary *event) {
-				if ([[event objectForKey:@"Title"] rangeOfString:@"Live Show"].location != NSNotFound)
-					return [NSNumber numberWithBool:YES];
-				else
-					return [NSNumber numberWithBool:NO];
-			};
-			FutureTest		=	^(NSDate *date) {
-				NSInteger	timeSince	=	[date timeIntervalSinceNow];
-				NSInteger	threshHold	=	-(60/*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/);
-				BOOL		inFuture	=	(timeSince > threshHold);
-				return inFuture;
-			};
-			CurrentEvents	=	^(NSManagedObjectContext * context) {
-				//	
-				//	Create a request for events
-				//	
-				NSFetchRequest		*	request	=	[[[NSFetchRequest alloc] init] autorelease];
-				NSEntityDescription	*	entity	=
-				[NSEntityDescription entityForName:@"Event" 
-							inManagedObjectContext:context];
-				[request setEntity:entity];
-				NSError		*	error;
-				NSArray		*	fetchResults	=
-				[context executeFetchRequest:request 
-									   error:&error];
-				[fetchResults makeObjectsPerformSelector:@selector(setKeep:) withObject:[NSNumber numberWithBool:NO]];
-				return fetchResults;
-			};
-			HasEvent		=	^(NSArray * events, NSString *eventID) {
-				if (eventID != nil)
-				{	
-					NSUInteger	index	=
-					[events indexOfObjectPassingTest: ^ BOOL (id obj, NSUInteger idx, BOOL *stop) {
-						return ([[(Event *)obj EventID] isEqualToString:eventID]);
-					}];
-					if (index != NSNotFound)
-						return (Event *)[events objectAtIndex:index];
-					else
-						return nil;
-				}
-				return nil;
-			};
-			//	
-			//	Create a context for use on this thread
-			//	
-			NSPersistentStoreCoordinator	*	psc				=	[self.managedObjectContext persistentStoreCoordinator];
-			NSManagedObjectContext			*	eventContext	=	[[NSManagedObjectContext alloc] init];
-			eventContext.persistentStoreCoordinator				=	psc;
-			[eventContext setPropagatesDeletesAtEndOfEvent:NO];
-			//	
-			//	Get Current Events for comparison later
-			//	
-			NSArray	*	currentEvents	=	CurrentEvents(eventContext);
-			//	
-			//	Decompose event dictionaries into managed objects
-			//	
-			for (NSDictionary *event in entries)
+			if ([self futureTest:dateTime] &&
+				  title != nil)
 			{
-				NSDictionary*	dateTimes		=	DateFormatters(event);
-				NSDate		*	dateTime		=	[dateTimes objectForKey:@"DateTime"];
-				NSString	*	title			=	[event objectForKey:@"Title"];
-				NSString	*	eventID			=	[event objectForKey:@"EventId"];
-				
-				if (FutureTest(dateTime) &&
-					title != nil)
-				{
-					Event	*	managedEvent	=	HasEvent(currentEvents, eventID);
-					if (managedEvent == nil)
-						managedEvent = (Event *)[NSEntityDescription insertNewObjectForEntityForName:@"Event" 
-																			  inManagedObjectContext:eventContext];
-					[managedEvent setKeep:[NSNumber numberWithBool:YES]];
-					[managedEvent setTitle:title];
-					[managedEvent setEventID:eventID];
-					[managedEvent setDateTime:dateTime];
-					
-					NSString	*	details		=	[event objectForKey:@"Details"];
-					if (!details || [details isEqualToString:@"NULL"]) details	=	@"";
-					[managedEvent setDetails:details];
-					
-					NSString	*	day			=	[dateTimes objectForKey:@"Day"];
-					if (!day)		day			=	@"";
-					[managedEvent setDay:day];
-					
-					NSString	*	date		=	[dateTimes objectForKey:@"Date"];
-					if (!date)		date		=	@"";
-					[managedEvent setDate:date];
-					
-					NSString	*	time		=	[dateTimes objectForKey:@"Time"];
-					if (!time)		time		=	@"";
-					[managedEvent setTime:time];
-					
-					NSNumber	*	showType	=	DetectShowType(event);
-					if (!showType)	showType	=	[NSNumber numberWithBool:YES];
-					[managedEvent setShowType:showType];
-					
-					NSError *error;
-					if (![eventContext save:&error])
-					{	// Handle Error
-						NSLog(@"Core Data Error %@", error);
-					}
-				}
+				Event	*	managedEvent	=	[self hasEvent:currentEvents withEventID:eventID];
+				  if (managedEvent == nil)
+					  managedEvent = (Event *)[NSEntityDescription insertNewObjectForEntityForName:@"Event" 
+																			inManagedObjectContext:eventContext];
+				  [managedEvent setKeep:[NSNumber numberWithBool:YES]];
+				  [managedEvent setTitle:title];
+				  [managedEvent setEventID:eventID];
+				  [managedEvent setDateTime:dateTime];
+				  
+				  NSString	*	details		=	[event objectForKey:@"Details"];
+				  if (!details || [details isEqualToString:@"NULL"]) details	=	@"";
+				  [managedEvent setDetails:details];
+				  
+				  NSString	*	day			=	[dateTimes objectForKey:@"Day"];
+				  if (!day)		day			=	@"";
+				  [managedEvent setDay:day];
+				  
+				  NSString	*	date		=	[dateTimes objectForKey:@"Date"];
+				  if (!date)		date		=	@"";
+				  [managedEvent setDate:date];
+				  
+				  NSString	*	time		=	[dateTimes objectForKey:@"Time"];
+				  if (!time)		time		=	@"";
+				  [managedEvent setTime:time];
+				  
+				NSNumber	*	showType	=	[self detectShowType:event];
+				  if (!showType)	showType	=	[NSNumber numberWithBool:YES];
+				  [managedEvent setShowType:showType];
+				  
+				  NSError *error;
+				  if (![eventContext save:&error])
+				  {	// Handle Error
+					  NSLog(@"Core Data Error %@", error);
+				  }
 			}
+		}];
+		dispatch_async(dispatch_get_main_queue(), ^{
 			for (Event * event in currentEvents)
 			{
 				if (![[event Keep] boolValue])
@@ -213,9 +133,84 @@
 					}
 				}
 			}
-			[eventContext release];
 		});
+		[eventContext release];
 	}
+}
+- (NSDictionary *)dateFormatters:(NSDictionary *)event
+{
+	NSDictionary	*	dateTimes = nil;
+	NSString		*	eventTimeString	=	[event objectForKey:@"StartDate"];
+	NSDate			*	eventDateTime	=	[formatter dateFromString:eventTimeString];
+	NSString		*	eventDay		=	[dayFormatter stringFromDate:eventDateTime];
+	NSString		*	eventDate		=	[dateFormatter stringFromDate:eventDateTime];
+	NSString		*	eventTime		=	[timeFormatter stringFromDate:eventDateTime];
+	if (eventDateTime &&
+		eventDay &&
+		eventDate &&
+		eventTime)
+	{
+		dateTimes =
+		[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
+											 eventDateTime, 
+											 eventDay, 
+											 eventDate, 
+											 eventTime, nil] 
+									forKeys:[NSArray arrayWithObjects:
+											 @"DateTime",
+											 @"Day",
+											 @"Date",
+											 @"Time", nil]];
+	}
+	else
+	{
+		ESLog(@"Date Formatting Failed");
+	}
+	return dateTimes;
+}
+- (NSNumber *)detectShowType:(NSDictionary *)event
+{
+	if ([[event objectForKey:@"Title"] rangeOfString:@"Live Show"].location != NSNotFound)
+		return [NSNumber numberWithBool:YES];
+	else
+		return [NSNumber numberWithBool:NO];
+}
+- (BOOL)futureTest:(NSDate *)date
+{
+	NSInteger	timeSince	=	[date timeIntervalSinceNow];
+	NSInteger	threshHold	=	-(60/*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/);
+	BOOL		inFuture	=	(timeSince > threshHold);
+	return inFuture;
+}
+- (NSArray *)currentEvents:(NSManagedObjectContext *)context
+{
+	//	
+	//	Create a request for events
+	//	
+	NSFetchRequest		*	request	=	[[[NSFetchRequest alloc] init] autorelease];
+	NSEntityDescription	*	entity	=
+	[NSEntityDescription entityForName:@"Event" 
+				inManagedObjectContext:context];
+	[request setEntity:entity];
+	NSError		*	error;
+	NSArray		*	fetchResults	=
+	[context executeFetchRequest:request 
+						   error:&error];
+	[fetchResults makeObjectsPerformSelector:@selector(setKeep:) withObject:[NSNumber numberWithBool:NO]];
+	return fetchResults;
+}
+- (Event *)hasEvent:(NSArray *)events withEventID:(NSString *)eventID
+{
+	if (eventID == nil)
+		return nil;
+	NSUInteger	index	=
+	[events indexOfObjectPassingTest: ^ BOOL (id obj, NSUInteger idx, BOOL *stop) {
+		return ([[(Event *)obj EventID] isEqualToString:eventID]);
+	}];
+	if (index != NSNotFound)
+		return (Event *)[events objectAtIndex:index];
+	else
+		return nil;
 }
 /******************************************************************************/
 #pragma mark -

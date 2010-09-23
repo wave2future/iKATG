@@ -1,6 +1,5 @@
 //
 //  UIViewController+Nib.m
-//  PartyCamera
 //
 //  Created by Doug Russell on 6/17/10.
 //  Copyright 2010 Doug Russell. All rights reserved.
@@ -19,14 +18,8 @@
 			   bundle:(NSBundle *)bundleOrNil 
 			  options:(NSDictionary *)optionsOrNil
 {
-#ifdef __IPHONE_4_0
 	UINib	*	NIB		=	[UINib nibWithNibName:nibNameOrNil bundle:bundleOrNil];
 	NSArray	*	nib		=	[NIB instantiateWithOwner:ownerOrNil options:optionsOrNil];
-#elif __IPHONE_3_2
-	NSArray	*	nib		=	[[NSBundle mainBundle] loadNibNamed:nibNameOrNil 
-												   owner:ownerOrNil 
-												 options:nil];
-#endif
 	return [nib objectAtIndex:0];
 }
 @end
@@ -42,14 +35,8 @@
 			   bundle:(NSBundle *)bundleOrNil 
 			  options:(NSDictionary *)optionsOrNil
 {
-#ifdef __IPHONE_4_0
 	UINib	*	NIB		=	[UINib nibWithNibName:nibNameOrNil bundle:bundleOrNil];
 	NSArray	*	nib		=	[NIB instantiateWithOwner:ownerOrNil options:optionsOrNil];
-#elif __IPHONE_3_2
-	NSArray	*	nib		=	[[NSBundle mainBundle] loadNibNamed:nibNameOrNil 
-												   owner:ownerOrNil 
-												 options:nil];
-#endif
 	return [nib objectAtIndex:0];
 }
 @end

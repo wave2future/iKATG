@@ -17,7 +17,6 @@
 - (void)decorateCell:(EventTableCellView *)cell withIndexPath:(NSIndexPath *)indexPath;
 @end
 
-
 @implementation EventsTableViewControlleriPhone
 @synthesize adView;
 @synthesize fetchedResultsController	=	_fetchedResultsController;
@@ -83,7 +82,7 @@
 - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
 {
 	if ([NSThread isMainThread])
-		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+		[self.eventContext mergeChangesFromContextDidSaveNotification:notification];
 	else
 		[self performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) 
 							   withObject:notification 
@@ -178,6 +177,7 @@
 {
 	[self.tableView beginUpdates];
 }
+#define kAnimType UITableViewRowAnimationFade
 - (void)controller:(NSFetchedResultsController*)controller 
   didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo 
 		   atIndex:(NSUInteger)sectionIndex 
@@ -187,10 +187,10 @@
 	switch(type) 
 	{
 		case NSFetchedResultsChangeInsert:
-			[self.tableView insertSections:set withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView insertSections:set withRowAnimation:kAnimType];
 			break; 
 		case NSFetchedResultsChangeDelete:
-			[self.tableView deleteSections:set withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView deleteSections:set withRowAnimation:kAnimType];
 			break;
 	}
 }
@@ -201,17 +201,17 @@
 {
 	switch(type) {
 		case NSFetchedResultsChangeInsert:
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:kAnimType];
 			break;
 		case NSFetchedResultsChangeDelete:
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:kAnimType];
 			break;
 		case NSFetchedResultsChangeUpdate:
 			[self decorateCell:(EventTableCellView *)[self.tableView cellForRowAtIndexPath:indexPath] withIndexPath:indexPath];
 			break;
 		case NSFetchedResultsChangeMove:
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:kAnimType];
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:kAnimType];
 			break;
 	}
 }

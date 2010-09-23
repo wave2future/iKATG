@@ -14,10 +14,17 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>KATG.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>KATG Big.app</key>
+		<true/>
+		<key>KATG.app</key>
 		<true/>
 		<key>KATG.com.app</key>
 		<true/>

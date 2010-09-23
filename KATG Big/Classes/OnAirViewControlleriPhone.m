@@ -35,7 +35,7 @@
 
 /******************************************************************************/
 #pragma mark -
-#pragma mark View Lifecycle
+#pragma mark View Life Cycle
 #pragma mark -
 /******************************************************************************/
 - (void)viewDidLoad

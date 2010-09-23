@@ -19,6 +19,7 @@
 
 #import "DataModel.h"
 
+@class Event;
 @interface DataModel (Processing) <DataOperationDelegate>
 
 /******************************************************************************/
@@ -26,6 +27,11 @@
 #pragma mark Events
 #pragma mark -
 /******************************************************************************/
+- (NSDictionary *)dateFormatters:(NSDictionary *)event;
+- (NSNumber *)detectShowType:(NSDictionary *)event;
+- (BOOL)futureTest:(NSDate *)date;
+- (NSArray *)currentEvents:(NSManagedObjectContext *)context;
+- (Event *)hasEvent:(NSArray *)events withEventID:(NSString *)eventID;
 /******************************************************************************/
 #pragma mark -
 #pragma mark Live Show Status

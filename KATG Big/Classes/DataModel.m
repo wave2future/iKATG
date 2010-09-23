@@ -23,6 +23,7 @@
 #import "Reachability.h"
 #import "DataModelURIList.h"
 #import "ModelLogging.h"
+#import "Event.h"
 
 static DataModel	*	sharedDataModel	=	nil;
 
@@ -122,6 +123,33 @@ static DataModel	*	sharedDataModel	=	nil;
 #pragma mark Events
 #pragma mark -
 /******************************************************************************/
+- (NSArray *)nextLiveShowTime
+{
+	NSFetchRequest		*	request			=	[[NSFetchRequest alloc] init];
+	NSEntityDescription	*	entity			=	[NSEntityDescription 
+												 entityForName:@"Event" 
+												 inManagedObjectContext:self.managedObjectContext];
+	request.entity							=	entity;
+	NSSortDescriptor	*	sortDescriptor	=	[[NSSortDescriptor alloc] 
+												 initWithKey:@"DateTime" 
+												 ascending:YES];
+	NSArray				*	sortDescriptors	=	[[NSArray alloc] initWithObjects:sortDescriptor, nil];
+	request.sortDescriptors					=	sortDescriptors;
+	[sortDescriptors release];
+	[sortDescriptor release];
+	NSPredicate	*	predicate				=	[NSPredicate predicateWithFormat:
+												 @"(DateTime >= %@) AND (DateTime <= %@)", 
+												 [[NSDate date] dateByAddingTimeInterval:-(60 /*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/)], 
+												 [[NSDate date] dateByAddingTimeInterval:(60 /*Seconds*/ * 60 /*Minutes*/ * 24 /*Hours*/)]];
+	[request setPredicate:predicate];
+	NSError		*	error;
+	NSArray		*	fetchResults	=
+	[self.managedObjectContext executeFetchRequest:request 
+											 error:&error];
+	[request release];
+	
+	return fetchResults;
+}
 - (void)events
 {
 	//	

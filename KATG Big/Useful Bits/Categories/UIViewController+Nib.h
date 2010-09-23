@@ -1,6 +1,5 @@
 //
 //  UIViewController+Nib.h
-//  PartyCamera
 //
 //  Created by Doug Russell on 6/17/10.
 //  Copyright 2010 Doug Russell. All rights reserved.

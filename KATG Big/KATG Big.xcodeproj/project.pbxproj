@@ -682,13 +682,13 @@
 		53284F3E1219FA2F0025DB3F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				53DA593D122CA0C2009266FD /* OnAirViewiPhone.xib */,
 				53DA5932122CA0C2009266FD /* ArchiveDetailViewiPhone.xib */,
 				53DA5933122CA0C2009266FD /* ArchiveTableViewCelliPhone.xib */,
 				53DA5936122CA0C2009266FD /* EventsTableViewiPhone.xib */,
 				53DA5939122CA0C2009266FD /* MainWindowiPhone.xib */,
 				53DA593B122CA0C2009266FD /* ModalWebViewiPhone.xib */,
 				53DA5934122CA0C2009266FD /* ArchiveViewiPhone.xib */,
-				53DA593D122CA0C2009266FD /* OnAirViewiPhone.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";

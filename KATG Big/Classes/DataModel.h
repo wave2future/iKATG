@@ -127,6 +127,10 @@
 #pragma mark Data Methods
 #pragma mark -
 /******************************************************************************/
+//	
+//	Return the Event of the first live show in the future
+//	
+- (NSArray *)nextLiveShowTime;
 //
 //	Retrieve list of events
 //  Stores results in core data store as

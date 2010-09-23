@@ -40,40 +40,7 @@
 #pragma mark Events
 #pragma mark -
 /******************************************************************************/
-- (void)notifyEvents:(NSArray *)events
-{
-	if ([NSThread isMainThread])
-	{
-#if LogEvents
-		NSLog(@"Events: \n%@", events);
-#endif
-		if (notifier)
-		{
-			//[[NSNotificationCenter defaultCenter] 
-			// postNotificationName: 
-			// object:];
-		}
-		NSMutableArray *dlgts = [[NSMutableArray alloc] init];
-		for (id delegate in delegates)
-		{
-			if ([(NSObject *)delegate respondsToSelector:@selector(events:)])
-			{
-				[dlgts addObject:delegate];
-			}
-		}
-		for (id delegate in dlgts)
-		{
-			[delegate events:events];
-		}
-		[dlgts release];
-	}
-	else
-	{
-		[self performSelectorOnMainThread:@selector(notifyEvents:) 
-							   withObject:events 
-							waitUntilDone:NO];
-	}
-}
+
 /******************************************************************************/
 #pragma mark -
 #pragma mark Live Show Status
@@ -119,37 +86,7 @@
 #pragma mark Show Archives
 #pragma mark -
 /******************************************************************************/
-- (void)notifyShows:(NSArray *)shows
-{
-	if ([NSThread isMainThread])
-	{
-		if (notifier)
-		{
-			//[[NSNotificationCenter defaultCenter] 
-			// postNotificationName: 
-			// object:];
-		}
-		NSMutableArray *dlgts = [[NSMutableArray alloc] init];
-		for (id delegate in delegates)
-		{
-			if ([(NSObject *)delegate respondsToSelector:@selector(shows:)])
-			{
-				[dlgts addObject:delegate];
-			}
-		}
-		for (id delegate in dlgts)
-		{
-			[delegate shows:shows];
-		}
-		[dlgts release];
-	}
-	else
-	{
-		[self performSelectorOnMainThread:@selector(notifyShows:) 
-							   withObject:shows 
-							waitUntilDone:NO];
-	}
-}
+
 /******************************************************************************/
 #pragma mark -
 #pragma mark Show Details
