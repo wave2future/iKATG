@@ -1,7 +1,7 @@
 //	
 //	TwitterTableViewController.h
 //	
-//  Created by Doug Russell on 5/5/10.
+//  Created by Doug Russell on 9/5/10.
 //  Copyright 2010 Doug Russell. All rights reserved.
 //  
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,16 +18,11 @@
 //  
 
 #import <UIKit/UIKit.h>
-#import "DataModelDelegate.h"
+#import "ModelTwitterTableViewController.h"
 
-@class DataModel;
-@interface TwitterTableViewController : UITableViewController 
-<DataModelDelegate>
+@interface TwitterTableViewController : ModelTwitterTableViewController
 {
-	DataModel	*	model;
-	NSArray		*	items;
+	BOOL	extended;
 }
-
-@property (nonatomic, retain)	NSArray		*	items;
 
 @end

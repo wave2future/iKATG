@@ -34,6 +34,7 @@
 @synthesize	headerDict, bodyBufferDict, bodyDataArray, userInfo;
 @synthesize	requestType;
 @synthesize	request	=	_request, response	=	_response;
+@synthesize useCache;
 
 /******************************************************************************/
 #pragma mark -
@@ -55,6 +56,7 @@
 		bodyDataArray	=	nil;
 		userInfo		=	nil;
 		requestType		=	GET;
+		useCache		=	YES;
 		_request		=	nil;
 		_response		=	nil;
 		_connection		=	nil;
@@ -361,11 +363,18 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 				  willCacheResponse:(NSCachedURLResponse *)cachedResponse
 
 {
-	// Don't cache https
-    NSCachedURLResponse	*	newCachedResponse	=	cachedResponse;
-    if ([[[[cachedResponse response] URL] scheme] isEqual:@"https"])
-        newCachedResponse						=	nil;
-    return newCachedResponse;
+	NSCachedURLResponse	*	newCachedResponse	=	cachedResponse;
+	//	
+	//	Check if caching is on
+	//	
+	if (!useCache)
+		newCachedResponse						=	nil;
+	//	
+	//	Don't cache https
+	//	
+	if ([[[[cachedResponse response] URL] scheme] isEqual:@"https"])
+		newCachedResponse						=	nil;
+	return newCachedResponse;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {

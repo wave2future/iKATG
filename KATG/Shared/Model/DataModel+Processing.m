@@ -22,8 +22,9 @@
 #import "Event.h"
 #import "Show.h"
 #import "Guest.h"
-
+#import "Tweet.h"
 #import "TouchXML.h"
+#import "UIImage+MyAdditions.h"
 
 @implementation DataModel (Processing)
 
@@ -75,7 +76,7 @@
 	
 	NSDictionary	*	nameSpace	=	[NSDictionary dictionaryWithObject:@"http://www.w3.org/1999/xhtml" 
 																	forKey:@"xhtml"];
-	NSArray			*	inputArray	=	[htmlParser nodesForXPath:@"//xhtml:input" //[@name='__VIEWSTATE'] [@name='__EVENTVALIDATION']
+	NSArray			*	inputArray	=	[htmlParser nodesForXPath:@"//xhtml:input"
 												namespaceMappings:nameSpace 
 															error:nil];
 	NSParameterAssert((inputArray != nil));
@@ -279,6 +280,7 @@
 	//	
 	NSParameterAssert([result isKindOfClass:[NSArray class]]);
 	[coreDataQueue addOperationWithBlock:^() {
+		NSAutoreleasePool	*	pool	=	[[NSAutoreleasePool alloc] init];
 		//	
 		//	Create a context for use on this thread
 		//	
@@ -332,15 +334,15 @@
 													NSNumber	*	showType	=	[self detectShowType:event];
 													if (!showType)	showType	=	[NSNumber numberWithBool:YES];
 													[managedEvent setShowType:showType];
-													
-													NSError *error;
-													if (![eventContext save:&error])
-													{	// Handle Error
-														NSLog(@"Core Data Error %@", error);
-													}
 												}
 											}];
+		NSError *error;
+		if (![eventContext save:&error])
+		{	// Handle Error
+			NSLog(@"Core Data Error %@", error);
+		}
 		dispatch_async(dispatch_get_main_queue(), ^{
+			NSAutoreleasePool	*	aPool	=	[[NSAutoreleasePool alloc] init];
 			for (Event * event in currentEvents)
 			{
 				if (![[event Keep] boolValue])
@@ -354,18 +356,20 @@
 				}
 			}
 			[self nextLiveShowTime];
+			[aPool drain]; aPool = nil;
 		});
 		[eventContext release];
+		[pool drain]; pool = nil;
 	}];
 }
 - (NSDictionary *)dateFormatters:(NSDictionary *)event
 {
 	NSDictionary	*	dateTimes = nil;
 	NSString		*	eventTimeString	=	[event objectForKey:@"StartDate"];
-	NSDate			*	eventDateTime	=	[formatter dateFromString:eventTimeString];
-	NSString		*	eventDay		=	[dayFormatter stringFromDate:eventDateTime];
-	NSString		*	eventDate		=	[dateFormatter stringFromDate:eventDateTime];
-	NSString		*	eventTime		=	[timeFormatter stringFromDate:eventDateTime];
+	NSDate			*	eventDateTime	=	[self.formatter dateFromString:eventTimeString];
+	NSString		*	eventDay		=	[self.dayFormatter stringFromDate:eventDateTime];
+	NSString		*	eventDate		=	[self.dateFormatter stringFromDate:eventDateTime];
+	NSString		*	eventTime		=	[self.timeFormatter stringFromDate:eventDateTime];
 	if (eventDateTime &&
 		eventDay &&
 		eventDate &&
@@ -438,14 +442,18 @@
 #pragma mark Shows
 #pragma mark -
 /******************************************************************************/
-- (void)processShowsList:(id)result
+- (void)processShowsList:(id)result count:(NSInteger)count
 {
 	[coreDataQueue addOperationWithBlock:^() {
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	
 		NSArray	*	shows	=	(NSArray *)result;
-		NSLog(@"%@", [shows objectAtIndex:0]);
+//		for (NSDictionary *show in shows)
+//		{
+//			NSLog(@"%@", show);
+//			break;
+//		}
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	
@@ -457,30 +465,49 @@
 		//	
 		NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
 		NSEntityDescription	*	entity	=	[NSEntityDescription entityForName:@"Show" 
-												   inManagedObjectContext:showContext];
+														inManagedObjectContext:showContext];
 		request.entity					=	entity;
-		request.fetchLimit				=	1;
+		request.fetchLimit				=	count + 100;
+		NSPredicate	*	predicate		=	[NSPredicate predicateWithFormat:@"Number >= 1050 or TV == YES"];
+		[request setPredicate:predicate];
+		NSError		*	anError;
+		NSArray		*	fetchResults	=	[managedObjectContext executeFetchRequest:request 
+																				error:&anError];
+		if (fetchResults == nil)
+		{	// Handle Error
+			NSLog(@"%@", anError);
+		}
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	
 		for (NSDictionary *show in shows)
 		{
-			NSString	*	ID				=	[show objectForKey:@"I"];
+			NSString	*	number			=	[show objectForKey:@"N"];
+			NSInteger		numInt			=	0;
+			if (number)
+				numInt						=	[number intValue];
+			NSString	*	isKATGTV		=	[show objectForKey:@"TV"];
+			BOOL			isTV			=	NO;
+			if (isKATGTV)
+				isTV						=	[isKATGTV boolValue];
 			
-			if ([self hasShow:request forID:[NSNumber numberWithInt:[ID intValue]]])
+			if (numInt < 1050 && !isTV)
 				continue;
 			
-			Show	*	managedShow = 
-			(Show *)[NSEntityDescription insertNewObjectForEntityForName:@"Show" 
-												  inManagedObjectContext:showContext];
+			NSString	*	ID				=	[show objectForKey:@"I"];
+			
+			Show	*	managedShow			=	nil;
+			managedShow						=	[self hasShow:fetchResults 
+														forID:[NSNumber numberWithInt:[ID intValue]]];
+			if (!managedShow)
+				managedShow					=	(Show *)[NSEntityDescription insertNewObjectForEntityForName:@"Show" 
+																					  inManagedObjectContext:showContext];
 			
 			NSString	*	guests			=	[show objectForKey:@"G"];
-			NSString	*	number			=	[show objectForKey:@"N"];
 			NSString	*	pdt				=	[show objectForKey:@"PDT"];
 			NSString	*	pictureCount	=	[show objectForKey:@"P"];
 			NSString	*	hasShowNotes	=	[show objectForKey:@"SN"];
 			NSString	*	title			=	[show objectForKey:@"T"];
-			NSString	*	isKATGTV		=	[show objectForKey:@"TV"];
 			
 			if (!guests || guests.length == 0 || [guests isEqualToString:@"NULL"])
 				guests						=	@"No Guest";
@@ -495,18 +522,9 @@
 						Guest	*	managedGuest	=
 						(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
 															   inManagedObjectContext:showContext];
-						
 						[managedGuest addShowObject:managedShow];
-						
 						[managedGuest setGuest:guest];
-						
 						[managedShow addGuestsObject:managedGuest];
-						
-						NSError	*	error;
-						if (![showContext save:&error])
-						{	// Handle Error
-							ESLog(@"Core Data Error %@", error);
-						}
 					}
 				}
 			}
@@ -515,34 +533,21 @@
 				Guest	*	managedGuest	=
 				(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
 													   inManagedObjectContext:showContext];
-				
 				[managedGuest addShowObject:managedShow];
-				
 				[managedGuest setGuest:guests];
-				
 				[managedShow addGuestsObject:managedGuest];
-				
-				NSError	*	error;
-				if (![showContext save:&error])
-				{	// Handle Error
-					ESLog(@"Core Data Error %@", error);
-				}
 			}
-			
 			if (ID)
 			{
 				NSInteger	idInt	=	[ID intValue];
 				[managedShow setID:[NSNumber numberWithInt:idInt]];
 			}
 			if (number)
-			{
-				NSInteger	numInt	=	[number intValue];
 				[managedShow setNumber:[NSNumber numberWithInt:numInt]];
-			}
 			if (pdt)
 			{
-				NSInteger	pdtInt	=	[pdt intValue];
-				[managedShow setPDT:[NSNumber numberWithInt:pdtInt]];
+				double	pdtDouble	=	[pdt doubleValue];
+				[managedShow setPDT:[NSNumber numberWithDouble:pdtDouble]];
 			}
 			if (pictureCount)
 			{
@@ -559,35 +564,26 @@
 				[managedShow setTitle:title];
 			}
 			if (isKATGTV)
-			{
-				BOOL	isTV	=	[isKATGTV boolValue];
 				[managedShow setTV:[NSNumber numberWithBool:isTV]];
-			}
-			
-			NSError	*	error;
-			if (![showContext save:&error])
-			{	// Handle Error
-				ESLog(@"Core Data Error %@", error);
-			}
+		}
+		NSLog(@"Save Shows");
+		NSError	*	error;
+		if (![showContext save:&error])
+		{	// Handle Error
+			ESLog(@"Core Data Error %@", error);
 		}
 		[request release];
 		[showContext release];
 	}];
 }
-- (BOOL)hasShow:(NSFetchRequest *)request forID:(NSNumber *)ID
+- (Show *)hasShow:(NSArray *)recentShows forID:(NSNumber *)ID
 {
-	NSPredicate	*	predicate		=	[NSPredicate predicateWithFormat:@"ID == %@", ID];
-	[request setPredicate:predicate];
-	NSError		*	error;
-	NSArray		*	fetchResults	=	[managedObjectContext executeFetchRequest:request 
-																  error:&error];
-	if (fetchResults == nil)
-	{	// Handle Error
-		NSLog(@"%@", error);
+	for (Show *show in recentShows)
+	{
+		if ([show.ID isEqualToNumber:ID])
+			return show;
 	}
-	if (fetchResults.count > 0)
-		return YES;
-	return NO;
+	return nil;
 }
 //- (void)procesShowDetails:(NSArray *)entries withID:(NSString *)ID
 //{
@@ -650,5 +646,234 @@
 //		[request release];
 //	}
 //}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Twitter
+#pragma mark -
+/******************************************************************************/
+- (void)processTwitterSearchFeed:(id)result
+{
+	//	
+	//	Decompose results into Tweet model objects
+	//	
+	self.twitterSearchRefreshURL	=	[(NSDictionary *)result objectForKey:@"refresh_url"];
+	NSArray	*	results				=	[(NSDictionary *)result objectForKey:@"results"];
+	if (results != nil)
+		[self notifyTwitterSearchFeed:[self processTweets:results]];
+}
+- (NSArray *)processTweets:(NSArray *)tweets
+{
+	NSMutableArray	*	resultsProxy	=	[[NSMutableArray alloc] initWithCapacity:tweets.count];
+	//	
+	//	Create Regex to extract @handles (use NSCLassFromString for iOS < 4.0)
+	//	
+	NSError			*	errorAt			=	NULL;
+	id					regexAt			=	[NSClassFromString(@"NSRegularExpression") regularExpressionWithPattern:@"@([\\w|_|\\d]+)"
+																					   options:NSRegularExpressionCaseInsensitive
+																						 error:&errorAt];
+	NSError			*	errorHash		=	NULL;
+	id					regexHash		=	[NSClassFromString(@"NSRegularExpression") regularExpressionWithPattern:@"#([\\w|_|\\d]+)"
+																						options:NSRegularExpressionCaseInsensitive
+																						  error:&errorHash];
+	for (NSDictionary *result in tweets)
+	{
+		Tweet	*	tweet		=	[[Tweet alloc] init];
+		tweet.From				=	[result objectForKey:kFromUserKey];
+		CGFloat	scale			=	1.0;
+		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+			scale				=	[[UIScreen mainScreen] scale];
+		if (scale == 2.0)
+			tweet.ImageURL			=	[NSString stringWithFormat:@"http://api.twitter.com/1/users/profile_image/%@.json?size=bigger", tweet.From];
+		else
+			tweet.ImageURL			=	[NSString stringWithFormat:@"http://api.twitter.com/1/users/profile_image/%@.json?size=normal", tweet.From];
+		NSString	*	text	=	[result objectForKey:kTextKey];
+		tweet.Text				=	DecodeHTMLEntities(text);
+		NSString	*	webText	=	[[text copy] autorelease];
+		if (regexAt)
+		{
+			NSArray		*	matches	=	[regexAt matchesInString:text
+												  options:0
+													range:NSMakeRange(0, [text length])];
+			for (NSTextCheckingResult *match in matches)
+			{
+				NSRange			matchRange	=	[match range];
+				NSString	*	string		=	[text substringWithRange:matchRange];
+				webText						=	ReplaceString(webText, string, [NSString stringWithFormat:@"<a href=\"tweet://%@\">%@</a>",  ReplaceString(string, @"@", @""), string]);
+			}
+		}
+		if (regexHash)
+		{
+			NSArray		*	matches	=	[regexHash matchesInString:text
+													options:0
+													  range:NSMakeRange(0, [text length])];
+			for (NSTextCheckingResult *match in matches)
+			{
+				NSRange			matchRange	=	[match range];
+				NSString	*	string		=	[text substringWithRange:matchRange];
+				webText						=	ReplaceString(webText, string, [NSString stringWithFormat:@"<a href=\"hashtag://%@\">%@</a>",  ReplaceString(string, @"#", @""), string]);
+			}
+		}
+		tweet.WebViewText		=	webText;
+		tweet.Date				=	[self.twitterSearchFormatter dateFromString:[result objectForKey:kDateKey]];
+		
+		[resultsProxy addObject:tweet];
+		
+		[tweet release]; tweet = nil;
+	}
+	
+	return [(NSArray *)resultsProxy autorelease];
+}
+- (void)processTwitterUserFeed:(id)result user:(NSString *)user
+{
+	//	
+	//	Decompose results into Tweet model objects
+	//	
+	[self notifyTwitterUserFeed:[self processUserTweets:(NSArray *)result user:user]];
+}
+- (NSArray *)processUserTweets:(NSArray *)tweets user:(NSString *)user
+{
+	NSMutableArray	*	resultsProxy	=	[[NSMutableArray alloc] initWithCapacity:tweets.count];
+	//	
+	//	Create Regex to extract @handles (use NSCLassFromString for iOS < 4.0)
+	//	
+	NSError			*	errorAt			=	NULL;
+	id					regexAt			=	[NSClassFromString(@"NSRegularExpression") regularExpressionWithPattern:@"@([\\w|_|\\d]+)"
+																					   options:NSRegularExpressionCaseInsensitive
+																						 error:&errorAt];
+	NSError			*	errorHash		=	NULL;
+	id					regexHash		=	[NSClassFromString(@"NSRegularExpression") regularExpressionWithPattern:@"#([\\w|_|\\d]+)"
+																						options:NSRegularExpressionCaseInsensitive
+																						  error:&errorHash];
+	for (NSDictionary *result in tweets)
+	{
+		Tweet	*	tweet		=	[[Tweet alloc] init];
+		tweet.From				=	user;
+		CGFloat	scale			=	1.0;
+		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+			scale				=	[[UIScreen mainScreen] scale];
+		if (scale == 2.0)
+			tweet.ImageURL			=	[NSString stringWithFormat:@"http://api.twitter.com/1/users/profile_image/%@.json?size=bigger", user];
+		else
+			tweet.ImageURL			=	[NSString stringWithFormat:@"http://api.twitter.com/1/users/profile_image/%@.json?size=normal", user];
+		NSString	*	text	=	[result objectForKey:kTextKey];
+		tweet.Text				=	text;
+		NSString	*	webText	=	[[text copy] autorelease];
+		if (regexAt)
+		{
+			NSArray		*	matches	=	[regexAt matchesInString:text
+												  options:0
+													range:NSMakeRange(0, [text length])];
+			for (NSTextCheckingResult *match in matches)
+			{
+				NSRange			matchRange	=	[match range];
+				NSString	*	string		=	[text substringWithRange:matchRange];
+				webText						=	ReplaceString(webText, string, [NSString stringWithFormat:@"<a href=\"tweet://%@\">%@</a>",  ReplaceString(string, @"@", @""), string]);
+			}
+		}
+		if (regexHash)
+		{
+			NSArray		*	matches	=	[regexHash matchesInString:text
+													options:0
+													  range:NSMakeRange(0, [text length])];
+			for (NSTextCheckingResult *match in matches)
+			{
+				NSRange			matchRange	=	[match range];
+				NSString	*	string		=	[text substringWithRange:matchRange];
+				webText						=	ReplaceString(webText, string, [NSString stringWithFormat:@"<a href=\"hashtag://%@\">%@</a>",  ReplaceString(string, @"#", @""), string]);
+			}
+		}
+		tweet.WebViewText		=	webText;
+		tweet.Date				=	[self.twitterUserFormatter dateFromString:[result objectForKey:kDateKey]];
+		
+		[resultsProxy addObject:tweet];
+		
+		[tweet release]; tweet = nil;
+	}
+	
+	return [(NSArray *)resultsProxy autorelease];
+}
+- (void)processTwitterHashTagFeed:(id)result
+{
+	//	
+	//	Decompose results into Tweet model objects
+	//	
+	//self.twitterSearchRefreshURL	=	[(NSDictionary *)result objectForKey:@"refresh_url"];
+	NSArray	*	results				=	[(NSDictionary *)result objectForKey:@"results"];
+	if (results != nil)
+		[self notifyTwitterHashTagFeed:[self processTweets:results]];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Image Get/Cache
+#pragma mark -
+/******************************************************************************/
+- (void)processGetImage:(NSData *)imgData forURL:(NSString *)url
+{
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	[coreDataQueue addOperationWithBlock:^() {
+		//	
+		//	/*UNREVISEDCOMMENTS*/
+		//	
+		UIImage	*	thumb	=	[UIImage imageWithData:imgData];
+		if (!thumb)
+		{
+			NSLog(@"%@", [[[NSString alloc] initWithData:imgData encoding:NSUTF8StringEncoding] autorelease]);
+			return;
+		}
+		CGFloat		scale	=	1.0;
+		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+			scale			=	[[UIScreen mainScreen] scale];
+		if (scale == 2.0)
+		{ // Scaling the 73 pixel bigger size twitter provides up to 96 to be double
+			// the size of the normal 48 so that it can be made into an image
+			// with a 2.0 scale. Not optimal, but better than a 48 pixel 1.0 scale image.
+			thumb			=	[thumb scaledToSize:CGSizeMake(96.0, 96.0)];
+		}
+		else
+		{
+			if ((thumb.size.width > 48.0 || thumb.size.height > 48.0))
+			{
+				thumb		=	[thumb scaledToSize:CGSizeMake(48.0, 48.0)];
+			}
+		}
+		
+		NSData	*	thumbData	=	UIImagePNGRepresentation(thumb);
+		
+		if (thumbData)
+		{
+			// This image is stored in a dictionary so that other image sizes can be added later
+			NSDictionary	*	imageDict	=	
+			[[NSDictionary alloc] initWithObjectsAndKeys:
+			 thumbData,	@"48", nil];
+			[self addToCache:imageDict key:url];
+			[imageDict release];
+		}
+		else 
+			ESLog(@"Thumb missed %@", [[[NSString alloc] initWithData:imgData encoding:NSUTF8StringEncoding] autorelease]);
+		
+		[self performSelectorOnMainThread:@selector(notifyGetImageForURL:) 
+							   withObject:url 
+							waitUntilDone:NO];
+	}];
+}
+- (void)addToCache:(id<NSObject>)object key:(id)key
+{
+	//	
+	//  /*UNREVISEDCOMMENT*/
+	//	
+	@synchronized(pictureCacheDictionary)
+	{
+		[pictureCacheDictionary setObject:object forKey:key];
+		if (pictureCacheDictionary.count > 300)
+		{
+			for (int i = 0; i < 100; i++)
+			{
+				[pictureCacheDictionary removeObjectForKey:[[pictureCacheDictionary allKeys] objectAtIndex:i]];
+			}
+		}
+	}
+}
 
 @end

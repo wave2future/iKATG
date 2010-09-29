@@ -17,7 +17,7 @@
 //  limitations under the License.
 //  
 
-#define ChatTesting
+//#define ChatTesting
 
 #import "OnAirViewController_iPad.h"
 #import <QuartzCore/QuartzCore.h>

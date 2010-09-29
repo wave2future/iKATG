@@ -1,10 +1,21 @@
 //
 //  DataModel+SetupCleanup.m
-//  KATG
-//
-//  Created by Doug Russell on 9/16/10.
-//  Copyright 2010 Everything Solution. All rights reserved.
-//
+//	
+//  Created by Doug Russell on 4/26/10.
+//  Copyright Doug Russell 2010. All rights reserved.
+//  
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//  
+//  http://www.apache.org/licenses/LICENSE-2.0
+//  
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//  
 
 #define kReachabilityURL @"app.keithandthegirl.com"
 
@@ -79,20 +90,41 @@ NSMutableArray * CreateNonRetainingArray()
 		//	/*UNREVISEDCOMMENT*/
 		//	
 		[self checkReachability];
+		//	
+		//	/*UNREVISEDCOMMENT*/
+		//	
+		pictureCacheDictionary	=	[[OrderedDictionary alloc] init];
 	}
 	return self;
 }
 - (void)dateFormatters
 {
+	formatter		=	nil;
+	dayFormatter	=	nil;
+	dateFormatter	=	nil;
+	timeFormatter	=	nil;
+	twitterSearchFormatter	=	nil;
+	twitterUserFormatter	=	nil;
+}
+- (NSDateFormatter *)formatter
+{
+	if (formatter)
+		return formatter;
 	//	
 	//	Initial formatter for creating data object for event
 	//	
 	formatter	=	[[NSDateFormatter alloc] init];
 	[formatter setDateStyle: NSDateFormatterLongStyle];
 	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[formatter setDateFormat: @"MM/dd/yyyy HH:mm"];
+	[formatter setDateFormat:@"MM/dd/yyyy HH:mm"];
 	NSTimeZone	*	timeZone	=	[NSTimeZone timeZoneWithName:@"America/New_York"];
 	[formatter setTimeZone:timeZone];
+	return formatter;
+}
+- (NSDateFormatter *)dayFormatter
+{
+	if (dayFormatter)
+		return dayFormatter;
 	//	
 	//	Create localized data string for Day of the Week
 	//	
@@ -101,6 +133,12 @@ NSMutableArray * CreateNonRetainingArray()
 	[dayFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
 	[dayFormatter setDateFormat: @"EEE"];
 	[dayFormatter setLocale:[NSLocale currentLocale]];
+	return dayFormatter;
+}
+- (NSDateFormatter *)dateFormatter
+{
+	if (dateFormatter)
+		return dateFormatter;
 	//	
 	//	Create localized data string for Month and Day of the Month
 	//	
@@ -109,6 +147,12 @@ NSMutableArray * CreateNonRetainingArray()
 	[dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
 	[dateFormatter setDateFormat: @"MM/dd"];
 	[dateFormatter setLocale:[NSLocale currentLocale]];
+	return dateFormatter;
+}
+- (NSDateFormatter *)timeFormatter
+{
+	if (timeFormatter)
+		return timeFormatter;
 	//	
 	//	Create localized data string for Time of Day
 	//	
@@ -117,6 +161,35 @@ NSMutableArray * CreateNonRetainingArray()
 	[timeFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
 	[timeFormatter setDateFormat: @"h:mm aa"];
 	[timeFormatter setLocale:[NSLocale currentLocale]];
+	return timeFormatter;
+}
+- (NSDateFormatter *)twitterSearchFormatter
+{
+	if (twitterSearchFormatter)
+		return twitterSearchFormatter;
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	twitterSearchFormatter	=	[[NSDateFormatter alloc] init];
+	[twitterSearchFormatter setDateStyle: NSDateFormatterLongStyle];
+	[twitterSearchFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	//@"Mon, 06 Sep 2010 07:36:57 +0000";
+	[twitterSearchFormatter setDateFormat: @"EEE, dd MMM yyyy HH:mm:ss ZZZ"];
+	return twitterSearchFormatter;
+}
+- (NSDateFormatter *)twitterUserFormatter
+{
+	if (twitterUserFormatter)
+		return twitterUserFormatter;
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	twitterUserFormatter	=	[[NSDateFormatter alloc] init];
+	[twitterUserFormatter setDateStyle: NSDateFormatterLongStyle];
+	[twitterUserFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	//"created_at" = "Wed Sep 08 21:51:09 +0000 2010";
+	[twitterUserFormatter setDateFormat: @"EEE MMM dd HH:mm:ss ZZZ yyyy"];
+	return twitterUserFormatter;
 }
 - (void)registerNotifications
 {
@@ -164,6 +237,10 @@ NSMutableArray * CreateNonRetainingArray()
 	CleanRelease(cacheDirectoryPath);
 	CleanRelease(managedObjectContext);
 	CleanRelease(hostReach);
+	CleanRelease(twitterSearchRefreshURL);
+	CleanRelease(twitterExtendedSearchRefreshURL);
+	CleanRelease(twitterHashSearchRefreshURL);
+	CleanRelease(pictureCacheDictionary);
 }
 - (void)cleanupDateFormatters
 {
@@ -171,6 +248,8 @@ NSMutableArray * CreateNonRetainingArray()
 	CleanRelease(dayFormatter);
 	CleanRelease(dateFormatter);
 	CleanRelease(timeFormatter);
+	CleanRelease(twitterSearchFormatter);
+	CleanRelease(twitterUserFormatter);
 }
 - (void)cleanupOperations
 {

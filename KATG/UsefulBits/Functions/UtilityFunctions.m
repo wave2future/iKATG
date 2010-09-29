@@ -19,8 +19,9 @@
 //  
 
 #import "UtilityFunctions.h"
+#import <math.h>
 
-const double	kRadPerDeg	= 0.0174532925199433;	// pi / 180
+const double	kRadPerDeg	=	M_PI / 180.0;
 
 double	ToRadians(double degrees)
 {
@@ -68,6 +69,7 @@ NSString * AppDirectoryLibraryPathAppended(NSString * pathToAppend)
 {
 	return [AppDirectoryDocumentsPath() stringByAppendingPathComponent:pathToAppend];
 }
+
 NSString * EncodeHTMLEntities(NSString * source)
 {
 	NSMutableString	*	escaped	=	[NSMutableString stringWithString:source];
@@ -136,6 +138,8 @@ NSString * EncodeHTMLEntities(NSString * source)
 }
 NSString * DecodeHTMLEntities(NSString * source)
 {
+	if ([source rangeOfString:@"&"].location == NSNotFound)
+		return source;
 	NSMutableString	*	escaped	=	[NSMutableString stringWithString:source];
 	NSArray			*	codes	=	
 	[NSArray arrayWithObjects:
@@ -237,4 +241,9 @@ NSString * DecodeHTMLEntities(NSString * source)
 //	}
 	
 	return (NSString *)escaped;
+}
+
+NSString * ReplaceString(NSString *stringToOperateOn, NSString *stringToReplace, NSString *replacementString)
+{
+	return [stringToOperateOn stringByReplacingOccurrencesOfString:stringToReplace withString:replacementString];
 }

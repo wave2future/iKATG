@@ -88,5 +88,50 @@
 	}
 	[dlgts release];
 }
+/******************************************************************************/
+#pragma mark -
+#pragma mark Twitter
+#pragma mark -
+/******************************************************************************/
+- (void)notifyTwitterSearchFeed:(NSArray *)result
+{
+	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
+	for (id delegate in dlgts)
+	{
+		if ([delegate respondsToSelector:@selector(twitterSearchFeed:)])
+			[delegate twitterSearchFeed:result];
+	}
+	[dlgts release];
+}
+- (void)notifyTwitterUserFeed:(NSArray *)result
+{
+	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
+	for (id delegate in dlgts)
+	{
+		if ([delegate respondsToSelector:@selector(twitterUserFeed:)])
+			[delegate twitterUserFeed:result];
+	}
+	[dlgts release];
+}
+- (void)notifyTwitterHashTagFeed:(NSArray *)result
+{
+	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
+	for (id delegate in dlgts)
+	{
+		if ([delegate respondsToSelector:@selector(twitterHashTagFeed:)])
+			[delegate twitterHashTagFeed:result];
+	}
+	[dlgts release];
+}
+- (void)notifyGetImageForURL:(NSString *)url
+{
+	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
+	for (id delegate in dlgts)
+	{
+		if ([delegate respondsToSelector:@selector(imageAvailableForURL:)])
+			[delegate imageAvailableForURL:url];
+	}
+	[dlgts release];
+}
 
 @end

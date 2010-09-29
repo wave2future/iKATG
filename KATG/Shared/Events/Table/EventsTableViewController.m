@@ -39,6 +39,15 @@
 {
     [super viewDidLoad];
 	//	
+	//	
+	//	
+	[model events];
+}
+- (NSFetchedResultsController *)fetchedResultsController
+{
+	if (_fetchedResultsController)
+		return _fetchedResultsController;
+	//	
 	//	Setup Fetch Controller
 	//	
 	NSFetchRequest		*	request			=	[[NSFetchRequest alloc] init];
@@ -53,25 +62,16 @@
 	request.sortDescriptors					=	sortDescriptors;
 	[sortDescriptors release];
 	[sortDescriptor release];
-	NSFetchedResultsController	*	fetchedResultsController	=	[[NSFetchedResultsController alloc] 
-																	 initWithFetchRequest:request 
-																	 managedObjectContext:self.context 
-																	 sectionNameKeyPath:nil 
-																	 cacheName:@"events"];
-	fetchedResultsController.delegate		=	self;
-	self.fetchedResultsController			=	fetchedResultsController;
-	[fetchedResultsController release];
+    [request setFetchBatchSize:20];
+	_fetchedResultsController				=	[[NSFetchedResultsController alloc] 
+												 initWithFetchRequest:request 
+												 managedObjectContext:self.context 
+												 sectionNameKeyPath:nil 
+												 cacheName:@"events"];
+	_fetchedResultsController.delegate		=	self;
 	[request release];
-	//	
-	//	
-	//	
-	BOOL	success	=	[self.fetchedResultsController performFetch:nil];
-	if (success)
-		[self.activityIndicator stopAnimating];
-	//	
-	//	
-	//	
-	[model events];
+	
+	return _fetchedResultsController;
 }
 - (void)viewDidUnload 
 {

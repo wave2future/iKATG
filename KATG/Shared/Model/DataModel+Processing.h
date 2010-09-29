@@ -19,7 +19,7 @@
 
 #import "DataModel.h"
 
-@class Event;
+@class Event, Show;
 @interface DataModel (Processing)
 
 /******************************************************************************/
@@ -56,7 +56,24 @@
 #pragma mark Shows
 #pragma mark -
 /******************************************************************************/
-- (void)processShowsList:(id)result;
-- (BOOL)hasShow:(NSFetchRequest *)request forID:(NSNumber *)ID;
+- (void)processShowsList:(id)result count:(NSInteger)count;
+- (Show *)hasShow:(NSArray *)recentShows forID:(NSNumber *)ID;
+/******************************************************************************/
+#pragma mark -
+#pragma mark Twitter
+#pragma mark -
+/******************************************************************************/
+- (void)processTwitterSearchFeed:(id)result;
+- (NSArray *)processTweets:(NSArray *)tweets;
+- (void)processTwitterUserFeed:(id)result user:(NSString *)user;
+- (NSArray *)processUserTweets:(NSArray *)tweets user:(NSString *)user;
+- (void)processTwitterHashTagFeed:(id)result;
+/******************************************************************************/
+#pragma mark -
+#pragma mark Image Get/Cache
+#pragma mark -
+/******************************************************************************/
+- (void)processGetImage:(NSData *)imgData forURL:(NSString *)url;
+- (void)addToCache:(id<NSObject>)object key:(id)key;
 
 @end

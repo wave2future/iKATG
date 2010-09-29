@@ -37,5 +37,21 @@
 //	/*UNREVISEDCOMMENT*/
 //	
 - (void)loggedIn;
+//	
+//	/*UNREVISEDCOMMENT*/
+//	
+- (void)twitterSearchFeed:(NSArray *)tweets;
+//	
+//	/*UNREVISEDCOMMENT*/
+//	
+- (void)twitterUserFeed:(NSArray *)tweets;
+//	
+//	/*UNREVISEDCOMMENT*/
+//	
+- (void)twitterHashTagFeed:(NSArray *)tweets;
+//	
+//	/*UNREVISEDCOMMENT*/
+//	
+- (void)imageAvailableForURL:(NSString *)url;
 
 @end

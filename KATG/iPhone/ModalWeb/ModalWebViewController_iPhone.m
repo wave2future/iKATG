@@ -28,15 +28,15 @@
 	{
 		if (osVer >= 4.0 && osVer < 4.2)
 			self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifier480x32;
-		else if (osVer >= 4.2)
-			self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifierLandscape;
+		//else if (osVer >= 4.2)
+		//	self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifierLandscape;
 	}
     else
 	{
 		if (osVer >= 4.0 && osVer < 4.2)
 			self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifier320x50;
-		else if (osVer >= 4.2)
-			self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifierPortrait;
+		//else if (osVer >= 4.2)
+		//	self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifierPortrait;
 	}
 }
 

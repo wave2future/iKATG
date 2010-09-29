@@ -1,7 +1,7 @@
 //	
 //	TwitterTableViewController.m
 //	
-//  Created by Doug Russell on 5/5/10.
+//  Created by Doug Russell on 9/5/10.
 //  Copyright 2010 Doug Russell. All rights reserved.
 //  
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,9 +19,9 @@
 
 #import "TwitterTableViewController.h"
 #import "DataModel.h"
+#import "Tweet.h"
 
 @implementation TwitterTableViewController
-@synthesize items;
 
 /******************************************************************************/
 #pragma mark -
@@ -31,39 +31,48 @@
 - (void)viewDidLoad 
 {
 	[super viewDidLoad];
+	
+	UISegmentedControl *segCon = 
+	[[UISegmentedControl alloc] initWithItems:
+	 [NSArray arrayWithObjects:@"KATG", @"KATG Clan", nil]];
+	[segCon setSegmentedControlStyle:UISegmentedControlStyleBar];
+	[segCon setSelectedSegmentIndex:0];
+	[segCon addTarget:self 
+			   action:@selector(toggleExtendedTweets:) 
+	 forControlEvents:UIControlEventValueChanged];
+	segCon.autoresizingMask	=	UIViewAutoresizingNone;
+	self.navigationItem.titleView	=	segCon;
+	[segCon release];
+	
+	extended	=	NO;
+	[self startLoading];
 }
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+- (void)toggleExtendedTweets:(id)sender
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait ||
-			interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
-}
-- (void)viewDidUnload 
-{
-    [super viewDidUnload];
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Memory Management
-#pragma mark -
-/******************************************************************************/
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
-}
-- (void)dealloc 
-{
-	[model removeDelegate:self]; model	=	nil;
-	[items release];
-    [super dealloc];
+	extended	=	!extended;
+	[self.items removeAllObjects];
+	[self reloadTableView];
+	[self startLoading];
 }
 /******************************************************************************/
 #pragma mark -
 #pragma mark Data Model Delegates
 #pragma mark -
 /******************************************************************************/
-- (void)error:(NSError *)error display:(BOOL)display
+- (void)twitterSearchFeed:(NSArray *)tweets
 {
-	
+	[self.items addObjectsFromArray:tweets];
+	[self reloadTableView];
+	[self stopLoading];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Refresh
+#pragma mark -
+/******************************************************************************/
+- (void)refresh 
+{
+	[model twitterSearchFeed:extended];
 }
 
 @end

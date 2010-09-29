@@ -23,7 +23,7 @@
 - (void)setText:(NSString *)text
 {
 	NSString	*	_htmlStart	=	nil;
-	_htmlStart	=	[NSString stringWithFormat:@"<html>\n<head>\n<style>\nbody {\n\tbackground-color: transparent;\n\tcolor: %@;\n\tpadding: 0px;\n\tfont-family: Helvetica; \n\tfont-size: %@;\n\tmargin: 10px;\n}\na {\n\tcolor: %@;\n\tfont-family: Helvetica; \n\tfont-size: %@;\n}\n</style>\n<meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0;\">\n</head>\n<body>\n\t<p>", [self textColor], [self fontSize], [self linkColor], [self linkSize]];
+	_htmlStart	=	[NSString stringWithFormat:@"<html>\n<head>\n<style>\nbody {\n\tbackground-color: transparent;\n\tcolor: %@;\n\tpadding: 0px;\n\tfont-family: Helvetica; \n\tfont-size: %@;\n\tmargin: 10px;\n}\na {\n\tcolor: %@;\n\tfont-family: Helvetica; \n\tfont-size: %@;\n\ttext-decoration: none;\n}\n</style>\n<meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0;\">\n</head>\n<body>\n\t<p>\n", [self textColor], [self fontSize], [self linkColor], [self linkSize]];
 	NSString	*	_htmlEnd	=	nil;
 	_htmlEnd	=	@"\n</body>\n</html>";
 	[self loadHTMLString:[NSString stringWithFormat:@"%@%@%@", _htmlStart, text, _htmlEnd] 

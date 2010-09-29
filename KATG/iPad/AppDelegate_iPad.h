@@ -22,14 +22,12 @@
 
 @class MGSplitViewController;
 @class EventsTableViewController_iPad;
+@class TwitterTableViewController_iPad;
 @interface AppDelegate_iPad : AppDelegate_Shared 
 {
-	MGSplitViewController			*	splitViewController;
-//	EventsTableViewController_iPad	*	rootViewController;
+	
 }
 
-@property (nonatomic, retain)	IBOutlet	MGSplitViewController			*	splitViewController;
-//@property (nonatomic, retain)	IBOutlet	EventsTableViewController_iPad	*	rootViewController;
 
 @end
 

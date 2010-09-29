@@ -52,6 +52,10 @@
 								<int key="NSvFlags">304</int>
 								<string key="NSFrame">{{57, 8}, {163, 64}}</string>
 								<reference key="NSSuperview" ref="147581631"/>
+								<object class="NSColor" key="IBUIBackgroundColor" id="692213424">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MCAwAA</bytes>
+								</object>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -69,12 +73,12 @@
 								<reference key="IBUIHighlightedColor" ref="908345856"/>
 								<object class="NSColor" key="IBUIShadowColor">
 									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC4yNQA</bytes>
+									<bytes key="NSWhite">MC4yNSAwLjcAA</bytes>
 									<object class="NSColorSpace" key="NSCustomColorSpace" id="934938255">
 										<int key="NSID">2</int>
 									</object>
 								</object>
-								<string key="IBUIShadowOffset">{0, 1}</string>
+								<string key="IBUIShadowOffset">{1, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
@@ -82,9 +86,10 @@
 							</object>
 							<object class="IBUILabel" id="972918430">
 								<reference key="NSNextResponder" ref="147581631"/>
-								<int key="NSvFlags">297</int>
+								<int key="NSvFlags">296</int>
 								<string key="NSFrame">{{223, 19}, {71, 15}}</string>
 								<reference key="NSSuperview" ref="147581631"/>
+								<reference key="IBUIBackgroundColor" ref="692213424"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -112,13 +117,10 @@
 							</object>
 							<object class="IBUILabel" id="328825840">
 								<reference key="NSNextResponder" ref="147581631"/>
-								<int key="NSvFlags">297</int>
+								<int key="NSvFlags">296</int>
 								<string key="NSFrame">{{223, 33}, {71, 15}}</string>
 								<reference key="NSSuperview" ref="147581631"/>
-								<object class="NSColor" key="IBUIBackgroundColor" id="692213424">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MCAwAA</bytes>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="692213424"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -134,7 +136,7 @@
 							</object>
 							<object class="IBUILabel" id="5757792">
 								<reference key="NSNextResponder" ref="147581631"/>
-								<int key="NSvFlags">297</int>
+								<int key="NSvFlags">296</int>
 								<string key="NSFrame">{{223, 47}, {71, 15}}</string>
 								<reference key="NSSuperview" ref="147581631"/>
 								<reference key="IBUIBackgroundColor" ref="692213424"/>
@@ -346,7 +348,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>EventTableViewCell</string>
-					<string>{{169, 373}, {320, 80}}</string>
+					<string>{{171, 293}, {320, 80}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -443,7 +445,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">EventTableViewCell.h</string>
+						<string key="minorKey">Shared/Events/Table/EventTableViewCell.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -470,7 +472,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Shared/EventsTableViewController.h</string>
+						<string key="minorKey">Shared/Events/Table/EventsTableViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -478,19 +480,19 @@
 					<string key="superclassName">UITableViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Shared/ModelTableViewController.h</string>
+						<string key="minorKey">Shared/AbstractSuperClasses/ModelTableViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="338152985">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="946474171">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">UIViewController+Nib.h</string>
+						<string key="minorKey">UsefulBits/Categories/UIViewController+Nib.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">UIViewController</string>
-					<reference key="sourceIdentifier" ref="338152985"/>
+					<reference key="sourceIdentifier" ref="946474171"/>
 				</object>
 			</object>
 			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
@@ -739,7 +741,7 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">KATG.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../../KATG.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">131</string>
 	</data>

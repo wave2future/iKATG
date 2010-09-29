@@ -20,8 +20,7 @@
 #import "ModelTableViewController.h"
 
 @implementation ModelTableViewController
-@synthesize fetchedResultsController	=	_fetchedResultsController;
-@synthesize	context						=	_context;
+@dynamic fetchedResultsController, context;
 @synthesize activityIndicator;
 
 /******************************************************************************/
@@ -37,17 +36,6 @@
 	//	
 	model	=	[DataModel sharedDataModel];
 	[model addDelegate:self];
-	//	
-	//	
-	//	
-	NSPersistentStoreCoordinator	*	psc		=	[model.managedObjectContext persistentStoreCoordinator];
-	NSManagedObjectContext			*	context	=	[[NSManagedObjectContext alloc] init];
-	if (context)
-	{
-		self.context							=	context;
-		self.context.persistentStoreCoordinator	=	psc;
-		[context release];
-	}
 	//	
 	//	
 	//	
@@ -70,16 +58,52 @@
 		[anActivityIndicator release];
 	}
 	[self.activityIndicator startAnimating];
+	//	
+	//	
+	//	
+	BOOL	success	=	[self.fetchedResultsController performFetch:nil];
+	if (success)
+		[self.activityIndicator stopAnimating];
 }
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+- (NSFetchedResultsController *)fetchedResultsController
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait ||
-			interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+	return nil;
+}
+- (void)setFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
+{
+	CleanRelease(_fetchedResultsController);
+	_fetchedResultsController	=	[fetchedResultsController retain];
+}
+- (NSManagedObjectContext *)context
+{
+	if (_context)
+		return _context;
+	NSPersistentStoreCoordinator	*	psc		=	[model.managedObjectContext persistentStoreCoordinator];
+	_context									=	[[NSManagedObjectContext alloc] init];
+	_context.persistentStoreCoordinator	=	psc;
+	return _context;
+}
+- (void)setContext:(NSManagedObjectContext *)context
+{
+	CleanRelease(_context);
+	_context	=	[context retain];
 }
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
-	self.activityIndicator	=	nil;
+	self.fetchedResultsController	=	nil;
+	self.context					=	nil;
+	self.activityIndicator			=	nil;
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Rotation
+#pragma mark -
+/******************************************************************************/
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait ||
+			interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 /******************************************************************************/
 #pragma mark -
@@ -106,10 +130,10 @@
 }
 - (void)dealloc 
 {
-    [model removeDelegate:self];
-	[_fetchedResultsController release];
-	[_context release];
-	[activityIndicator release];
+    [model removeDelegate:self]; model = nil;
+	CleanRelease(_fetchedResultsController);
+	CleanRelease(_context);
+	CleanRelease(activityIndicator);
 	[super dealloc];
 }
 /******************************************************************************/
@@ -150,9 +174,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	
 }
+/******************************************************************************/
 #pragma mark -
 #pragma mark Fetched Results Controller Delegates
 #pragma mark -
+/******************************************************************************/
 - (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
 	[self.activityIndicator stopAnimating];

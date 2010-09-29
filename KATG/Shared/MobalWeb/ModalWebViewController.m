@@ -50,6 +50,8 @@
 	CleanRelease(webView);
 	CleanRelease(activityIndicator);
 	CleanRelease(navToolbar);
+	adBanner.delegate = nil;
+	CleanRelease(adBanner);
     [super dealloc];
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error

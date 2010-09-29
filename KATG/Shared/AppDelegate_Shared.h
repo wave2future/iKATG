@@ -19,8 +19,10 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "Push.h"
 
-@interface AppDelegate_Shared : NSObject <UIApplicationDelegate> 
+@interface AppDelegate_Shared : NSObject 
+<UIApplicationDelegate, UITabBarDelegate, PushDelegate> 
 {
 	UIWindow			*	window;
 	UITabBarController	*	tabBarController;

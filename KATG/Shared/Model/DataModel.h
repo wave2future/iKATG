@@ -23,6 +23,7 @@
 #import "DataModelMetaData.h"
 #import "Reachability.h"
 #import "NetworkOperationQueue.h"
+#import "OrderedDictionary.h"
 
 @interface DataModel : NSObject <NetworkOperationDelegate>
 {
@@ -76,6 +77,15 @@
 	NSDateFormatter			*	dayFormatter;
 	NSDateFormatter			*	dateFormatter;
 	NSDateFormatter			*	timeFormatter;
+	//	
+	//	Twitter
+	//	
+	NSDateFormatter			*	twitterSearchFormatter;
+	NSDateFormatter			*	twitterUserFormatter;
+	NSString				*	twitterSearchRefreshURL;
+	NSString				*	twitterExtendedSearchRefreshURL;
+	NSString				*	twitterHashSearchRefreshURL;
+	OrderedDictionary		*	pictureCacheDictionary;
 	//	
 	//	
 	//	
@@ -192,6 +202,34 @@
 //
 //	With Notes, Quote, URL
 //
-//- (void)showDetails:(NSString *)ID;
+- (void)showDetails:(NSString *)ID;
+//	
+//	Parse a twitter search json feed
+//	
+- (void)twitterSearchFeed:(BOOL)extended;
+//	
+//	/*UNREVISEDCOMMENTS*/
+//	
+- (void)twitterUserFeed:(NSString *)userName;
+//	
+//	/*UNREVISEDCOMMENTS*/
+//	
+- (void)twitterHashTagFeed:(NSString *)hashTag;
+//	
+//	/*UNREVISEDCOMMENTS*/
+//	
+- (UIImage *)thumbForURL:(NSString *)url;
 
+@end
+
+@interface DataModel ()
+@property (nonatomic, retain)	NSString	*	twitterSearchRefreshURL;
+@property (nonatomic, retain)	NSString	*	twitterExtendedSearchRefreshURL;
+@property (nonatomic, retain)	NSString	*	twitterHashSearchRefreshURL;
+@property (nonatomic, readonly)	NSDateFormatter	*	formatter;
+@property (nonatomic, readonly)	NSDateFormatter	*	dayFormatter;
+@property (nonatomic, readonly)	NSDateFormatter	*	dateFormatter;
+@property (nonatomic, readonly)	NSDateFormatter	*	timeFormatter;
+@property (nonatomic, readonly)	NSDateFormatter	*	twitterSearchFormatter;
+@property (nonatomic, readonly)	NSDateFormatter	*	twitterUserFormatter;
 @end

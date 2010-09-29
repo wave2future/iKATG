@@ -39,6 +39,7 @@
 @synthesize	parseType;
 @synthesize	requestType;
 @dynamic	response;
+@synthesize useCache;
 
 /******************************************************************************/
 #pragma mark -
@@ -62,6 +63,7 @@
 		xPath			=	nil;
 		parseType		=	NoParse;
 		requestType		=	GET;
+		useCache		=	YES;
 		_request		=	nil;
 	}
 	return self;
@@ -121,6 +123,7 @@
 	_request.userInfo		=	userInfo;
 	_request.connectionID	=	connectionID;
 	_request.delegate		=	self;
+	_request.useCache		=	useCache;
 	[_request start];
 }
 - (void)cancel

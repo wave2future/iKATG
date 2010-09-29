@@ -41,6 +41,7 @@ typedef enum {
 	NSDictionary	*	userInfo;
 	NetworkRequestType	requestType;
 	NSURLRequest	*	_request;
+	BOOL				useCache;
 @private
 	NSURLResponse	*	_response;
 	NSURLConnection	*	_connection;
@@ -58,6 +59,7 @@ typedef enum {
 @property (nonatomic, assign)	NetworkRequestType	requestType;
 @property (nonatomic, retain)	NSURLRequest	*	request;
 @property (nonatomic, readonly)	NSURLResponse	*	response;
+@property (nonatomic, assign)	BOOL				useCache;
 
 - (void)start;
 - (void)cancel;

@@ -111,10 +111,10 @@
 								<reference key="IBUIHighlightedColor" ref="1048402667"/>
 								<object class="NSColor" key="IBUIShadowColor">
 									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC4yNQA</bytes>
+									<bytes key="NSWhite">MC4yNSAwLjcAA</bytes>
 									<reference key="NSCustomColorSpace" ref="1042531294"/>
 								</object>
-								<string key="IBUIShadowOffset">{0, 1}</string>
+								<string key="IBUIShadowOffset">{1, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
@@ -465,7 +465,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">ArchiveTableViewCell.h</string>
+						<string key="minorKey">Shared/Archive/Table/ArchiveTableViewCell.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -473,7 +473,7 @@
 					<string key="superclassName">ModelTableViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">ArchiveTableViewController.h</string>
+						<string key="minorKey">Shared/Archive/Table/ArchiveTableViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -481,7 +481,7 @@
 					<string key="superclassName">UITableViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Shared/ModelTableViewController.h</string>
+						<string key="minorKey">Shared/AbstractSuperClasses/ModelTableViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -734,7 +734,7 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">KATG.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../../KATG.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">131</string>
 	</data>

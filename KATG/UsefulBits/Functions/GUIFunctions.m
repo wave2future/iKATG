@@ -33,17 +33,8 @@ void BasicAlert(NSString *title,
 				NSString *cancelButtonTitle, 
 				NSString *otherButtonTitle)
 {
-#ifdef __IPHONE_4_0
 	if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive)
 		return;
-#endif
-//	UIAlertView *alertView = 
-//	[[UIAlertView alloc] 
-//	 initWithTitle:title 
-//	 message:message 
-//	 delegate:delegate 
-//	 cancelButtonTitle:cancelButtonTitle 
-//	 otherButtonTitles:otherButtonTitle, nil];
 	ESAlertView	*	alertView	=
 	[[ESAlertView alloc]
 	 initWithTitle:title 

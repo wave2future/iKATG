@@ -30,6 +30,11 @@
 #pragma mark 
 #pragma mark -
 /******************************************************************************/
+- (void)viewDidLoad
+{
+	[super viewDidLoad];
+	mgsplitViewController.showsMasterInPortrait	=	YES;
+}
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];

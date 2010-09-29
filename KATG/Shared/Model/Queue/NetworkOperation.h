@@ -122,6 +122,7 @@ typedef enum {
 	NSString		*	xPath;
 	NetworkOperationParseType	parseType;
 	NetworkRequestType			requestType;
+	BOOL				useCache;
 @private
 	//	
 	//	Network Request instance that manages the actual network activity
@@ -146,6 +147,7 @@ typedef enum {
 @property (nonatomic, retain)	NSString		*	xPath;
 @property (nonatomic, assign)	NetworkOperationParseType	parseType;
 @property (nonatomic, assign)	NetworkRequestType			requestType;
+@property (nonatomic, assign)	BOOL				useCache;
 @property (nonatomic, readonly)	NSURLResponse	*	response;
 
 - (void)start;

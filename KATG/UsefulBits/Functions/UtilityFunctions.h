@@ -34,3 +34,5 @@ NSString	*	AppDirectoryLibraryPathAppended(NSString * pathToAppend);
 
 NSString	*	EncodeHTMLEntities(NSString * source);
 NSString	*	DecodeHTMLEntities(NSString * source);
+
+NSString * ReplaceString(NSString *stringToOperateOn, NSString *stringToReplace, NSString *replacementString);

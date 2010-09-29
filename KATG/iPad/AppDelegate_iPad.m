@@ -20,9 +20,9 @@
 #import "AppDelegate_iPad.h"
 #import "MGSplitViewController.h"
 #import "EventsTableViewController_iPad.h"
+#import "TwitterTableViewController_iPad.h"
 
 @implementation AppDelegate_iPad
-@synthesize splitViewController;//, rootViewController;
 
 /******************************************************************************/
 #pragma mark -
@@ -34,8 +34,6 @@
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	[self.window addSubview:tabBarController.view];
     [window makeKeyAndVisible];
-	
-	splitViewController.showsMasterInPortrait	=	YES;
 	
     return YES;
 }
@@ -73,8 +71,6 @@
 }
 - (void)dealloc 
 {
-//	[rootViewController release];
-	[splitViewController release];
 	[super dealloc];
 }
 

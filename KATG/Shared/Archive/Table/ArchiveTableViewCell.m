@@ -15,12 +15,12 @@
 @end
 
 @implementation ArchiveTableViewCell
-@synthesize showTypeImageView;
-@synthesize showNumberLabel;
-@synthesize showTitleLabel;
-@synthesize showGuestsLabel;
-@synthesize showNotesImageView;
-@synthesize showPicsImageView;
+@synthesize showTypeImageView = _showTypeImageView;
+@synthesize showNumberLabel = _showNumberLabel;
+@synthesize showTitleLabel = _showTitleLabel;
+@synthesize showGuestsLabel = _showGuestsLabel;
+@synthesize showNotesImageView = _showNotesImageView;
+@synthesize showPicsImageView = _showPicsImageView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier 
 {

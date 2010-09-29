@@ -26,6 +26,8 @@
 @implementation DataModel
 @synthesize delegates, connected;
 @synthesize managedObjectContext;
+@synthesize twitterSearchRefreshURL, twitterExtendedSearchRefreshURL, twitterHashSearchRefreshURL;
+@dynamic	formatter, dayFormatter, dateFormatter, timeFormatter, twitterSearchFormatter, twitterUserFormatter;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 
@@ -315,10 +317,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	op.delegate					=	self;
 	op.instanceCode				=	kShowArchivesCode;
 	op.URI						=	kShowListURIAddress;
-	if (connectionType == ReachableViaWWAN)
+	NSDate	*	start			=	[self.formatter dateFromString:@"03/01/2010 12:00"];
+	if (start)
 	{
+		NSInteger	days		=	[start timeIntervalSinceDate:[NSDate date]] / -(60 /*Seconds*/ * 60 /*Minutes*/ * 24 /*Hours*/);
 		op.requestType			=	POST;
-		op.bodyBufferDict		=	[NSDictionary dictionaryWithObject:@"100" forKey:@"ShowCount"];
+		op.bodyBufferDict		=	[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%d", days] forKey:@"ShowCount"];
 	}
 	op.parseType				=	ParseXML;
 	op.xPath					=	kShowArchivesXPath;
@@ -328,11 +332,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 		[delayedOperations addObject:op];
 	[op release];
 }
-//- (void)showDetails:(NSString *)ID
-//{
-//	//	
-//	//	Update given show with details
-//	//	
+- (void)showDetails:(NSString *)ID
+{
+	//	
+	//	Update given show with details
+	//	
 //	DataOperation	*	op	=	[[DataOperation alloc] init];
 //	[op setDelegate:self];
 //	// Object setters are (nonatomic, copy)
@@ -347,7 +351,153 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 //	else
 //		[delayedOperations addObject:op];
 //	[op release];
-//}
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Twitter
+#pragma mark -
+/******************************************************************************/
+- (void)twitterSearchFeed:(BOOL)extended
+{
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	if (extended)
+		self.twitterSearchRefreshURL	=	nil;
+	else
+		self.twitterSearchRefreshURL	=	nil;
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+	op.delegate					=	self;
+	op.instanceCode				=	kTwitterSearchCode;
+	if (extended)
+	{
+		op.baseURL				=	kTwitterSearchFeedBaseURLAddress;
+		if (self.twitterSearchRefreshURL)
+			op.URI				=	[NSString stringWithFormat:@"%@%@", @"/search.json", self.twitterExtendedSearchRefreshURL];
+		else
+			op.URI				=	kTwitterSearchExtendedFeedURIAddress;
+	}
+	else
+	{
+		op.baseURL				=	kTwitterSearchFeedBaseURLAddress;
+		if (self.twitterSearchRefreshURL)
+			op.URI				=	[NSString stringWithFormat:@"%@%@", @"/search.json", self.twitterSearchRefreshURL];
+		else
+			op.URI				=	kTwitterSearchFeedURIAddress;
+	}
+	op.parseType				=	ParseJSONDictionary;
+	if (connected)
+		[operationQueue addOperation:op];
+	else
+		[delayedOperations addObject:op];
+	[op release];
+}
+- (void)twitterUserFeed:(NSString *)userName
+{
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+	op.delegate					=	self;
+	op.instanceCode				=	kTwitterUserFeedCode;
+	op.baseURL					=	kTwitterBaseURLAddress;
+	op.URI						=	[NSString stringWithFormat:
+									 @"%@%@%@", 
+									 kTwitterUserURIAddress, 
+									 userName, 
+									 @".json"];
+	op.userInfo					=	[NSDictionary dictionaryWithObject:userName forKey:@"userName"];
+	op.parseType				=	ParseJSONArray;
+	if (connected)
+		[operationQueue addOperation:op];
+	else
+		[delayedOperations addObject:op];
+	[op release];
+}
+- (void)twitterHashTagFeed:(NSString *)hashTag
+{
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+	op.delegate					=	self;
+	op.instanceCode				=	kTwitterHashTagCode;
+	op.baseURL					=	kTwitterSearchFeedBaseURLAddress;
+	//if (self.twitterSearchRefreshURL)
+	//	op.URI				=	[NSString stringWithFormat:@"%@%@", @"/search.json", self.twitterSearchRefreshURL];
+	//else
+	//	op.URI				=	kTwitterSearchFeedURIAddress;
+	op.URI						=	[NSString stringWithFormat:@"/search.json?q=%%23%@", hashTag];
+	op.parseType				=	ParseJSONDictionary;
+	if (connected)
+		[operationQueue addOperation:op];
+	else
+		[delayedOperations addObject:op];
+	[op release];
+}
+- (UIImage *)thumbForURL:(NSString *)url
+{
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	return [self getImage:@"48" url:url];
+}
+- (UIImage *)getImage:(NSString *)key url:(NSString *)url
+{
+	//	
+	//  /*UNREVISEDCOMMENTS*/
+	//	
+	if (url)
+	{
+		NSDictionary	*	imageDict	=	[pictureCacheDictionary objectForKey:url];
+		if (imageDict)
+		{
+			UIImage		*	image		=	[UIImage imageWithData:[imageDict objectForKey:key]];
+			if (image)
+			{
+				CGFloat			scale	=	1.0;
+				if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] &&
+					[UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)])
+				{
+					scale				=	[[UIScreen mainScreen] scale];
+					image				=	[UIImage imageWithCGImage:image.CGImage scale:scale orientation:0];
+				}
+				if (image)
+					return image;
+			}
+		}
+		
+		BOOL				inQueue		=	NO;
+		for (NetworkOperation *anOp in [operationQueue operations])
+		{
+			if ([[anOp baseURL] isEqualToString:url])
+				inQueue					=	YES;
+		}
+		
+		if (!inQueue)
+		{
+			NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+			op.delegate					=	self;
+			// Object setters are (nonatomic, copy)
+			op.instanceCode				=	kGetImageCode;
+			op.baseURL					=	url;
+			if (connected)
+				[operationQueue addOperation:op];
+			else
+				[delayedOperations addObject:op];
+			[op release];
+		}
+	}
+	else
+	{
+		ESLog(@"URL missed for getImageForURL");
+	}
+	
+	return nil;
+}
 /******************************************************************************/
 #pragma mark -
 #pragma mark Network Operation Delegate
@@ -402,10 +552,36 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 			NSParameterAssert([result isKindOfClass:[NSArray class]]);
 			NSParameterAssert(([(NSArray *)result count] > 0));
 			if ([(NSArray *)result count] > 0)
-				[self processShowsList:result];
+				[self processShowsList:result count:[[operation.bodyBufferDict objectForKey:@"ShowCount"] intValue]];
 			break;
 		case kShowDetailsCode:
 			
+			break;
+		case kTwitterSearchCode:
+			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
+			[self processTwitterSearchFeed:result];
+			break;
+		case kTwitterUserFeedCode:
+			NSParameterAssert([result isKindOfClass:[NSArray class]] || result == nil);
+			if (result == nil)
+			{
+				[self notifyError:[NSError errorWithDomain:[NSString stringWithFormat:
+															@"Twitter User @%@ Timeline Not Available", 
+															[operation.userInfo objectForKey:@"userName"]] 
+													  code:kTwitterUserFeedCode 
+												  userInfo:nil] 
+						  display:YES];
+				break;
+			}
+			[self processTwitterUserFeed:result user:[operation.userInfo objectForKey:@"userName"]];
+			break;
+		case kTwitterHashTagCode:
+			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
+			[self processTwitterHashTagFeed:result];
+			break;
+		case kGetImageCode:
+			NSParameterAssert([result isKindOfClass:[NSData class]]);
+			[self processGetImage:(NSData *)result forURL:operation.baseURL];
 			break;
 		default:
 			break;

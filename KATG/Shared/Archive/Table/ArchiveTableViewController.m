@@ -19,12 +19,16 @@
 
 #import "ArchiveTableViewController.h"
 #import "ArchiveTableViewCell.h"
+#import "ArchiveDetailViewController.h"
 #import "Show.h"
 #import "Guest.h"
 #import "UIViewController+Nib.h"
 
 @interface ArchiveTableViewController ()
-- (void)decorateCell:(ArchiveTableViewCell *)cell withIndexPath:(NSIndexPath *)indexPath;
+- (void)decorateCell:(ArchiveTableViewCell *)cell 
+	   withIndexPath:(NSIndexPath *)indexPath;
+- (void)setPredicateForSearchText:(NSString*)searchText 
+							scope:(NSInteger)scope;
 @end
 
 @implementation ArchiveTableViewController
@@ -37,6 +41,15 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+	//	
+	//	Retrieve shows list from web api
+	//	
+	[model shows];
+}
+- (NSFetchedResultsController *)fetchedResultsController
+{
+	if (_fetchedResultsController)
+		return _fetchedResultsController;
 	//	
 	//	Setup Fetch Controller
 	//	
@@ -52,25 +65,16 @@
 	request.sortDescriptors					=	sortDescriptors;
 	[sortDescriptors release];
 	[sortDescriptor release];
-	NSFetchedResultsController	*	fetchedResultsController	=	[[NSFetchedResultsController alloc] 
-																	 initWithFetchRequest:request 
-																	 managedObjectContext:self.context 
-																	 sectionNameKeyPath:nil 
-																	 cacheName:@"archives"];
-	fetchedResultsController.delegate		=	self;
-	self.fetchedResultsController			=	fetchedResultsController;
-	[fetchedResultsController release];
+    [request setFetchBatchSize:20];
+	_fetchedResultsController				=	[[NSFetchedResultsController alloc] 
+												 initWithFetchRequest:request 
+												 managedObjectContext:self.context 
+												 sectionNameKeyPath:nil 
+												 cacheName:@"archives"];
+	_fetchedResultsController.delegate		=	self;
 	[request release];
-	//	
-	//	
-	//	
-	BOOL	success	=	[self.fetchedResultsController performFetch:nil];
-	if (success)
-		[self.activityIndicator stopAnimating];
-	//	
-	//	Retrieve shows list from web api
-	//	
-	[model shows];
+	
+	return _fetchedResultsController;
 }
 - (void)viewDidUnload 
 {
@@ -136,7 +140,12 @@
 - (void)tableView:(UITableView *)tableView 
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	
+	ArchiveDetailViewController	*	viewController	=	
+	[[ArchiveDetailViewController alloc] initWithNibName:@"ArchiveDetailView_iPhone" 
+												  bundle:nil];
+	viewController.show	=	(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+	[self.navigationController pushViewController:viewController animated:YES];
+	[viewController release];
 }
 /******************************************************************************/
 #pragma mark -
@@ -150,6 +159,69 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)dealloc 
 {
 	[super dealloc];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Search
+#pragma mark -
+/******************************************************************************/
+- (void)searchDisplayController:(UISearchDisplayController *)controller 
+  didLoadSearchResultsTableView:(UITableView *)tableView
+{
+	//	
+	//	
+	//	
+	self.searchDisplayController.searchResultsTableView.rowHeight = self.tableView.rowHeight;	
+	self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;	
+}
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self setPredicateForSearchText:searchString scope:[self.searchDisplayController.searchBar selectedScopeButtonIndex]];
+    return YES;
+}
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
+{
+	[self setPredicateForSearchText:[self.searchDisplayController.searchBar text] scope:searchOption];
+    return YES;
+}
+- (void)setPredicateForSearchText:(NSString*)searchText 
+							scope:(NSInteger)scope
+{
+	[NSFetchedResultsController deleteCacheWithName:@"archives"];
+	NSPredicate	*	predicate	=	nil;
+	switch (scope) {
+		case 1: //title
+			predicate	=	[NSPredicate predicateWithFormat:@"Title contains[cd] %@", searchText];
+			break;
+		case 2: //guests
+			predicate	=	[NSPredicate predicateWithFormat:@"Guests.Guest contains[cd] %@", searchText];
+			break;
+		case 3://number
+			predicate	=	[NSPredicate predicateWithFormat:@"Number == %@", searchText];
+			break;
+		case 0: //all
+		default:
+			predicate	=	[NSPredicate predicateWithFormat:@"Title contains[cd] %@ or Guests.Guest contains[cd] %@ or Number == %@", searchText, searchText, searchText];
+			break;
+	}
+	[self.fetchedResultsController.fetchRequest setPredicate:predicate];
+	NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Handle error
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        exit(-1);  // Fail
+    } 
+}
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
+{
+	[NSFetchedResultsController deleteCacheWithName:@"archives"];
+	[self.fetchedResultsController.fetchRequest setPredicate:nil];
+	NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Handle error
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        exit(-1);  // Fail
+    }
 }
 
 @end
