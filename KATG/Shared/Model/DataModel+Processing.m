@@ -449,11 +449,6 @@
 		//	/*UNREVISEDCOMMENTS*/
 		//	
 		NSArray	*	shows	=	(NSArray *)result;
-//		for (NSDictionary *show in shows)
-//		{
-//			NSLog(@"%@", show);
-//			break;
-//		}
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	
@@ -467,6 +462,7 @@
 		NSEntityDescription	*	entity	=	[NSEntityDescription entityForName:@"Show" 
 														inManagedObjectContext:showContext];
 		request.entity					=	entity;
+        request.relationshipKeyPathsForPrefetching  =   [NSArray arrayWithObject:@"Guest"];
 		request.fetchLimit				=	count + 100;
 		NSPredicate	*	predicate		=	[NSPredicate predicateWithFormat:@"Number >= 1050 or TV == YES"];
 		[request setPredicate:predicate];
@@ -509,6 +505,7 @@
 			NSString	*	hasShowNotes	=	[show objectForKey:@"SN"];
 			NSString	*	title			=	[show objectForKey:@"T"];
 			
+			NSSet		*	existingGuests	=	[managedShow Guests];
 			if (!guests || guests.length == 0 || [guests isEqualToString:@"NULL"])
 				guests						=	@"No Guest";
 			
@@ -519,6 +516,17 @@
 				{
 					for (NSString *guest in guestArray)
 					{
+						BOOL	exists	=	NO;
+						for (Guest *existingGuest in existingGuests)
+						{
+							if ([[existingGuest Guest] isEqualToString:guest])
+							{
+								exists	=	YES;
+								break;
+							}
+						}
+						if (exists)
+							continue;
 						Guest	*	managedGuest	=
 						(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
 															   inManagedObjectContext:showContext];
@@ -530,12 +538,24 @@
 			}
 			else
 			{
-				Guest	*	managedGuest	=
-				(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
-													   inManagedObjectContext:showContext];
-				[managedGuest addShowObject:managedShow];
-				[managedGuest setGuest:guests];
-				[managedShow addGuestsObject:managedGuest];
+				BOOL	exists	=	NO;
+				for (Guest *existingGuest in existingGuests)
+				{
+					if ([[existingGuest Guest] isEqualToString:guests])
+					{
+						exists	=	YES;
+						break;
+					}
+				}
+				if (!exists)
+				{
+					Guest	*	managedGuest	=
+					(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
+														   inManagedObjectContext:showContext];
+					[managedGuest addShowObject:managedShow];
+					[managedGuest setGuest:guests];
+					[managedShow addGuestsObject:managedGuest];
+				}
 			}
 			if (ID)
 			{
