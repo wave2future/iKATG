@@ -20,7 +20,7 @@
 #import "DataModel.h"
 
 @class Event, Show;
-@interface DataModel (Processing)
+@interface DataModel (Processing) <NetworkOperationDelegate>
 
 /******************************************************************************/
 #pragma mark -
@@ -58,6 +58,8 @@
 /******************************************************************************/
 - (void)processShowsList:(id)result count:(NSInteger)count;
 - (Show *)hasShow:(NSArray *)recentShows forID:(NSNumber *)ID;
+- (void)procesShowDetails:(NSDictionary *)details withID:(NSString *)ID;
+- (void)procesShowPictures:(NSArray *)pictures withID:(NSString *)ID;
 /******************************************************************************/
 #pragma mark -
 #pragma mark Twitter
@@ -73,7 +75,7 @@
 #pragma mark Image Get/Cache
 #pragma mark -
 /******************************************************************************/
-- (void)processGetImage:(NSData *)imgData forURL:(NSString *)url;
+- (void)processGetTwitterImage:(NSData *)imgData forURL:(NSString *)url;
 - (void)addToCache:(id<NSObject>)object key:(id)key;
 
 @end

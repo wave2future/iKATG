@@ -20,6 +20,7 @@
 
 #include <pthread.h>
 #include <AudioToolbox/AudioToolbox.h>
+#import "OrderedDictionary.h"
 
 #define LOG_QUEUED_BUFFERS 0
 
@@ -136,14 +137,14 @@ extern NSString * const ASStatusChangedNotification;
 	double seekTime;
 	double sampleRate;
 	double lastProgress;
+	
+	OrderedDictionary	*	bandwidthUse;
 }
 
 @property AudioStreamerErrorCode errorCode;
 @property (readonly) AudioStreamerState state;
 @property (readonly) double progress;
 @property (readwrite) UInt32 bitRate;
-
-
 
 - (id)initWithURL:(NSURL *)aURL;
 - (void)start;

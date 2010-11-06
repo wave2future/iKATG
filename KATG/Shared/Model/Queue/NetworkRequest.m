@@ -18,6 +18,7 @@
 //  
 
 #import "NetworkRequest.h"
+#import "NetworkCache.h"
 
 @interface NetworkRequest ()
 - (NSURLRequest *)initRequest;
@@ -34,7 +35,6 @@
 @synthesize	headerDict, bodyBufferDict, bodyDataArray, userInfo;
 @synthesize	requestType;
 @synthesize	request	=	_request, response	=	_response;
-@synthesize useCache;
 
 /******************************************************************************/
 #pragma mark -
@@ -56,7 +56,6 @@
 		bodyDataArray	=	nil;
 		userInfo		=	nil;
 		requestType		=	GET;
-		useCache		=	YES;
 		_request		=	nil;
 		_response		=	nil;
 		_connection		=	nil;
@@ -99,9 +98,13 @@
 		//	
 		//	Check cache for available data
 		//	
-		NSCachedURLResponse	*	cachedResponse	=	[[NSURLCache sharedURLCache] cachedResponseForRequest:_request];
+		//NSCachedURLResponse	*	cachedResponse	=	[[NSURLCache sharedURLCache] cachedResponseForRequest:_request];
+		NSCachedURLResponse	*	cachedResponse	=	[[NetworkCache sharedNetworkCache] cachedResponseForRequest:_request];
 		if (cachedResponse != nil && !cancelled)
 		{
+#if 1
+			NSLog(@"Response From Cache");
+#endif
 			_response	=	[[cachedResponse response] retain];
 			_data		=	[[cachedResponse data] retain];
 			if ([(NSObject *)self.delegate respondsToSelector:@selector(networkRequestDone:data:)])
@@ -363,17 +366,14 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 				  willCacheResponse:(NSCachedURLResponse *)cachedResponse
 
 {
-	NSCachedURLResponse	*	newCachedResponse	=	cachedResponse;
-	//	
-	//	Check if caching is on
-	//	
-	if (!useCache)
-		newCachedResponse						=	nil;
-	//	
-	//	Don't cache https
-	//	
-	if ([[[[cachedResponse response] URL] scheme] isEqual:@"https"])
-		newCachedResponse						=	nil;
+	// Don't cache https
+    NSCachedURLResponse	*	newCachedResponse	=	cachedResponse;
+    if ([[[[cachedResponse response] URL] scheme] isEqual:@"https"])
+        newCachedResponse						=	nil;
+	NetworkCache	*	cache					=	[NetworkCache sharedNetworkCache];
+	[cache storeCachedResponse:newCachedResponse 
+					forRequest:_request];
+	newCachedResponse	=	 nil;
 	return newCachedResponse;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection

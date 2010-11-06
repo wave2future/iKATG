@@ -103,8 +103,10 @@ void uncaughtExceptionHandler(NSException *exception)
              
              abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
              */
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
+#ifdef DEVELOPMENTBUILD
             abort();
+#endif
         } 
     }
 }
@@ -151,19 +153,19 @@ void uncaughtExceptionHandler(NSException *exception)
         if (persistentStoreCoordinator_ != nil)
             return persistentStoreCoordinator_;
         
-        NSString	*	defaultStorePath	=	[[NSBundle bundleForClass:[self class]] pathForResource:@"KATG" ofType:@"sqlite"];
+//        NSString	*	defaultStorePath	=	[[NSBundle bundleForClass:[self class]] pathForResource:@"KATG" ofType:@"sqlite"];
         NSString	*	storePath			=	[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"KATG.sqlite"];
         
         NSError		*	error;
-        if (![[NSFileManager defaultManager] fileExistsAtPath:storePath]) 
-        {
-            if ([[NSFileManager defaultManager] copyItemAtPath:defaultStorePath 
-														toPath:storePath 
-														 error:&error])
-                NSLog(@"Copied starting data to %@", storePath);
-            else 
-                NSLog(@"Error copying default DB to %@ (%@)", storePath, error);
-        }
+//        if (![[NSFileManager defaultManager] fileExistsAtPath:storePath]) 
+//        {
+//            if ([[NSFileManager defaultManager] copyItemAtPath:defaultStorePath 
+//														toPath:storePath 
+//														 error:&error])
+//                NSLog(@"Copied starting data to %@", storePath);
+//            else 
+//                NSLog(@"Error copying default DB to %@ (%@)", storePath, error);
+//        }
         
         NSURL		*	storeURL			=	[NSURL fileURLWithPath:storePath];
         
@@ -172,7 +174,7 @@ void uncaughtExceptionHandler(NSException *exception)
         NSDictionary	*	options			=	[NSDictionary dictionaryWithObjectsAndKeys:
 												 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
 												 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-        
+		
         if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType 
 													   configuration:nil URL:storeURL 
 															 options:options 
@@ -201,8 +203,19 @@ void uncaughtExceptionHandler(NSException *exception)
 			 Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
 			 
 			 */
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-			abort();
+			NSLog(@"PSC error %@, %@", error, [error userInfo]);
+			error	=	nil;
+			[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+			if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType 
+														   configuration:nil URL:storeURL 
+																 options:options 
+																   error:&error]) 
+			{
+				ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
+#ifdef DEVELOPMENTBUILD
+				abort();
+#endif
+			}
         }    
         
         return persistentStoreCoordinator_;

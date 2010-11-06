@@ -1,4 +1,3 @@
-.DS_Store
 .dropbox
 Icon?
 KATG Big/KATG Big.xcodeproj/hayroob.mode1v3
@@ -8,3 +7,10 @@ PSD Files/
 KATG Big/Classes/PushKeys.h
 KATG/build
 KATG/Shared/Push/PushKeys.h
+KATG/KATG.xcodeproj/Minitron.mode1v3
+KATG/KATG.xcodeproj/Minitron.pbxuser
+KATG/KATG.xcodeproj/hayroob.mode1v3
+KATG/KATG.xcodeproj/hayroob.pbxuser
+KATG/KATG.xcodeproj/doug.mode1v3
+KATG/KATG.xcodeproj/doug.pbxuser
+.DS_Store

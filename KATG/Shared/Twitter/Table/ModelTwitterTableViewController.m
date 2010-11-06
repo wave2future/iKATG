@@ -98,7 +98,7 @@
 			if ([rowURL isEqualToString:url])
 			{
 				TwitterTableViewCell	*	cell	=	(TwitterTableViewCell *)[self.tableView cellForRowAtIndexPath:path];
-				cell.userImageView.image			=	[model thumbForURL:url];
+				cell.userImageView.image			=	[model twitterImageForURL:url];
 				// To fade in image:
 				//[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
 				// To just pop in image: (one or the other not both)
@@ -137,7 +137,7 @@
 	NSString	*	userName	=	[[self.items objectAtIndex:indexPath.row] From];
 	if (userName)
 		cell.userNameLabel.text		=	[NSString stringWithFormat:@"@%@", userName];
-	cell.userImageView.image	=	[model thumbForURL:[[self.items objectAtIndex:indexPath.row] ImageURL]];
+	cell.userImageView.image	=	[model twitterImageForURL:[[self.items objectAtIndex:indexPath.row] ImageURL]];
 	cell.tweetTextLabel.text	=	[[self.items objectAtIndex:indexPath.row] Text];
 	NSInteger		timeSince	=	-[[[self.items objectAtIndex:indexPath.row] Date] timeIntervalSinceNow];
 	NSString	*	interval	=	@"s";

@@ -52,5 +52,7 @@
 /******************************************************************************/
 - (void)notifyTwitterSearchFeed:(NSArray *)result;
 - (void)notifyTwitterUserFeed:(NSArray *)result;
+- (void)notifyTwitterHashTagFeed:(NSArray *)result;
+- (void)notifyGetTwitterImageForURL:(NSString *)url;
 
 @end

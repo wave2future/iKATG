@@ -90,6 +90,21 @@
 }
 /******************************************************************************/
 #pragma mark -
+#pragma mark Shows
+#pragma mark -
+/******************************************************************************/
+- (void)notifyShowDetails:(NSString *)ID
+{
+	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
+	for (id delegate in dlgts)
+	{
+		if ([delegate respondsToSelector:@selector(showDetails:)])
+			[delegate showDetails:ID];
+	}
+	[dlgts release];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark Twitter
 #pragma mark -
 /******************************************************************************/
@@ -123,7 +138,7 @@
 	}
 	[dlgts release];
 }
-- (void)notifyGetImageForURL:(NSString *)url
+- (void)notifyGetTwitterImageForURL:(NSString *)url
 {
 	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
 	for (id delegate in dlgts)

@@ -79,7 +79,7 @@
 }
 - (void)updateFields
 {
-	self.imageView.image	=	[model thumbForURL:[item ImageURL]];
+	self.imageView.image	=	[model twitterImageForURL:[item ImageURL]];
 	self.fromLabel.text		=	[item From];
 	self.navigationItem.title	=	[item From];
 	[self.webView setText:[item WebViewText]];
@@ -151,7 +151,7 @@
 - (void)imageAvailableForURL:(NSString *)url
 {
 	if ([url isEqualToString:[item ImageURL]])
-		self.imageView.image	=	[model thumbForURL:[item ImageURL]];
+		self.imageView.image	=	[model twitterImageForURL:[item ImageURL]];
 }
 #pragma mark -
 #pragma mark Web View

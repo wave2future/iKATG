@@ -18,6 +18,7 @@
 //  
 
 #import "NetworkOperationQueue.h"
+#import "NetworkCache.h"
 
 @interface NetworkOperationQueue ()
 - (NSMutableArray *)_operations;
@@ -26,7 +27,8 @@
 @end
 
 @implementation NetworkOperationQueue
-@synthesize maxConcurrentOperationCount, suspended;
+@synthesize maxConcurrentOperationCount;
+@dynamic	suspended;
 
 /******************************************************************************/
 #pragma mark -
@@ -50,6 +52,7 @@
 	CleanRelease(_operations);
 	[_parseQueue cancelAllOperations];
 	CleanRelease(_parseQueue);
+	[[NetworkCache sharedNetworkCache] superRelease];
 	[super dealloc];
 }
 /******************************************************************************/
@@ -132,6 +135,15 @@
 #pragma mark The Business
 #pragma mark -
 /******************************************************************************/
+- (BOOL)suspended
+{
+	return suspended;
+}
+- (void)setSuspended:(BOOL)shouldSuspend
+{
+	suspended	=	shouldSuspend;
+	[self processQueue];
+}
 - (void)processQueue
 {
 	if (suspended)

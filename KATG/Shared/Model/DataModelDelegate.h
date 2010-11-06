@@ -40,6 +40,10 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
+- (void)showDetails:(NSString *)ID;
+//	
+//	/*UNREVISEDCOMMENT*/
+//	
 - (void)twitterSearchFeed:(NSArray *)tweets;
 //	
 //	/*UNREVISEDCOMMENT*/
@@ -52,6 +56,6 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
-- (void)imageAvailableForURL:(NSString *)url;
+- (void)twitterImageAvailableForURL:(NSString *)url;
 
 @end

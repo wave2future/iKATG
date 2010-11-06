@@ -13,9 +13,7 @@
 //	
 
 #import "AudioStreamer.h"
-#ifdef TARGET_OS_IPHONE
 #import <CFNetwork/CFNetwork.h>
-#endif
 
 #define LOG 1
 #define VERBOSE_ERRORS 1
@@ -45,6 +43,7 @@ NSString	*	const	AS_NETWORK_CONNECTION_FAILED_STRING				=	@"Network connection f
 NSString	*	const	AS_AUDIO_BUFFER_TOO_SMALL_STRING				=	@"Audio packets are larger than kAQBufSize.";
 
 @interface AudioStreamer ()
+
 @property (readwrite)	AudioStreamerState	state;
 - (void)handlePropertyChangeForFileStream:(AudioFileStreamID)inAudioFileStream
 					 fileStreamPropertyID:(AudioFileStreamPropertyID)inPropertyID
@@ -57,13 +56,13 @@ NSString	*	const	AS_AUDIO_BUFFER_TOO_SMALL_STRING				=	@"Audio packets are large
 							  buffer:(AudioQueueBufferRef)inBuffer;
 - (void)handlePropertyChangeForQueue:(AudioQueueRef)inAQ
 						  propertyID:(AudioQueuePropertyID)inID;
-#ifdef TARGET_OS_IPHONE
 - (void)handleInterruptionChangeToState:(AudioQueuePropertyID)inInterruptionState;
-#endif
 - (void)enqueueBuffer;
 - (void)handleReadFromStream:(CFReadStreamRef)aStream
 				   eventType:(CFStreamEventType)eventType;
+
 @end
+
 #pragma mark -
 #pragma mark Audio Callback Function Prototypes
 #pragma mark -
@@ -83,10 +82,9 @@ void MyPacketsProc(void			*					inClientData,
 				   const void	*					inInputData,
 				   AudioStreamPacketDescription	*	inPacketDescriptions);
 OSStatus MyEnqueueBuffer(AudioStreamer	*	myData);
-#ifdef TARGET_OS_IPHONE
 void MyAudioSessionInterruptionListener(void	*	inClientData,
 										UInt32		inInterruptionState);
-#endif
+
 #pragma mark -
 #pragma mark Audio Callback Function Implementations
 #pragma mark -
@@ -170,7 +168,6 @@ void MyAudioQueueIsRunningCallback(void		*			inUserData,
 	[streamer handlePropertyChangeForQueue:inAQ
 								propertyID:inID];
 }
-#ifdef TARGET_OS_IPHONE
 //	
 //	MyAudioSessionInterruptionListener
 //	
@@ -182,7 +179,7 @@ void MyAudioSessionInterruptionListener(void	*	inClientData,
 	AudioStreamer	*	streamer	=	(AudioStreamer *)inClientData;
 	[streamer handleInterruptionChangeToState:inInterruptionState];
 }
-#endif
+
 #pragma mark -
 #pragma mark CFReadStream Callback Function Implementations
 #pragma mark -
@@ -198,18 +195,14 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 						   CFStreamEventType	eventType,
 						   void		*			inClientInfo)
 {
-//	CFHTTPMessageRef		response	=	CFReadStreamCopyProperty(stream, kCFStreamPropertyHTTPResponseHeader);
-//	if (CFHTTPMessageIsHeaderComplete(response)) {
-//		CFDictionaryRef		header		=	CFHTTPMessageCopyAllHeaderFields(response);
-//		NSString		*	contentType	=	[[(NSDictionary *)header objectForKey:@"content-type"] retain];
-//		NSString		*	bR			=	[[(NSDictionary *)header objectForKey:@"icy-br"] retain];
-//		if (contentType)
-//			NSLog(@"%@ %@", contentType, bR);
-//		[contentType release];
-//		[bR release];
-//		CFRelease(header);
-//	}
-//	CFRelease(response);
+	//	CFHTTPMessageRef		response	=	CFReadStreamCopyProperty(aStream, kCFStreamPropertyHTTPResponseHeader);
+	//	if (CFHTTPMessageIsHeaderComplete(response)) {
+	//		CFDictionaryRef		header		=	CFHTTPMessageCopyAllHeaderFields(response);
+	//		NSLog(@"%@", (NSDictionary *)header);
+	//		CFRelease(header);
+	//	}
+	//	CFRelease(response);
+	
 	AudioStreamer	*	streamer	=	(AudioStreamer *)inClientInfo;
 	[streamer handleReadFromStream:aStream
 						 eventType:eventType];
@@ -227,7 +220,10 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 - (id)initWithURL:(NSURL *)aURL
 {
 	if ((self = [super init]))
-		url	=	[aURL retain];
+	{
+		url				=	[aURL retain];
+		bandwidthUse	=	[[OrderedDictionary alloc] init];
+	}
 	return self;
 }
 //	
@@ -240,6 +236,7 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 	[self stop];
 	[notificationCenter release];
 	[url release];
+	[bandwidthUse release];
 	[super dealloc];
 }
 //	
@@ -385,26 +382,11 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 			AudioQueueStop(audioQueue, true);
 		}
 		
-#ifdef TARGET_OS_IPHONE
 		BasicAlert(NSLocalizedStringFromTable(@"Audio Error", @"Errors", nil), 
 				   NSLocalizedStringFromTable([AudioStreamer stringForErrorCode:self.errorCode], @"Errors", nil), 
 				   nil, 
 				   @"OK", 
 				   nil);
-#else
-		NSAlert *alert =
-		[NSAlert
-		 alertWithMessageText:NSLocalizedString(@"Audio Error", @"")
-		 defaultButton:NSLocalizedString(@"OK", @"")
-		 alternateButton:nil
-		 otherButton:nil
-		 informativeTextWithFormat:[AudioStreamer stringForErrorCode:self.errorCode]];
-		[alert
-		 performSelector:@selector(runModal)
-		 onThread:[NSThread mainThread]
-		 withObject:nil
-		 waitUntilDone:NO];
-#endif
 	}
 }
 //	
@@ -474,9 +456,18 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 - (BOOL)isIdle
 {
 	if (state == AS_INITIALIZED)
-	{
 		return YES;
-	}
+	return NO;
+}
+//	
+//	isPaused
+//	
+//	returns YES if the AudioStream is in the AS_PAUSED state
+//	
+- (BOOL)isPaused
+{
+	if (state == AS_PAUSED)
+		return YES;
 	return NO;
 }
 
@@ -545,26 +536,11 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 									kCFStreamPropertyHTTPShouldAutoredirect,
 									kCFBooleanTrue) == false)
 		{
-#ifdef TARGET_OS_IPHONE
 			BasicAlert(NSLocalizedStringFromTable(@"File Error", @"Errors", nil), 
 					   NSLocalizedStringFromTable(@"Unable to configure network read stream.", @"Errors", nil), 
 					   nil, 
 					   @"OK", 
 					   nil);
-#else
-			NSAlert *alert =
-			[NSAlert
-			 alertWithMessageText:NSLocalizedStringFromTable(@"File Error", @"Errors", nil)
-			 defaultButton:NSLocalizedString(@"OK", @"")
-			 alternateButton:nil
-			 otherButton:nil
-			 informativeTextWithFormat:NSLocalizedStringFromTable(@"Unable to configure network read stream.", @"Errors", nil)];
-			[alert
-			 performSelector:@selector(runModal)
-			 onThread:[NSThread mainThread]
-			 withObject:nil
-			 waitUntilDone:NO];
-#endif
 			return NO;
 		}
 		
@@ -592,26 +568,11 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 		if (!CFReadStreamOpen(stream))
 		{
 			CFRelease(stream);
-#ifdef TARGET_OS_IPHONE
 			BasicAlert(NSLocalizedStringFromTable(@"File Error", @"Errors", nil), 
 					   NSLocalizedStringFromTable(@"Unable to configure network read stream.", @"Errors", nil), 
 					   nil, 
 					   @"OK", 
 					   nil);
-#else
-			NSAlert *alert =
-			[NSAlert
-			 alertWithMessageText:NSLocalizedStringFromTable(@"File Error", @"Errors", nil)
-			 defaultButton:NSLocalizedString(@"OK", @"")
-			 alternateButton:nil
-			 otherButton:nil
-			 informativeTextWithFormat:NSLocalizedStringFromTable(@"Unable to configure network read stream.", @"Errors", nil)];
-			[alert
-			 performSelector:@selector(runModal)
-			 onThread:[NSThread mainThread]
-			 withObject:nil
-			 waitUntilDone:NO];
-#endif
 			return NO;
 		}
 		
@@ -674,7 +635,6 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 			return;
 		}
 		
-#ifdef TARGET_OS_IPHONE			
 		//
 		// Set the audio session category so that we continue to play if the
 		// iPhone/iPod auto-locks.
@@ -688,7 +648,6 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 								 sizeof (sessionCategory),
 								 &sessionCategory);
 		AudioSessionSetActive(true);
-#endif
 		
 		self.state = AS_WAITING_FOR_DATA;
 		
@@ -772,9 +731,7 @@ cleanup:
 		pthread_mutex_destroy(&queueBuffersMutex);
 		pthread_cond_destroy(&queueBufferReadyCondition);
 		
-#ifdef TARGET_OS_IPHONE			
 		AudioSessionSetActive(false);
-#endif
 		
 		bytesFilled = 0;
 		packetsFilled = 0;
@@ -1015,8 +972,25 @@ cleanup:
 			}
 		}
 	}
+#define BANDWIDTHCAP 5000000 /*This should end up as 5000000*/
 	else if (eventType == kCFStreamEventHasBytesAvailable)
 	{
+		NSInteger	bytesUsedInLastFiveMinutes = 0;
+		NSInteger	timeMod10		=	(int)[[NSDate date] timeIntervalSince1970] / 10;
+		for (NSInteger i = 0; i < 30 /*change this to 30*/; i ++)
+		{
+			NSNumber * used = [bandwidthUse objectForKey:[NSString stringWithFormat:@"%d", timeMod10 - i]];
+			if (used)
+				bytesUsedInLastFiveMinutes += [used intValue];
+		}
+		//NSLog(@"Kilobytes used in last 5 minutes: %d", bytesUsedInLastFiveMinutes / 1024);
+		if (bytesUsedInLastFiveMinutes > BANDWIDTHCAP)
+		{
+			NSLog(@"Pause");
+			[self performSelector:@selector(restart) withObject:nil afterDelay:10];
+			return;
+		}
+		
 		UInt8 bytes[kAQBufSize];
 		CFIndex length;
 		@synchronized(self)
@@ -1043,6 +1017,14 @@ cleanup:
 			}
 		}
 		
+		NSString	*	bandwidthMod10	=	[NSString stringWithFormat:@"%d", timeMod10];
+		NSNumber	*	bytesUsed		=	[bandwidthUse objectForKey:bandwidthMod10];
+		if (bytesUsed)
+			bytesUsed					=	[NSNumber numberWithInt:([bytesUsed intValue] + length)];
+		else
+			bytesUsed					=	[NSNumber numberWithInt:length];
+		[bandwidthUse setObject:bytesUsed forKey:bandwidthMod10];
+		
 		if (discontinuous)
 		{
 			err = AudioFileStreamParseBytes(audioFileStream, length, bytes, kAudioFileStreamParseFlag_Discontinuity);
@@ -1062,6 +1044,18 @@ cleanup:
 			}
 		}
 	}
+}
+- (void)restart
+{
+	NSNotification	*	notification	=
+	[NSNotification notificationWithName:@"Paused" 
+								  object:[NSNumber numberWithBool:NO]];
+	[notificationCenter performSelector:@selector(postNotification:) 
+							   onThread:[NSThread mainThread]
+							 withObject:notification
+						  waitUntilDone:NO];
+	[self handleReadFromStream:stream
+					 eventType:kCFStreamEventHasBytesAvailable];
 }
 
 //
@@ -1260,6 +1254,21 @@ cleanup:
 				[self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
 				return;
 			}
+		}
+		else if (inPropertyID == kAudioFileStreamProperty_AudioDataByteCount)
+		{
+			UInt64 byteCount;
+			UInt32 byteCountSize = sizeof(byteCount);
+			err = AudioFileStreamGetProperty(inAudioFileStream, kAudioFileStreamProperty_AudioDataByteCount, &byteCountSize, &byteCount);
+			//if (err)
+			//{
+			//	NSLog(@"");
+			//}
+			//else 
+			//{
+			//	NSLog(@"");
+			//}
+			
 		}
 	}
 }
@@ -1547,7 +1556,6 @@ cleanup:
 	[pool release];
 }
 
-#ifdef TARGET_OS_IPHONE
 //
 // handleInterruptionChangeForQueue:propertyID:
 //
@@ -1568,6 +1576,5 @@ cleanup:
 		[self pause];
 	}
 }
-#endif
 
 @end

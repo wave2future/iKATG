@@ -17,6 +17,15 @@
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
+		917E90FB1285CBB400875294 /* NetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E90FA1285CBB400875294 /* NetworkCache.m */; };
+		C512DB4E12559EB6003D94BB /* PlayerController+Cellular.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DB4912559EB6003D94BB /* PlayerController+Cellular.m */; };
+		C512DB4F12559EB6003D94BB /* PlayerController+Wifi.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DB4B12559EB6003D94BB /* PlayerController+Wifi.m */; };
+		C512DB5012559EB6003D94BB /* PlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DB4D12559EB6003D94BB /* PlayerController.m */; };
+		C512DB921255A38D003D94BB /* PlayerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C512DB911255A38D003D94BB /* PlayerController.xib */; };
+		C512DBAE1255A69B003D94BB /* TitleBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DBAD1255A69B003D94BB /* TitleBarButton.m */; };
+		C512DC2F1255B21D003D94BB /* Pause.png in Resources */ = {isa = PBXBuildFile; fileRef = C512DC2D1255B21D003D94BB /* Pause.png */; };
+		C512DC301255B21D003D94BB /* Pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C512DC2E1255B21D003D94BB /* Pause@2x.png */; };
+		C512DCC71256AF91003D94BB /* Picture.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DCC61256AF91003D94BB /* Picture.m */; };
 		C53CCEE5124AF2130072D28A /* UIViewController+Nib.m in Sources */ = {isa = PBXBuildFile; fileRef = C53CCEE2124AF2130072D28A /* UIViewController+Nib.m */; };
 		C53CCEE6124AF2130072D28A /* UIWebView+SetText.m in Sources */ = {isa = PBXBuildFile; fileRef = C53CCEE4124AF2130072D28A /* UIWebView+SetText.m */; };
 		C53CD09D124B24C40072D28A /* Show.m in Sources */ = {isa = PBXBuildFile; fileRef = C53CD09C124B24C40072D28A /* Show.m */; };
@@ -33,6 +42,7 @@
 		C55B370612515A1400676D45 /* TwitterUserTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B370512515A1400676D45 /* TwitterUserTableViewController_iPad.m */; };
 		C55B3785125243F200676D45 /* TwitterHashTagTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B3784125243F200676D45 /* TwitterHashTagTableViewController.m */; };
 		C55B379E125244F100676D45 /* TwitterHashTagTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B379D125244F100676D45 /* TwitterHashTagTableViewController_iPad.m */; };
+		C56BDBAD1255413D002263CF /* ArrowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C56BDBAC1255413D002263CF /* ArrowButton.m */; };
 		C57A3CF91242997C00D6BA3B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A3CF81242997C00D6BA3B /* AudioToolbox.framework */; };
 		C57A3CFB1242997C00D6BA3B /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A3CFA1242997C00D6BA3B /* iAd.framework */; };
 		C57A3CFD1242997C00D6BA3B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A3CFC1242997C00D6BA3B /* QuartzCore.framework */; };
@@ -155,7 +165,6 @@
 		C57A40601242BBFC00D6BA3B /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A405F1242BBFC00D6BA3B /* AudioStreamer.m */; };
 		C57A41FF12431D0B00D6BA3B /* KATG.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C57A41FD12431D0B00D6BA3B /* KATG.xcdatamodeld */; };
 		C57A421112431D4800D6BA3B /* Guest.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A420B12431D4800D6BA3B /* Guest.m */; };
-		C57A421212431D4800D6BA3B /* Picture.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A420D12431D4800D6BA3B /* Picture.m */; };
 		C57A421312431D4800D6BA3B /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A420F12431D4800D6BA3B /* Event.m */; };
 		C57A421812431DBD00D6BA3B /* DataModel+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A421512431DBD00D6BA3B /* DataModel+Notifications.m */; };
 		C57A421912431DBD00D6BA3B /* DataModel+Processing.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A421712431DBD00D6BA3B /* DataModel+Processing.m */; };
@@ -229,6 +238,21 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* KATG_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KATG_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* KATG-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "KATG-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		917E90F91285CBB400875294 /* NetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkCache.h; sourceTree = "<group>"; };
+		917E90FA1285CBB400875294 /* NetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkCache.m; sourceTree = "<group>"; };
+		C512DB4812559EB6003D94BB /* PlayerController+Cellular.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayerController+Cellular.h"; sourceTree = "<group>"; };
+		C512DB4912559EB6003D94BB /* PlayerController+Cellular.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlayerController+Cellular.m"; sourceTree = "<group>"; };
+		C512DB4A12559EB6003D94BB /* PlayerController+Wifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayerController+Wifi.h"; sourceTree = "<group>"; };
+		C512DB4B12559EB6003D94BB /* PlayerController+Wifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlayerController+Wifi.m"; sourceTree = "<group>"; };
+		C512DB4C12559EB6003D94BB /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
+		C512DB4D12559EB6003D94BB /* PlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerController.m; sourceTree = "<group>"; };
+		C512DB911255A38D003D94BB /* PlayerController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerController.xib; sourceTree = "<group>"; };
+		C512DBAC1255A69B003D94BB /* TitleBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleBarButton.h; sourceTree = "<group>"; };
+		C512DBAD1255A69B003D94BB /* TitleBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleBarButton.m; sourceTree = "<group>"; };
+		C512DC2D1255B21D003D94BB /* Pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pause.png; sourceTree = "<group>"; };
+		C512DC2E1255B21D003D94BB /* Pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Pause@2x.png"; sourceTree = "<group>"; };
+		C512DCC51256AF91003D94BB /* Picture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Picture.h; sourceTree = "<group>"; };
+		C512DCC61256AF91003D94BB /* Picture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Picture.m; sourceTree = "<group>"; };
 		C53CCEE1124AF2130072D28A /* UIViewController+Nib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Nib.h"; sourceTree = "<group>"; };
 		C53CCEE2124AF2130072D28A /* UIViewController+Nib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Nib.m"; sourceTree = "<group>"; };
 		C53CCEE3124AF2130072D28A /* UIWebView+SetText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+SetText.h"; sourceTree = "<group>"; };
@@ -259,6 +283,8 @@
 		C55B3784125243F200676D45 /* TwitterHashTagTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterHashTagTableViewController.m; sourceTree = "<group>"; };
 		C55B379C125244F100676D45 /* TwitterHashTagTableViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterHashTagTableViewController_iPad.h; sourceTree = "<group>"; };
 		C55B379D125244F100676D45 /* TwitterHashTagTableViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterHashTagTableViewController_iPad.m; sourceTree = "<group>"; };
+		C56BDBAB1255413D002263CF /* ArrowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrowButton.h; sourceTree = "<group>"; };
+		C56BDBAC1255413D002263CF /* ArrowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArrowButton.m; sourceTree = "<group>"; };
 		C57A3CF81242997C00D6BA3B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C57A3CFA1242997C00D6BA3B /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		C57A3CFC1242997C00D6BA3B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -429,8 +455,6 @@
 		C57A41FE12431D0B00D6BA3B /* KATG.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = KATG.xcdatamodel; sourceTree = "<group>"; };
 		C57A420A12431D4800D6BA3B /* Guest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Guest.h; sourceTree = "<group>"; };
 		C57A420B12431D4800D6BA3B /* Guest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Guest.m; sourceTree = "<group>"; };
-		C57A420C12431D4800D6BA3B /* Picture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Picture.h; sourceTree = "<group>"; };
-		C57A420D12431D4800D6BA3B /* Picture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Picture.m; sourceTree = "<group>"; };
 		C57A420E12431D4800D6BA3B /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		C57A420F12431D4800D6BA3B /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		C57A421412431DBD00D6BA3B /* DataModel+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DataModel+Notifications.h"; path = "Shared/Model/DataModel+Notifications.h"; sourceTree = "<group>"; };
@@ -632,6 +656,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C512DB4712559EB6003D94BB /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				C512DB4C12559EB6003D94BB /* PlayerController.h */,
+				C512DB4D12559EB6003D94BB /* PlayerController.m */,
+				C512DB911255A38D003D94BB /* PlayerController.xib */,
+				C512DB4812559EB6003D94BB /* PlayerController+Cellular.h */,
+				C512DB4912559EB6003D94BB /* PlayerController+Cellular.m */,
+				C512DB4A12559EB6003D94BB /* PlayerController+Wifi.h */,
+				C512DB4B12559EB6003D94BB /* PlayerController+Wifi.m */,
+			);
+			name = Player;
+			path = Shared/Player;
+			sourceTree = "<group>";
+		};
 		C53CCEE0124AF2130072D28A /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -825,6 +864,8 @@
 				C57A3DB612429A5800D6BA3B /* LoadStage2@2x.png */,
 				C57A3DB712429A5800D6BA3B /* LoadStage3.png */,
 				C57A3DB812429A5800D6BA3B /* LoadStage3@2x.png */,
+				C512DC2D1255B21D003D94BB /* Pause.png */,
+				C512DC2E1255B21D003D94BB /* Pause@2x.png */,
 				C57A3DB912429A5800D6BA3B /* Play.png */,
 				C57A3DBA12429A5800D6BA3B /* Play@2x.png */,
 				C57A3DBB12429A5800D6BA3B /* Stop.png */,
@@ -905,6 +946,7 @@
 				C585CBDD124BD4C900F56AE8 /* OnAir */,
 				C585CC11124BD59700F56AE8 /* Events */,
 				C585CC08124BD59700F56AE8 /* Archive */,
+				C512DB4712559EB6003D94BB /* Player */,
 				C585CC1C124BD59700F56AE8 /* Twitter */,
 				C585CBDA124BD4C900F56AE8 /* MobalWeb */,
 			);
@@ -984,6 +1026,10 @@
 				C57A402C1242BB7000D6BA3B /* RoundedView.m */,
 				C57A3F151242AB9E00D6BA3B /* GradButton.h */,
 				C57A3F161242AB9E00D6BA3B /* GradButton.m */,
+				C56BDBAB1255413D002263CF /* ArrowButton.h */,
+				C56BDBAC1255413D002263CF /* ArrowButton.m */,
+				C512DBAC1255A69B003D94BB /* TitleBarButton.h */,
+				C512DBAD1255A69B003D94BB /* TitleBarButton.m */,
 				C57A3F171242AB9E00D6BA3B /* OrderedDictionary.h */,
 				C57A3F181242AB9E00D6BA3B /* OrderedDictionary.m */,
 			);
@@ -1095,6 +1141,8 @@
 			children = (
 				C57A3F711242AC5100D6BA3B /* NetworkOperationQueue.h */,
 				C57A3F721242AC5100D6BA3B /* NetworkOperationQueue.m */,
+				917E90F91285CBB400875294 /* NetworkCache.h */,
+				917E90FA1285CBB400875294 /* NetworkCache.m */,
 				C57A3F701242AC5100D6BA3B /* NetworkOperationDelegate.h */,
 				C57A3F6E1242AC5000D6BA3B /* NetworkOperation.h */,
 				C57A3F6F1242AC5100D6BA3B /* NetworkOperation.m */,
@@ -1313,9 +1361,9 @@
 		C585CC39124BD63A00F56AE8 /* OnAir */ = {
 			isa = PBXGroup;
 			children = (
-				C585CC3A124BD63A00F56AE8 /* OnAirView_iPhone.xib */,
 				C585CC3B124BD63A00F56AE8 /* OnAirViewController_iPhone.h */,
 				C585CC3C124BD63A00F56AE8 /* OnAirViewController_iPhone.m */,
+				C585CC3A124BD63A00F56AE8 /* OnAirView_iPhone.xib */,
 			);
 			path = OnAir;
 			sourceTree = "<group>";
@@ -1574,6 +1622,9 @@
 				C55B36E012513D2C00676D45 /* TwitterDetailView_iPad.xib in Resources */,
 				C5F6B17B1252AEC800905096 /* KATG.sqlite in Resources */,
 				C5F6B27B1252F82200905096 /* ArchiveDetailView_iPhone.xib in Resources */,
+				C512DB921255A38D003D94BB /* PlayerController.xib in Resources */,
+				C512DC2F1255B21D003D94BB /* Pause.png in Resources */,
+				C512DC301255B21D003D94BB /* Pause@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1630,7 +1681,6 @@
 				C57A40321242BB7000D6BA3B /* RoundedView.m in Sources */,
 				C57A40601242BBFC00D6BA3B /* AudioStreamer.m in Sources */,
 				C57A421112431D4800D6BA3B /* Guest.m in Sources */,
-				C57A421212431D4800D6BA3B /* Picture.m in Sources */,
 				C57A421312431D4800D6BA3B /* Event.m in Sources */,
 				C57A421812431DBD00D6BA3B /* DataModel+Notifications.m in Sources */,
 				C57A421912431DBD00D6BA3B /* DataModel+Processing.m in Sources */,
@@ -1679,6 +1729,13 @@
 				C55B379E125244F100676D45 /* TwitterHashTagTableViewController_iPad.m in Sources */,
 				C5F6B2181252E03C00905096 /* TwitterHashTagTableViewController_iPhone.m in Sources */,
 				C5F6B23B1252E59300905096 /* ArchiveDetailViewController.m in Sources */,
+				C56BDBAD1255413D002263CF /* ArrowButton.m in Sources */,
+				C512DB4E12559EB6003D94BB /* PlayerController+Cellular.m in Sources */,
+				C512DB4F12559EB6003D94BB /* PlayerController+Wifi.m in Sources */,
+				C512DB5012559EB6003D94BB /* PlayerController.m in Sources */,
+				C512DBAE1255A69B003D94BB /* TitleBarButton.m in Sources */,
+				C512DCC71256AF91003D94BB /* Picture.m in Sources */,
+				917E90FB1285CBB400875294 /* NetworkCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1827,14 +1884,14 @@
 			isa = XCVersionGroup;
 			children = (
 				C57A41FE12431D0B00D6BA3B /* KATG.xcdatamodel */,
+				C57A420E12431D4800D6BA3B /* Event.h */,
+				C57A420F12431D4800D6BA3B /* Event.m */,
 				C53CD09B124B24C40072D28A /* Show.h */,
 				C53CD09C124B24C40072D28A /* Show.m */,
 				C57A420A12431D4800D6BA3B /* Guest.h */,
 				C57A420B12431D4800D6BA3B /* Guest.m */,
-				C57A420C12431D4800D6BA3B /* Picture.h */,
-				C57A420D12431D4800D6BA3B /* Picture.m */,
-				C57A420E12431D4800D6BA3B /* Event.h */,
-				C57A420F12431D4800D6BA3B /* Event.m */,
+				C512DCC51256AF91003D94BB /* Picture.h */,
+				C512DCC61256AF91003D94BB /* Picture.m */,
 			);
 			currentVersion = C57A41FE12431D0B00D6BA3B /* KATG.xcdatamodel */;
 			name = KATG.xcdatamodeld;

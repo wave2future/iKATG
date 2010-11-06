@@ -32,30 +32,23 @@
 - (id)init
 {
 	if (self = [super init])
-	{
 		[self setup];
-	}
 	return self;
 }
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	if (self = [super initWithCoder:aDecoder])
-	{
 		[self setup];
-	}
 	return self;
 }
 - (id)initWithFrame:(CGRect)frame
 {
 	if (self = [super initWithFrame:frame])
-	{
 		[self setup];
-	}
 	return self;
 }
-- (void)setup
+- (void)awakeFromNib
 {
-	gradient					=	nil;
 	self.layer.cornerRadius		=	10.0;
 	self.layer.borderWidth		=	2.0;
 	self.layer.masksToBounds	=	YES;
@@ -63,30 +56,33 @@
 											   green:(CGFloat)(85.0/255.0) 
 												blue:(CGFloat)(0.0/255.0) 
 											   alpha:0.7] CGColor];
+	if (!gradient)
+	{
+		gradient			=	[[CAGradientLayer layer] retain];
+		gradient.colors		=	[NSArray arrayWithObjects:
+								 (id)[[UIColor colorWithRed:(CGFloat)(121.0/255.0) 
+													  green:(CGFloat)(171.0/255.0) 
+													   blue:(CGFloat)(6.0/255.0) 
+													  alpha:1.0] CGColor],
+								 (id)[[UIColor colorWithRed:(CGFloat)(19.0/255.0) 
+													  green:(CGFloat)(90.0/255.0) 
+													   blue:(CGFloat)(0.0/255.0) 
+													  alpha:1.0] CGColor],
+								 (id)[[UIColor colorWithRed:(CGFloat)(52.0/255.0) 
+													  green:(CGFloat)(121.0/255.0) 
+													   blue:(CGFloat)(4.0/255.0) 
+													  alpha:1.0] CGColor], nil];
+		[self.layer insertSublayer:gradient atIndex:0];
+	}
+}
+- (void)setup
+{
+	gradient	=	nil;
 }
 - (void)drawRect:(CGRect)rect
 {
 	[super drawRect:rect];
-	[self.layer removeAllAnimations];
-	if (gradient == nil)
-	{
-		gradient	=	[[CAGradientLayer layer] retain];
-		gradient.colors					=	[NSArray arrayWithObjects:
-											 (id)[[UIColor colorWithRed:(CGFloat)(121.0/255.0) 
-																  green:(CGFloat)(171.0/255.0) 
-																   blue:(CGFloat)(6.0/255.0) 
-																  alpha:1.0] CGColor],
-											 (id)[[UIColor colorWithRed:(CGFloat)(19.0/255.0) 
-																  green:(CGFloat)(90.0/255.0) 
-																   blue:(CGFloat)(0.0/255.0) 
-																  alpha:1.0] CGColor],
-											 (id)[[UIColor colorWithRed:(CGFloat)(52.0/255.0) 
-																  green:(CGFloat)(121.0/255.0) 
-																   blue:(CGFloat)(4.0/255.0) 
-																  alpha:1.0] CGColor], nil];
-		[self.layer insertSublayer:gradient atIndex:0];
-	}
-	gradient.frame					=	self.bounds;
+	gradient.frame	=	self.bounds;
 }
 #pragma mark -
 #pragma mark Cleanup

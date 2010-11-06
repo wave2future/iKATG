@@ -21,16 +21,62 @@
 #import "Show.h"
 #import "Guest.h"
 #import "RoundedView.h"
+#import "PlayerController.h"
+#import "TitleBarButton.h"
+#import "ArrowButton.h"
 
 @implementation ArchiveDetailViewController
 @synthesize show;
 @synthesize showTitleLabel, showNumberLabel, showGuestsLabel, showNotesTextView;
 @synthesize	showNotesContainer;
 
+/******************************************************************************/
+#pragma mark -
+#pragma mark 
+#pragma mark -
+/******************************************************************************/
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
 	[self updateFields];
+	[model showDetails:[NSString stringWithFormat:@"%@", show.ID]];
+	[model showPictures:[NSString stringWithFormat:@"%@", show.ID]];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	if ([PlayerController sharedPlayerController].player != nil ||
+		[PlayerController sharedPlayerController].streamer != nil )
+	{
+		TitleBarButton	*	button	=
+		[[TitleBarButton alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+		[button setTitle:@"Now Playing" forState:UIControlStateNormal];
+		[button addTarget:self 
+				   action:@selector(presentPlayer) 
+		 forControlEvents:UIControlEventTouchUpInside];
+		self.navigationItem.titleView	=	button;
+		[button release];
+	}
+	else
+	{
+		TitleBarButton	*	button	=
+		[[TitleBarButton alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+		[button setTitle:@"Play Episode" forState:UIControlStateNormal];
+		[button addTarget:self 
+				   action:@selector(playButtonPressed:) 
+		 forControlEvents:UIControlEventTouchUpInside];
+		self.navigationItem.titleView	=	button;
+		[button release];
+	}
+	
+	ArrowButton	*	picButton	=
+	[[ArrowButton alloc] initWithFrame:CGRectMake(0, 0, 70, 30)];
+	[picButton setTitle:@"Pictures" forState:UIControlStateNormal];
+	UIBarButtonItem	*	picBarButton	=
+	[[UIBarButtonItem alloc] initWithCustomView:picButton];
+	self.navigationItem.rightBarButtonItem	=	picBarButton;
+	[picBarButton release];
+	[picButton release];
 }
 - (void)viewDidUnload 
 {
@@ -41,6 +87,11 @@
 	self.showNotesContainer	=	nil;
 	self.showNotesTextView	=	nil;
 }
+/******************************************************************************/
+#pragma mark -
+#pragma mark 
+#pragma mark -
+/******************************************************************************/
 - (void)dealloc
 {
 	[showTitleLabel release];
@@ -49,6 +100,16 @@
 	[showNotesContainer release];
 	[showNotesTextView release];
 	[super dealloc];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark 
+#pragma mark -
+/******************************************************************************/
+- (void)showDetails:(NSString *)ID
+{
+	if ([ID isEqualToString:[NSString stringWithFormat:@"%@", show.ID]])
+		[self updateFields];
 }
 - (void)updateFields
 {
@@ -69,5 +130,27 @@
 	if ([self.show Notes])
 		self.showNotesTextView.text	=	[self.show Notes];
 }
-
+/******************************************************************************/
+#pragma mark -
+#pragma mark 
+#pragma mark -
+/******************************************************************************/
+- (IBAction)playButtonPressed:(id)sender
+{
+	if ([self.show URL])
+		[self presentPlayer:[NSURL URLWithString:[self.show URL]]];
+}
+- (void)presentPlayer:(NSURL *)URL
+{
+	[self presentPlayer];
+	[[PlayerController sharedPlayerController] preparePlayer:URL];
+	[PlayerController sharedPlayerController].titleLabel.text	=	[self.show Title];
+	//[[PlayerController sharedPlayerController].textView setText:[self.show Notes]];
+}
+- (void)presentPlayer
+{
+	PlayerController	*	viewController	=	[PlayerController sharedPlayerController];
+	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;
+	[self presentModalViewController:viewController animated:YES];
+}
 @end

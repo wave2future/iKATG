@@ -24,7 +24,8 @@
 #import "Event.h"
 
 @implementation DataModel
-@synthesize delegates, connected;
+@synthesize delegates;
+@synthesize connected, connectionType;
 @synthesize managedObjectContext;
 @synthesize twitterSearchRefreshURL, twitterExtendedSearchRefreshURL, twitterHashSearchRefreshURL;
 @dynamic	formatter, dayFormatter, dateFormatter, timeFormatter, twitterSearchFormatter, twitterUserFormatter;
@@ -134,6 +135,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	NSArray		*	fetchResults	=
 	[self.managedObjectContext executeFetchRequest:request 
 											 error:&error];
+	if (error)
+	{
+		//ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
+#ifdef DEVELOPMENTBUILD
+		//abort();
+#endif
+	}	
 	[request release];
 	
 	Event		*	nextShowEvent	=	nil;
@@ -322,7 +330,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	{
 		NSInteger	days		=	[start timeIntervalSinceDate:[NSDate date]] / -(60 /*Seconds*/ * 60 /*Minutes*/ * 24 /*Hours*/);
 		op.requestType			=	POST;
-		op.bodyBufferDict		=	[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%d", days] forKey:@"ShowCount"];
+		op.bodyBufferDict		=	[NSDictionary dictionaryWithObjectsAndKeys:
+									 [NSString stringWithFormat:@"%d", days], @"ShowCount", nil];
 	}
 	op.parseType				=	ParseXML;
 	op.xPath					=	kShowArchivesXPath;
@@ -334,23 +343,45 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 }
 - (void)showDetails:(NSString *)ID
 {
+	NSParameterAssert([ID isKindOfClass:[NSString class]]);
 	//	
 	//	Update given show with details
 	//	
-//	DataOperation	*	op	=	[[DataOperation alloc] init];
-//	[op setDelegate:self];
-//	// Object setters are (nonatomic, copy)
-//	[op setCode:kShowDetailsCode];
-//	[op setURI:kShowDetailsURIAddress];
-//	NSDictionary	*	bufferDict	=
-//	[NSDictionary dictionaryWithObjectsAndKeys:
-//	 [[ID copy] autorelease],	kShowIDKey, nil];
-//	[op setBufferDict:bufferDict];
-//	if (connected)
-//		[operationQueue addOperation:op];
-//	else
-//		[delayedOperations addObject:op];
-//	[op release];
+	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+	op.delegate					=	self;
+	op.instanceCode				=	kShowDetailsCode;
+	op.URI						=	kShowDetailsURIAddress;
+	op.requestType				=	POST;
+	op.bodyBufferDict			=	[NSDictionary dictionaryWithObjectsAndKeys:
+									 [[ID copy] autorelease], kShowIDKey, nil];
+	op.parseType				=	ParseXML;
+	op.xPath					=	kShowDetailsXPath;
+	if (connected)
+		[operationQueue addOperation:op];
+	else
+		[delayedOperations addObject:op];
+	[op release];
+}
+- (void)showPictures:(NSString *)ID
+{
+	NSParameterAssert([ID isKindOfClass:[NSString class]]);
+	//	
+	//	Update given show with details
+	//	
+	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+	op.delegate					=	self;
+	op.instanceCode				=	kShowPicturesCode;
+	op.URI						=	kShowPicturesURIAddress;
+	op.requestType				=	POST;
+	op.bodyBufferDict			=	[NSDictionary dictionaryWithObjectsAndKeys:
+									 [[ID copy] autorelease], kShowIDKey, nil];
+	op.parseType				=	ParseXML;
+	op.xPath					=	kShowPicturesXPath;
+	if (connected)
+		[operationQueue addOperation:op];
+	else
+		[delayedOperations addObject:op];
+	[op release];
 }
 /******************************************************************************/
 #pragma mark -
@@ -438,195 +469,47 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 		[delayedOperations addObject:op];
 	[op release];
 }
-- (UIImage *)thumbForURL:(NSString *)url
+- (UIImage *)twitterImageForURL:(NSString *)url
 {
-	//	
-	//	/*UNREVISEDCOMMENTS*/
-	//	
-	return [self getImage:@"48" url:url];
-}
-- (UIImage *)getImage:(NSString *)key url:(NSString *)url
-{
+	NSParameterAssert((url != nil));
+	NSParameterAssert([url isKindOfClass:[NSString class]]);
+	NSParameterAssert((url.length != 0));
 	//	
 	//  /*UNREVISEDCOMMENTS*/
 	//	
-	if (url)
+	NSData	*	imageData	=	[pictureCacheDictionary objectForKey:url];
+	if (imageData)
 	{
-		NSDictionary	*	imageDict	=	[pictureCacheDictionary objectForKey:url];
-		if (imageDict)
+		UIImage		*	image	=	[UIImage imageWithData:imageData];
+		if (image)
 		{
-			UIImage		*	image		=	[UIImage imageWithData:[imageDict objectForKey:key]];
+			CGFloat		scale	=	[[UIScreen mainScreen] scale];
+			if (scale != 1.0)
+				image			=	[UIImage imageWithCGImage:image.CGImage scale:scale orientation:0];
 			if (image)
-			{
-				CGFloat			scale	=	1.0;
-				if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] &&
-					[UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)])
-				{
-					scale				=	[[UIScreen mainScreen] scale];
-					image				=	[UIImage imageWithCGImage:image.CGImage scale:scale orientation:0];
-				}
-				if (image)
-					return image;
-			}
-		}
-		
-		BOOL				inQueue		=	NO;
-		for (NetworkOperation *anOp in [operationQueue operations])
-		{
-			if ([[anOp baseURL] isEqualToString:url])
-				inQueue					=	YES;
-		}
-		
-		if (!inQueue)
-		{
-			NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
-			op.delegate					=	self;
-			// Object setters are (nonatomic, copy)
-			op.instanceCode				=	kGetImageCode;
-			op.baseURL					=	url;
-			if (connected)
-				[operationQueue addOperation:op];
-			else
-				[delayedOperations addObject:op];
-			[op release];
+				return image;
 		}
 	}
-	else
+	BOOL			inQueue		=	NO;
+	for (NetworkOperation *anOp in [operationQueue operations])
 	{
-		ESLog(@"URL missed for getImageForURL");
+		if ([[anOp baseURL] isEqualToString:url])
+			inQueue					=	YES;
 	}
 	
+	if (!inQueue)
+	{
+		NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+		op.delegate					=	self;
+		op.instanceCode				=	kGetTwitterImageCode;
+		op.baseURL					=	url;
+		if (connected)
+			[operationQueue addOperation:op];
+		else
+			[delayedOperations addObject:op];
+		[op release];
+	}
 	return nil;
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Network Operation Delegate
-#pragma mark -
-/******************************************************************************/
-- (void)networkOperationDidComplete:(NetworkOperation *)operation withResult:(id)result
-{
-	//	
-	//	switch on instance code and or connectionID and forward results to wherever it should go
-	//	
-	switch (operation.instanceCode)
-	{
-		case kLiveShowStatusCode:
-			NSParameterAssert([result isKindOfClass:[NSArray class]]);
-			NSParameterAssert(([(NSArray *)result count] == 1));
-			if ([(NSArray *)result count] > 0)
-				[self processLiveShowStatus:[(NSArray *)result objectAtIndex:0]];
-			break;
-		case kFeedbackCode:
-			
-			break;
-		case kChatLoginPhaseOneCode:
-			NSParameterAssert([result isKindOfClass:[NSData class]]);
-			NSParameterAssert(([operation.userInfo objectForKey:@"Username"] != nil));
-			NSParameterAssert(([operation.userInfo objectForKey:@"password"] != nil));
-			[self processChatLoginPhaseOne:[[result copy] autorelease] 
-								  userName:[operation.userInfo objectForKey:@"Username"] 
-								  password:[operation.userInfo objectForKey:@"password"]];
-			break;
-		case kChatLoginPhaseTwoCode:
-			NSParameterAssert([result isKindOfClass:[NSData class]]);
-			[self processChatLoginPhaseTwo:[[result copy] autorelease]];
-			break;
-		case kChatStartCodePhaseOne:
-			NSParameterAssert([result isKindOfClass:[NSData class]]);
-			[self processChatStartPhaseOne:result];
-			break;
-		case kChatStartCodePhaseTwo:
-			NSParameterAssert([result isKindOfClass:[NSData class]]);
-			[self processChatStartPhaseTwo:result];
-			break;
-		case kChatPollingCode:
-			
-			break;
-		case kEventsListCode:
-			NSParameterAssert([result isKindOfClass:[NSArray class]]);
-			NSParameterAssert(([(NSArray *)result count] > 0));
-			if ([(NSArray *)result count] > 0)
-				[self processEvents:result];
-			break;
-		case kShowArchivesCode:
-			NSParameterAssert([result isKindOfClass:[NSArray class]]);
-			NSParameterAssert(([(NSArray *)result count] > 0));
-			if ([(NSArray *)result count] > 0)
-				[self processShowsList:result count:[[operation.bodyBufferDict objectForKey:@"ShowCount"] intValue]];
-			break;
-		case kShowDetailsCode:
-			
-			break;
-		case kTwitterSearchCode:
-			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
-			[self processTwitterSearchFeed:result];
-			break;
-		case kTwitterUserFeedCode:
-			NSParameterAssert([result isKindOfClass:[NSArray class]] || result == nil);
-			if (result == nil)
-			{
-				[self notifyError:[NSError errorWithDomain:[NSString stringWithFormat:
-															@"Twitter User @%@ Timeline Not Available", 
-															[operation.userInfo objectForKey:@"userName"]] 
-													  code:kTwitterUserFeedCode 
-												  userInfo:nil] 
-						  display:YES];
-				break;
-			}
-			[self processTwitterUserFeed:result user:[operation.userInfo objectForKey:@"userName"]];
-			break;
-		case kTwitterHashTagCode:
-			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
-			[self processTwitterHashTagFeed:result];
-			break;
-		case kGetImageCode:
-			NSParameterAssert([result isKindOfClass:[NSData class]]);
-			[self processGetImage:(NSData *)result forURL:operation.baseURL];
-			break;
-		default:
-			break;
-	}
-}
-- (void)networkOperationDidFail:(NetworkOperation *)operation withError:(NSError *)error
-{
-	//	
-	//	switch on instance code and or connectionID and forward error to wherever it should go
-	//	
-	switch (operation.instanceCode)
-	{
-		case kLiveShowStatusCode:
-			
-			break;
-		case kFeedbackCode:
-			
-			break;
-		case kChatLoginPhaseOneCode:
-			
-			break;
-		case kChatLoginPhaseTwoCode:
-			
-			break;
-		case kChatStartCodePhaseOne:
-			
-			break;
-		case kChatStartCodePhaseTwo:
-			
-			break;
-		case kChatPollingCode:
-			
-			break;
-		case kEventsListCode:
-			
-			break;
-		case kShowArchivesCode:
-			
-			break;
-		case kShowDetailsCode:
-			
-			break;
-		default:
-			break;
-	}
 }
 
 @end

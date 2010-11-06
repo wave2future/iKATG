@@ -23,7 +23,7 @@
 @class Show, RoundedView;
 @interface ArchiveDetailViewController : ModelViewController 
 {
-	Show	*	show;
+	Show			*	show;
 	UILabel			*	showTitleLabel;
 	UILabel			*	showNumberLabel;
 	UILabel			*	showGuestsLabel;
@@ -31,7 +31,7 @@
 	UITextView		*	showNotesTextView;
 }
 
-@property (nonatomic, assign)	Show	*	show;
+@property (nonatomic, assign)				Show			*	show;
 
 @property (nonatomic, retain)	IBOutlet	UILabel			*	showTitleLabel;
 @property (nonatomic, retain)	IBOutlet	UILabel			*	showNumberLabel;

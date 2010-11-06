@@ -41,7 +41,7 @@
 }
 - (NSString *)linkColor
 {
-	return @"#438a23";
+	return @"#333";//this is the wrong color
 }
 - (NSString *)linkSize
 {

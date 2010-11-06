@@ -2,7 +2,7 @@
 //  Picture.m
 //  KATG
 //
-//  Created by Doug Russell on 9/16/10.
+//  Created by Doug Russell on 10/1/10.
 //  Copyright 2010 Everything Solution. All rights reserved.
 //
 
@@ -12,11 +12,13 @@
 
 @implementation Picture 
 
+@dynamic ShowID;
 @dynamic Data;
+@dynamic ThumbURL;
+@dynamic ThumbData;
+@dynamic Title;
 @dynamic URL;
 @dynamic Description;
-@dynamic Title;
-@dynamic ShowID;
-@dynamic newRelationship;
+@dynamic Show;
 
 @end

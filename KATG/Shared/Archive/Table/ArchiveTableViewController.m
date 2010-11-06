@@ -23,6 +23,7 @@
 #import "Show.h"
 #import "Guest.h"
 #import "UIViewController+Nib.h"
+#import "PlayerController.h"
 
 @interface ArchiveTableViewController ()
 - (void)decorateCell:(ArchiveTableViewCell *)cell 
@@ -45,6 +46,24 @@
 	//	Retrieve shows list from web api
 	//	
 	[model shows];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	if ([PlayerController sharedPlayerController].player != nil ||
+		[PlayerController sharedPlayerController].streamer != nil )
+	{
+		UIBarButtonItem	*	button	=
+		[[UIBarButtonItem alloc] 
+		 initWithTitle:@"Now Playing"
+		 style:UIBarButtonItemStyleBordered 
+		 target:self 
+		 action:@selector(presentPlayer)];
+		self.navigationItem.rightBarButtonItem	=	button;
+		[button release];
+	}
+	else
+		self.navigationItem.rightBarButtonItem	=	nil;
 }
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -85,7 +104,8 @@
 #pragma mark Table View Data Source
 #pragma mark -
 /******************************************************************************/
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+- (UITableViewCell *)tableView:(UITableView *)tableView 
+		 cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	static NSString	*	CellIdentifier	=	@"ArchiveTableViewCell";
     static NSString	*	CellNibName		=	@"ArchiveTableViewCell";
@@ -96,7 +116,8 @@
 	[self decorateCell:cell withIndexPath:indexPath];
 	return cell;
 }
-- (void)decorateCell:(ArchiveTableViewCell *)cell withIndexPath:(NSIndexPath *)indexPath
+- (void)decorateCell:(ArchiveTableViewCell *)cell 
+	   withIndexPath:(NSIndexPath *)indexPath
 {
 	// Get Show Object
 	Show			*	show	=	(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -187,30 +208,30 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)setPredicateForSearchText:(NSString*)searchText 
 							scope:(NSInteger)scope
 {
-	[NSFetchedResultsController deleteCacheWithName:@"archives"];
-	NSPredicate	*	predicate	=	nil;
-	switch (scope) {
-		case 1: //title
-			predicate	=	[NSPredicate predicateWithFormat:@"Title contains[cd] %@", searchText];
-			break;
-		case 2: //guests
-			predicate	=	[NSPredicate predicateWithFormat:@"Guests.Guest contains[cd] %@", searchText];
-			break;
-		case 3://number
-			predicate	=	[NSPredicate predicateWithFormat:@"Number == %@", searchText];
-			break;
-		case 0: //all
-		default:
-			predicate	=	[NSPredicate predicateWithFormat:@"Title contains[cd] %@ or Guests.Guest contains[cd] %@ or Number == %@", searchText, searchText, searchText];
-			break;
-	}
-	[self.fetchedResultsController.fetchRequest setPredicate:predicate];
-	NSError *error = nil;
-    if (![self.fetchedResultsController performFetch:&error]) {
-        // Handle error
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        exit(-1);  // Fail
-    } 
+//	[NSFetchedResultsController deleteCacheWithName:@"archives"];
+//	NSPredicate	*	predicate	=	nil;
+//	switch (scope) {
+//		case 1: //title
+//			predicate	=	[NSPredicate predicateWithFormat:@"Title contains[cd] %@", searchText];
+//			break;
+//		case 2: //guests
+//			predicate	=	[NSPredicate predicateWithFormat:@"Guests.Guest contains[cd] %@", searchText];
+//			break;
+//		case 3://number
+//			predicate	=	[NSPredicate predicateWithFormat:@"Number == %@", searchText];
+//			break;
+//		case 0: //all
+//		default:
+//			predicate	=	[NSPredicate predicateWithFormat:@"Title contains[cd] %@ or Guests.Guest contains[cd] %@ or Number == %@", searchText, searchText, searchText];
+//			break;
+//	}
+//	[self.fetchedResultsController.fetchRequest setPredicate:predicate];
+//	NSError *error = nil;
+//    if (![self.fetchedResultsController performFetch:&error]) {
+//        // Handle error
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        exit(-1);  // Fail
+//    }
 }
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
 {
@@ -222,6 +243,17 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         exit(-1);  // Fail
     }
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark 
+#pragma mark -
+/******************************************************************************/
+- (void)presentPlayer
+{
+	PlayerController	*	viewController	=	[PlayerController sharedPlayerController];
+	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;
+	[self presentModalViewController:viewController animated:YES];
 }
 
 @end

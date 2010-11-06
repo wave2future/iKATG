@@ -25,7 +25,7 @@
 #import "NetworkOperationQueue.h"
 #import "OrderedDictionary.h"
 
-@interface DataModel : NSObject <NetworkOperationDelegate>
+@interface DataModel : NSObject
 {
 	//	
 	//  Delegate array for returning data asynchronously
@@ -99,6 +99,7 @@
 /******************************************************************************/
 @property (nonatomic, retain)			NSMutableArray	*	delegates;
 @property (readwrite, assign, getter=isConnected)	BOOL	connected;
+@property (nonatomic, readonly)				NetworkStatus	connectionType;
 @property (nonatomic, retain)	NSManagedObjectContext	*	managedObjectContext;
 /******************************************************************************/
 #pragma mark -
@@ -204,6 +205,14 @@
 //
 - (void)showDetails:(NSString *)ID;
 //	
+//	/*UNREVISEDCOMMENTS*/
+//	
+- (void)showPictures:(NSString *)ID;
+//	
+//	/*UNREVISEDCOMMENTS*/
+//	
+//- (UIImage *)imageForURL:(NSString *)url;
+//	
 //	Parse a twitter search json feed
 //	
 - (void)twitterSearchFeed:(BOOL)extended;
@@ -218,7 +227,7 @@
 //	
 //	/*UNREVISEDCOMMENTS*/
 //	
-- (UIImage *)thumbForURL:(NSString *)url;
+- (UIImage *)twitterImageForURL:(NSString *)url;
 
 @end
 

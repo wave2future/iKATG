@@ -115,6 +115,12 @@ typedef enum {
 	//	POST - HTTP POST with Content-Type: application/x-www-form-urlencoded
 	//	MULTI - HTTP POST with Content-Type: multipart/form-data
 	//	PUT - HTTP PUT
+	//	
+	//	NSURLResponse	*	response;
+	//	Copy of the NSURLResponse from NetworkRequest (This is usually
+	//	a NSHTTPURLResponse. For example:
+	//	if ([response isKindOfClass:[NSHTTPURLResponse class]])
+	//		NSLog(@"Response Code: %d\nResponse Headers: %@", [(NSHTTPURLResponse *)response statusCode], [(NSHTTPURLResponse *)response allHeaderFields]);
 	NSDictionary	*	headerDict;
 	NSDictionary	*	bodyBufferDict;
 	NSArray			*	bodyDataArray;
@@ -122,7 +128,7 @@ typedef enum {
 	NSString		*	xPath;
 	NetworkOperationParseType	parseType;
 	NetworkRequestType			requestType;
-	BOOL				useCache;
+	NSURLResponse	*	response;
 @private
 	//	
 	//	Network Request instance that manages the actual network activity
@@ -147,7 +153,6 @@ typedef enum {
 @property (nonatomic, retain)	NSString		*	xPath;
 @property (nonatomic, assign)	NetworkOperationParseType	parseType;
 @property (nonatomic, assign)	NetworkRequestType			requestType;
-@property (nonatomic, assign)	BOOL				useCache;
 @property (nonatomic, readonly)	NSURLResponse	*	response;
 
 - (void)start;

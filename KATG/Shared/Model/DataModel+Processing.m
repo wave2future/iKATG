@@ -28,6 +28,151 @@
 
 @implementation DataModel (Processing)
 
+/******************************************************************************/
+#pragma mark -
+#pragma mark Network Operation Delegate
+#pragma mark -
+/******************************************************************************/
+- (void)networkOperationDidComplete:(NetworkOperation *)operation withResult:(id)result
+{
+	//	
+	//	switch on instance code and or connectionID and forward results to wherever it should go
+	//	
+	switch (operation.instanceCode)
+	{
+		case kLiveShowStatusCode:
+			NSParameterAssert([result isKindOfClass:[NSArray class]]);
+			NSParameterAssert(([(NSArray *)result count] == 1));
+			if ([(NSArray *)result count] > 0)
+				[self processLiveShowStatus:[(NSArray *)result objectAtIndex:0]];
+			break;
+		case kFeedbackCode:
+			
+			break;
+		case kChatLoginPhaseOneCode:
+			NSParameterAssert([result isKindOfClass:[NSData class]]);
+			NSParameterAssert(([operation.userInfo objectForKey:@"Username"] != nil));
+			NSParameterAssert(([operation.userInfo objectForKey:@"password"] != nil));
+			[self processChatLoginPhaseOne:[[result copy] autorelease] 
+								  userName:[operation.userInfo objectForKey:@"Username"] 
+								  password:[operation.userInfo objectForKey:@"password"]];
+			break;
+		case kChatLoginPhaseTwoCode:
+			NSParameterAssert([result isKindOfClass:[NSData class]]);
+			[self processChatLoginPhaseTwo:[[result copy] autorelease]];
+			break;
+		case kChatStartCodePhaseOne:
+			NSParameterAssert([result isKindOfClass:[NSData class]]);
+			[self processChatStartPhaseOne:result];
+			break;
+		case kChatStartCodePhaseTwo:
+			NSParameterAssert([result isKindOfClass:[NSData class]]);
+			[self processChatStartPhaseTwo:result];
+			break;
+		case kChatPollingCode:
+			
+			break;
+		case kEventsListCode:
+			NSParameterAssert([result isKindOfClass:[NSArray class]]);
+			NSParameterAssert(([(NSArray *)result count] > 0));
+			if ([(NSArray *)result count] > 0)
+				[self processEvents:result];
+			break;
+		case kShowArchivesCode:
+			NSParameterAssert([result isKindOfClass:[NSArray class]]);
+			NSParameterAssert(([(NSArray *)result count] > 0));
+			if ([(NSArray *)result count] > 0)
+				[self processShowsList:result 
+								 count:[[operation.bodyBufferDict objectForKey:@"ShowCount"] intValue]];
+			break;
+		case kShowDetailsCode:
+			NSParameterAssert([result isKindOfClass:[NSArray class]]);
+			NSParameterAssert(([(NSArray *)result count] > 0));
+			if ([(NSArray *)result count] > 0)
+				[self procesShowDetails:[(NSArray *)result objectAtIndex:0] 
+								 withID:[operation.bodyBufferDict objectForKey:kShowIDKey]];
+			break;
+		case kShowPicturesCode:
+			NSParameterAssert([result isKindOfClass:[NSArray class]]);
+			//NSParameterAssert(([(NSArray *)result count] > 0));
+			NSLog(@"%@", result);
+			break;
+		case kTwitterSearchCode:
+			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
+			[self processTwitterSearchFeed:result];
+			break;
+		case kTwitterUserFeedCode:
+			NSParameterAssert([result isKindOfClass:[NSArray class]] || result == nil);
+			if (result == nil)
+			{
+				[self notifyError:[NSError errorWithDomain:[NSString stringWithFormat:
+															@"Twitter User @%@ Timeline Not Available", 
+															[operation.userInfo objectForKey:@"userName"]] 
+													  code:kTwitterUserFeedCode 
+												  userInfo:nil] 
+						  display:YES];
+				break;
+			}
+			[self processTwitterUserFeed:result user:[operation.userInfo objectForKey:@"userName"]];
+			break;
+		case kTwitterHashTagCode:
+			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
+			[self processTwitterHashTagFeed:result];
+			break;
+		case kGetTwitterImageCode:
+			NSParameterAssert([result isKindOfClass:[NSData class]]);
+			[self processGetTwitterImage:(NSData *)result forURL:operation.baseURL];
+			break;
+		default:
+			break;
+	}
+}
+- (void)networkOperationDidFail:(NetworkOperation *)operation withError:(NSError *)error
+{
+	//	
+	//	switch on instance code and or connectionID and forward error to wherever it should go
+	//	
+	switch (operation.instanceCode)
+	{
+		case kLiveShowStatusCode:
+			
+			break;
+		case kFeedbackCode:
+			
+			break;
+		case kChatLoginPhaseOneCode:
+			
+			break;
+		case kChatLoginPhaseTwoCode:
+			
+			break;
+		case kChatStartCodePhaseOne:
+			
+			break;
+		case kChatStartCodePhaseTwo:
+			
+			break;
+		case kChatPollingCode:
+			
+			break;
+		case kEventsListCode:
+			
+			break;
+		case kShowArchivesCode:
+			
+			break;
+		case kShowDetailsCode:
+			
+			break;
+		default:
+			break;
+	}
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark 
+#pragma mark -
+/******************************************************************************/
 - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
 {
 	//	
@@ -339,7 +484,10 @@
 		NSError *error;
 		if (![eventContext save:&error])
 		{	// Handle Error
-			NSLog(@"Core Data Error %@", error);
+			ESLog(@"Core Data Error %@", error);
+#ifdef DEVELOPMENTBUILD
+            abort();
+#endif
 		}
 		dispatch_async(dispatch_get_main_queue(), ^{
 			NSAutoreleasePool	*	aPool	=	[[NSAutoreleasePool alloc] init];
@@ -351,7 +499,10 @@
 					NSError	*	error;
 					if (![eventContext save:&error])
 					{// Handle Error
-						NSLog(@"Core Data Error %@", error);
+						ESLog(@"Core Data Error %@", error);
+#ifdef DEVELOPMENTBUILD
+						abort();
+#endif
 					}
 				}
 			}
@@ -421,6 +572,13 @@
 	NSArray		*	fetchResults	=
 	[context executeFetchRequest:request 
 						   error:&error];
+	if (error)
+	{
+		//ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
+#ifdef DEVELOPMENTBUILD
+		//abort();
+#endif
+	}
 	[fetchResults makeObjectsPerformSelector:@selector(setKeep:) withObject:[NSNumber numberWithBool:NO]];
 	return fetchResults;
 }
@@ -586,11 +744,14 @@
 			if (isKATGTV)
 				[managedShow setTV:[NSNumber numberWithBool:isTV]];
 		}
-		NSLog(@"Save Shows");
+		//NSLog(@"Save Shows");
 		NSError	*	error;
 		if (![showContext save:&error])
 		{	// Handle Error
 			ESLog(@"Core Data Error %@", error);
+#ifdef DEVELOPMENTBUILD
+            abort();
+#endif
 		}
 		[request release];
 		[showContext release];
@@ -605,67 +766,121 @@
 	}
 	return nil;
 }
-//- (void)procesShowDetails:(NSArray *)entries withID:(NSString *)ID
-//{
-//	if (entries && entries.count > 0)
-//	{
-//		// Create a MOC for this call
-//		NSDictionary	*	details	=	[entries objectAtIndex:0];
-//		NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
-//		NSEntityDescription	*	entity	=
-//		[NSEntityDescription entityForName:@"Show" 
-//					inManagedObjectContext:managedObjectContext];
-//		[request setEntity:entity];
-//		[request setFetchLimit:1];
-//		NSPredicate	*	predicate	=
-//		[NSPredicate predicateWithFormat:@"ID == %@", ID];
-//		[request setPredicate:predicate];
-//		NSError		*	error;
-//		NSArray		*	fetchResults	=
-//		[managedObjectContext executeFetchRequest:request 
-//											error:&error];
-//		if (fetchResults == nil)
-//		{	// Handle Error
-//			ESLog(@"%@", error);
-//		}
-//		if (fetchResults.count > 0)
-//		{
-//			Show		*	show	=	[fetchResults objectAtIndex:0];
-//			
-//			NSString	*	notes	=	[details objectForKey:@"Detail"];
-//			if (!notes || notes.length == 0 || [notes isEqualToString:@"NULL"])
-//				notes				=	@"No Show Notes";
-//			else
-//			{					
-//				notes	=	[notes stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\n • "];
-//			}
-//			[show setNotes:[NSString stringWithFormat:@" • %@", notes]];
-//			
-//			NSString	*	quote	=	[details objectForKey:@"Description"];
-//			if (!quote || quote.length == 0 || [quote isEqualToString:@"NULL"])
-//				quote				=	@"No Quote";
-//			[show setQuote:quote];
-//			
-//			NSString	*	URL		=	[details objectForKey:@"FileUrl"];
-//			if (!URL || [URL isEqualToString:@"NULL"])
-//				URL				=	@"";
-//			[show setURL:URL];
-//			
-//			ESLog(@"%@", show);
-//			
-//			NSError	*	error;
-//			if (![self.managedObjectContext save:&error])
-//			{	// Handle Error
-//				ESLog(@"Core Data Error %@", error);
-//			}
-//			
-//			[self performSelectorOnMainThread:@selector(notifyShowDetails:) 
-//								   withObject:ID 
-//								waitUntilDone:NO];
-//		}
-//		[request release];
-//	}
-//}
+- (void)procesShowDetails:(NSDictionary *)details withID:(NSString *)ID
+{
+	[coreDataQueue addOperationWithBlock:^() {
+		//	
+		//	/*UNREVISEDCOMMENTS*/
+		//	
+		NSPersistentStoreCoordinator	*	psc			=	[self.managedObjectContext persistentStoreCoordinator];
+		NSManagedObjectContext			*	showContext	=	[[NSManagedObjectContext alloc] init];
+		showContext.persistentStoreCoordinator			=	psc;
+		//	
+		//	/*UNREVISEDCOMMENTS*/
+		//	
+		NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
+		NSEntityDescription	*	entity	=
+		[NSEntityDescription entityForName:@"Show" 
+					inManagedObjectContext:showContext];
+		[request setEntity:entity];
+		[request setFetchLimit:1];
+		request.relationshipKeyPathsForPrefetching	=	[NSArray arrayWithObject:@"Guest"];
+		NSPredicate	*	predicate	=
+		[NSPredicate predicateWithFormat:@"ID == %@", ID];
+		[request setPredicate:predicate];
+		NSError		*	error;
+		NSArray		*	fetchResults	=
+		[showContext executeFetchRequest:request 
+								   error:&error];
+		if (fetchResults == nil)
+		{	// Handle Error
+			ESLog(@"%@", error);
+#ifdef DEVELOPMENTBUILD
+            abort();
+#endif
+		}
+		if (fetchResults.count > 0)
+		{
+			Show		*	show	=	[fetchResults objectAtIndex:0];
+			
+			NSString	*	notes	=	[details objectForKey:@"Detail"];
+			if (!notes || notes.length == 0 || [notes isEqualToString:@"NULL"])
+				notes				=	@"No Show Notes";
+			else
+			{					
+				notes	=	[notes stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\n • "];
+			}
+			[show setNotes:[NSString stringWithFormat:@" • %@", notes]];
+			
+			NSString	*	quote	=	[details objectForKey:@"Description"];
+			if (!quote || quote.length == 0 || [quote isEqualToString:@"NULL"])
+				quote				=	@"No Quote";
+			[show setQuote:quote];
+			
+			NSString	*	URL		=	[details objectForKey:@"FileUrl"];
+			if (!URL || [URL isEqualToString:@"NULL"])
+				URL				=	@"";
+			[show setURL:URL];
+			
+			NSError	*	error;
+			if (![showContext save:&error])
+			{	// Handle Error
+				ESLog(@"Core Data Error %@", error);
+#ifdef DEVELOPMENTBUILD
+				abort();
+#endif
+			}
+			
+			[self performSelectorOnMainThread:@selector(notifyShowDetails:) 
+								   withObject:ID 
+								waitUntilDone:NO];
+		}
+		[request release];
+		[showContext release];
+	}];
+}
+- (void)procesShowPictures:(NSArray *)pictures withID:(NSString *)ID
+{
+	[coreDataQueue addOperationWithBlock:^() {
+		//	
+		//	/*UNREVISEDCOMMENTS*/
+		//	
+		NSPersistentStoreCoordinator	*	psc			=	[self.managedObjectContext persistentStoreCoordinator];
+		NSManagedObjectContext			*	showContext	=	[[NSManagedObjectContext alloc] init];
+		showContext.persistentStoreCoordinator			=	psc;
+		//	
+		//	/*UNREVISEDCOMMENTS*/
+		//	
+		NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
+		NSEntityDescription	*	entity	=
+		[NSEntityDescription entityForName:@"Show" 
+					inManagedObjectContext:showContext];
+		[request setEntity:entity];
+		[request setFetchLimit:1];
+		request.relationshipKeyPathsForPrefetching	=	[NSArray arrayWithObject:@"Pictures"];
+		NSPredicate	*	predicate	=
+		[NSPredicate predicateWithFormat:@"ID == %@", ID];
+		[request setPredicate:predicate];
+		NSError		*	error;
+		NSArray		*	fetchResults	=
+		[showContext executeFetchRequest:request 
+								   error:&error];
+		if (fetchResults == nil)
+		{	// Handle Error
+			ESLog(@"%@", error);
+#ifdef DEVELOPMENTBUILD
+            abort();
+#endif
+		}
+		if (fetchResults.count > 0)
+		{
+			Show		*	show	=	[fetchResults objectAtIndex:0];
+			
+		}
+		[request release];
+		[showContext release];
+	}];
+}
 /******************************************************************************/
 #pragma mark -
 #pragma mark Twitter
@@ -822,12 +1037,7 @@
 	if (results != nil)
 		[self notifyTwitterHashTagFeed:[self processTweets:results]];
 }
-/******************************************************************************/
-#pragma mark -
-#pragma mark Image Get/Cache
-#pragma mark -
-/******************************************************************************/
-- (void)processGetImage:(NSData *)imgData forURL:(NSString *)url
+- (void)processGetTwitterImage:(NSData *)imgData forURL:(NSString *)url
 {
 	//	
 	//	/*UNREVISEDCOMMENTS*/
@@ -854,26 +1064,17 @@
 		else
 		{
 			if ((thumb.size.width > 48.0 || thumb.size.height > 48.0))
-			{
 				thumb		=	[thumb scaledToSize:CGSizeMake(48.0, 48.0)];
-			}
 		}
 		
 		NSData	*	thumbData	=	UIImagePNGRepresentation(thumb);
 		
 		if (thumbData)
-		{
-			// This image is stored in a dictionary so that other image sizes can be added later
-			NSDictionary	*	imageDict	=	
-			[[NSDictionary alloc] initWithObjectsAndKeys:
-			 thumbData,	@"48", nil];
-			[self addToCache:imageDict key:url];
-			[imageDict release];
-		}
+			[self addToCache:thumbData key:url];
 		else 
-			ESLog(@"Thumb missed %@", [[[NSString alloc] initWithData:imgData encoding:NSUTF8StringEncoding] autorelease]);
+			ESLog(@"Image missed %@", [[[NSString alloc] initWithData:imgData encoding:NSUTF8StringEncoding] autorelease]);
 		
-		[self performSelectorOnMainThread:@selector(notifyGetImageForURL:) 
+		[self performSelectorOnMainThread:@selector(notifyGetTwitterImageForURL:) 
 							   withObject:url 
 							waitUntilDone:NO];
 	}];

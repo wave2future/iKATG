@@ -55,11 +55,12 @@ typedef enum {
 	//	Archive Shows List And Details
 	kShowArchivesCode,
 	kShowDetailsCode,
+	kShowPicturesCode,
 	//	Twitter
 	kTwitterSearchCode,
 	kTwitterUserFeedCode,
 	kTwitterHashTagCode,
-	kGetImageCode,
+	kGetTwitterImageCode,
 } DataOperationCodes;
 
 //	
@@ -71,6 +72,8 @@ typedef enum {
 #define kEventsXPath		@"Event"
 #define kShowArchivesXPath	@"S"
 #define kShowIDKey			@"ShowID"
+#define kShowDetailsXPath	@"root"
+#define kShowPicturesXPath	@"picture"
 //	
 //	Twitter Keys
 //	
