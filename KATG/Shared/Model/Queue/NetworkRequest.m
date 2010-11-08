@@ -102,7 +102,7 @@
 		NSCachedURLResponse	*	cachedResponse	=	[[NetworkCache sharedNetworkCache] cachedResponseForRequest:_request];
 		if (cachedResponse != nil && !cancelled)
 		{
-#if 1
+#if 0
 			NSLog(@"Response From Cache");
 #endif
 			_response	=	[[cachedResponse response] retain];

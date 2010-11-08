@@ -17,10 +17,10 @@
 //  limitations under the License.
 //  
 
-#import "ModelTableViewController.h"
+#import "ModelFetchedTableViewController.h"
 
-@implementation ModelTableViewController
-@synthesize items;
+@implementation ModelFetchedTableViewController
+@dynamic fetchedResultsController, context;
 @synthesize activityIndicator;
 
 /******************************************************************************/
@@ -58,11 +58,42 @@
 		[anActivityIndicator release];
 	}
 	[self.activityIndicator startAnimating];
+	//	
+	//	
+	//	
+	BOOL	success	=	[self.fetchedResultsController performFetch:nil];
+	if (success)
+		[self.activityIndicator stopAnimating];
+}
+- (NSFetchedResultsController *)fetchedResultsController
+{
+	return nil;
+}
+- (void)setFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
+{
+	CleanRelease(_fetchedResultsController);
+	_fetchedResultsController	=	[fetchedResultsController retain];
+}
+- (NSManagedObjectContext *)context
+{
+	if (_context)
+		return _context;
+	NSPersistentStoreCoordinator	*	psc		=	[model.managedObjectContext persistentStoreCoordinator];
+	_context									=	[[NSManagedObjectContext alloc] init];
+	_context.persistentStoreCoordinator	=	psc;
+	return _context;
+}
+- (void)setContext:(NSManagedObjectContext *)context
+{
+	CleanRelease(_context);
+	_context	=	[context retain];
 }
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
-	self.activityIndicator	=	nil;
+	self.fetchedResultsController	=	nil;
+	self.context					=	nil;
+	self.activityIndicator			=	nil;
 }
 /******************************************************************************/
 #pragma mark -
@@ -76,6 +107,20 @@
 }
 /******************************************************************************/
 #pragma mark -
+#pragma mark Core Data
+#pragma mark -
+/******************************************************************************/
+- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
+{
+	if ([NSThread isMainThread])
+		[self.context mergeChangesFromContextDidSaveNotification:notification];
+	else
+		[self performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) 
+							   withObject:notification 
+							waitUntilDone:NO];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark Memory Management
 #pragma mark -
 /******************************************************************************/
@@ -86,7 +131,8 @@
 - (void)dealloc 
 {
     [model removeDelegate:self]; model = nil;
-	CleanRelease(items);
+	CleanRelease(_fetchedResultsController);
+	CleanRelease(_context);
 	CleanRelease(activityIndicator);
 	[super dealloc];
 }
@@ -97,12 +143,12 @@
 /******************************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	return 1;
+	return [[self.fetchedResultsController sections] count];
 }
 - (NSInteger)tableView:(UITableView *)tableView 
  numberOfRowsInSection:(NSInteger)section 
 {
-	return self.items.count;
+	return [(id <NSFetchedResultsSectionInfo>)[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView 
 		 cellForRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -130,6 +176,58 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 }
 /******************************************************************************/
 #pragma mark -
+#pragma mark Fetched Results Controller Delegates
+#pragma mark -
+/******************************************************************************/
+- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
+{
+	[self.activityIndicator stopAnimating];
+	[self.tableView beginUpdates];
+}
+#define kAnimType UITableViewRowAnimationFade
+- (void)controller:(NSFetchedResultsController*)controller 
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo 
+		   atIndex:(NSUInteger)sectionIndex 
+	 forChangeType:(NSFetchedResultsChangeType)type
+{
+	NSIndexSet	*	set	=	[NSIndexSet indexSetWithIndex:sectionIndex];
+	switch(type) 
+	{
+		case NSFetchedResultsChangeInsert:
+			[self.tableView insertSections:set withRowAnimation:kAnimType];
+			break; 
+		case NSFetchedResultsChangeDelete:
+			[self.tableView deleteSections:set withRowAnimation:kAnimType];
+			break;
+	}
+}
+- (void)controller:(NSFetchedResultsController*)controller 
+   didChangeObject:(id)anObject
+	   atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type
+	  newIndexPath:(NSIndexPath*)newIndexPath
+{
+	switch(type) {
+		case NSFetchedResultsChangeInsert:
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:kAnimType];
+			break;
+		case NSFetchedResultsChangeDelete:
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:kAnimType];
+			break;
+		case NSFetchedResultsChangeUpdate:
+			[self decorateCell:[self.tableView cellForRowAtIndexPath:indexPath] withIndexPath:indexPath];
+			break;
+		case NSFetchedResultsChangeMove:
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:kAnimType];
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:kAnimType];
+			break;
+	}
+}
+- (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
+{
+	[[self tableView] endUpdates];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark Data Model Delegates
 #pragma mark -
 /******************************************************************************/
@@ -139,3 +237,4 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 }
 
 @end
+

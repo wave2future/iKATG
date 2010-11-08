@@ -41,37 +41,12 @@
 	//	
 	//	
 	//	
-	[model events];
-}
-- (NSFetchedResultsController *)fetchedResultsController
-{
-	if (_fetchedResultsController)
-		return _fetchedResultsController;
-	//	
-	//	Setup Fetch Controller
-	//	
-	NSFetchRequest		*	request			=	[[NSFetchRequest alloc] init];
-	NSEntityDescription	*	entity			=	[NSEntityDescription 
-												 entityForName:@"Event" 
-												 inManagedObjectContext:self.context];
-	request.entity							=	entity;
-	NSSortDescriptor	*	sortDescriptor	=	[[NSSortDescriptor alloc] 
-												 initWithKey:@"DateTime" 
-												 ascending:YES];
-	NSArray				*	sortDescriptors	=	[[NSArray alloc] initWithObjects:sortDescriptor, nil];
-	request.sortDescriptors					=	sortDescriptors;
-	[sortDescriptors release];
-	[sortDescriptor release];
-    [request setFetchBatchSize:20];
-	_fetchedResultsController				=	[[NSFetchedResultsController alloc] 
-												 initWithFetchRequest:request 
-												 managedObjectContext:self.context 
-												 sectionNameKeyPath:nil 
-												 cacheName:@"events"];
-	_fetchedResultsController.delegate		=	self;
-	[request release];
-	
-	return _fetchedResultsController;
+	NSArray	*	events	=	[model events];
+	if (events)
+	{
+		self.items	=	events;
+		[self.activityIndicator stopAnimating];
+	}
 }
 - (void)viewDidUnload 
 {
@@ -100,7 +75,7 @@
 - (void)decorateCell:(EventTableViewCell *)cell 
 	   withIndexPath:(NSIndexPath *)indexPath
 {
-	Event	*	event	=	(Event *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+	Event	*	event	=	[self.items objectAtIndex:indexPath.row];
 	
     [[cell eventTitleLabel] setText:[event Title]];
 	[[cell eventDayLabel] setText:[event Day]];
@@ -121,6 +96,27 @@
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Data Model Delegates
+#pragma mark -
+/******************************************************************************/
+- (void)error:(NSError *)error display:(BOOL)display
+{
+	if (error.code == kEventsListCode)
+	{
+		if (display)
+			BasicAlert(@"Events Error", error.domain, nil, @"OK", nil);
+		
+		[self.activityIndicator stopAnimating];
+	}
+}
+- (void)events:(NSArray *)events
+{
+	self.items	=	events;
+	[self reloadTableView];
+	[self.activityIndicator stopAnimating];
 }
 /******************************************************************************/
 #pragma mark -

@@ -18,9 +18,9 @@
 //  
 
 #import <UIKit/UIKit.h>
-#import "ModelTableViewController.h"
+#import "ModelFetchedTableViewController.h"
 
-@interface ArchiveTableViewController : ModelTableViewController 
+@interface ArchiveTableViewController : ModelFetchedTableViewController 
 {
 	
 }

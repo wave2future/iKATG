@@ -25,6 +25,7 @@
 #import "Tweet.h"
 #import "TouchXML.h"
 #import "UIImage+MyAdditions.h"
+#import "EventFormattingOperation.h"
 
 @implementation DataModel (Processing)
 
@@ -77,6 +78,10 @@
 			NSParameterAssert(([(NSArray *)result count] > 0));
 			if ([(NSArray *)result count] > 0)
 				[self processEvents:result];
+			else
+				[self notifyError:[NSError errorWithDomain:@"Events Unavailable" 
+													  code:kEventsListCode 
+												  userInfo:nil] display:NO];
 			break;
 		case kShowArchivesCode:
 			NSParameterAssert([result isKindOfClass:[NSArray class]]);
@@ -156,7 +161,9 @@
 			
 			break;
 		case kEventsListCode:
-			
+			[self notifyError:[NSError errorWithDomain:@"Events Unavailable" 
+												  code:kEventsListCode 
+											  userInfo:nil] display:NO];
 			break;
 		case kShowArchivesCode:
 			
@@ -421,179 +428,14 @@
 {
 	//	
 	//	Use data formatters to create localized event
-	//	strings and store them in core data store
+	//	strings and store them in the cache
 	//	
-	NSParameterAssert([result isKindOfClass:[NSArray class]]);
-	[coreDataQueue addOperationWithBlock:^() {
-		NSAutoreleasePool	*	pool	=	[[NSAutoreleasePool alloc] init];
-		//	
-		//	Create a context for use on this thread
-		//	
-		NSPersistentStoreCoordinator	*	psc				=	[self.managedObjectContext persistentStoreCoordinator];
-		NSManagedObjectContext			*	eventContext	=	[[NSManagedObjectContext alloc] init];
-		eventContext.persistentStoreCoordinator				=	psc;
-		[eventContext setPropagatesDeletesAtEndOfEvent:NO];
-		//	
-		//	Get Current Events for comparison later
-		//	
-		NSArray	*	currentEvents	=	[self currentEvents:eventContext];
-		//	
-		//	Decompose event dictionaries into managed objects
-		//	
-		[(NSArray *)result enumerateObjectsWithOptions:NSEnumerationReverse 
-											usingBlock: ^ void (id obj, NSUInteger idx, BOOL *stop) {
-												NSDictionary*	event			=	(NSDictionary *)obj;
-												NSDictionary*	dateTimes		=	[self dateFormatters:event];
-												NSDate		*	dateTime		=	[dateTimes objectForKey:@"DateTime"];
-												NSString	*	title			=	[event objectForKey:@"Title"];
-												NSString	*	eventID			=	[event objectForKey:@"EventId"];
-												
-												if ([self futureTest:dateTime] &&
-													title != nil)
-												{
-													Event	*	managedEvent	=	[self hasEvent:currentEvents withEventID:eventID];
-													if (managedEvent == nil)
-														managedEvent = (Event *)[NSEntityDescription insertNewObjectForEntityForName:@"Event" 
-																											  inManagedObjectContext:eventContext];
-													[managedEvent setKeep:[NSNumber numberWithBool:YES]];
-													[managedEvent setTitle:title];
-													[managedEvent setEventID:eventID];
-													[managedEvent setDateTime:dateTime];
-													
-													NSString	*	details		=	[event objectForKey:@"Details"];
-													if (!details || [details isEqualToString:@"NULL"]) details	=	@"";
-													[managedEvent setDetails:details];
-													
-													NSString	*	day			=	[dateTimes objectForKey:@"Day"];
-													if (!day)		day			=	@"";
-													[managedEvent setDay:day];
-													
-													NSString	*	date		=	[dateTimes objectForKey:@"Date"];
-													if (!date)		date		=	@"";
-													[managedEvent setDate:date];
-													
-													NSString	*	time		=	[dateTimes objectForKey:@"Time"];
-													if (!time)		time		=	@"";
-													[managedEvent setTime:time];
-													
-													NSNumber	*	showType	=	[self detectShowType:event];
-													if (!showType)	showType	=	[NSNumber numberWithBool:YES];
-													[managedEvent setShowType:showType];
-												}
-											}];
-		NSError *error;
-		if (![eventContext save:&error])
-		{	// Handle Error
-			ESLog(@"Core Data Error %@", error);
-#ifdef DEVELOPMENTBUILD
-            abort();
-#endif
-		}
-		dispatch_async(dispatch_get_main_queue(), ^{
-			NSAutoreleasePool	*	aPool	=	[[NSAutoreleasePool alloc] init];
-			for (Event * event in currentEvents)
-			{
-				if (![[event Keep] boolValue])
-				{
-					[eventContext deleteObject:event];
-					NSError	*	error;
-					if (![eventContext save:&error])
-					{// Handle Error
-						ESLog(@"Core Data Error %@", error);
-#ifdef DEVELOPMENTBUILD
-						abort();
-#endif
-					}
-				}
-			}
-			[self nextLiveShowTime];
-			[aPool drain]; aPool = nil;
-		});
-		[eventContext release];
-		[pool drain]; pool = nil;
-	}];
-}
-- (NSDictionary *)dateFormatters:(NSDictionary *)event
-{
-	NSDictionary	*	dateTimes = nil;
-	NSString		*	eventTimeString	=	[event objectForKey:@"StartDate"];
-	NSDate			*	eventDateTime	=	[self.formatter dateFromString:eventTimeString];
-	NSString		*	eventDay		=	[self.dayFormatter stringFromDate:eventDateTime];
-	NSString		*	eventDate		=	[self.dateFormatter stringFromDate:eventDateTime];
-	NSString		*	eventTime		=	[self.timeFormatter stringFromDate:eventDateTime];
-	if (eventDateTime &&
-		eventDay &&
-		eventDate &&
-		eventTime)
-	{
-		dateTimes =
-		[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
-											 eventDateTime, 
-											 eventDay, 
-											 eventDate, 
-											 eventTime, nil] 
-									forKeys:[NSArray arrayWithObjects:
-											 @"DateTime",
-											 @"Day",
-											 @"Date",
-											 @"Time", nil]];
-	}
-	else
-	{
-		ESLog(@"Date Formatting Failed");
-	}
-	return dateTimes;
-}
-- (NSNumber *)detectShowType:(NSDictionary *)event
-{
-	if ([[event objectForKey:@"Title"] rangeOfString:@"Live Show"].location != NSNotFound)
-		return [NSNumber numberWithBool:YES];
-	else
-		return [NSNumber numberWithBool:NO];
-}
-- (BOOL)futureTest:(NSDate *)date
-{
-	NSInteger	timeSince	=	[date timeIntervalSinceNow];
-	NSInteger	threshHold	=	-(60/*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/);
-	BOOL		inFuture	=	(timeSince > threshHold);
-	return inFuture;
-}
-- (NSArray *)currentEvents:(NSManagedObjectContext *)context
-{
-	//	
-	//	Create a request for events
-	//	
-	NSFetchRequest		*	request	=	[[[NSFetchRequest alloc] init] autorelease];
-	NSEntityDescription	*	entity	=
-	[NSEntityDescription entityForName:@"Event" 
-				inManagedObjectContext:context];
-	[request setEntity:entity];
-	NSError		*	error;
-	NSArray		*	fetchResults	=
-	[context executeFetchRequest:request 
-						   error:&error];
-	if (error)
-	{
-		//ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
-#ifdef DEVELOPMENTBUILD
-		//abort();
-#endif
-	}
-	[fetchResults makeObjectsPerformSelector:@selector(setKeep:) withObject:[NSNumber numberWithBool:NO]];
-	return fetchResults;
-}
-- (Event *)hasEvent:(NSArray *)events withEventID:(NSString *)eventID
-{
-	if (eventID == nil)
-		return nil;
-	NSUInteger	index	=
-	[events indexOfObjectPassingTest: ^ BOOL (id obj, NSUInteger idx, BOOL *stop) {
-		return ([[(Event *)obj EventID] isEqualToString:eventID]);
-	}];
-	if (index != NSNotFound)
-		return (Event *)[events objectAtIndex:index];
-	else
-		return nil;
+	//NSParameterAssert([result isKindOfClass:[NSArray class]]);
+	EventFormattingOperation	*	op	=	[[EventFormattingOperation alloc] init];
+	op.delegate							=	self;
+	op.unprocessedEvents				=	(NSArray *)result;
+	[coreDataQueue addOperation:op];
+	[op release];
 }
 /******************************************************************************/
 #pragma mark -

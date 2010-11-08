@@ -1,6 +1,5 @@
 //	
 //	Tweet.m
-//	ESTwitterViewer
 //	
 //	Created by Doug Russell on 9/5/10.
 //	Copyright 2010 Doug Russell. All rights reserved.
@@ -28,6 +27,29 @@
 @synthesize	WebViewText;
 @synthesize	ImageURL;
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+	self = [super init];
+	if (self != nil)
+	{
+		self.From			=	[aDecoder decodeObject];
+		self.To				=	[aDecoder decodeObject];
+		self.Date			=	[aDecoder decodeObject];
+		self.Text			=	[aDecoder decodeObject];
+		self.WebViewText	=	[aDecoder decodeObject];
+		self.ImageURL		=	[aDecoder decodeObject];
+	}
+	return self;
+}
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+	[aCoder encodeObject:From];
+	[aCoder encodeObject:To];
+	[aCoder encodeObject:Date];
+	[aCoder encodeObject:Text];
+	[aCoder encodeObject:WebViewText];
+	[aCoder encodeObject:ImageURL];
+}
 - (void)dealloc
 {
 	[From release];

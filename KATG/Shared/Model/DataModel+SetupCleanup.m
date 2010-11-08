@@ -99,69 +99,8 @@ NSMutableArray * CreateNonRetainingArray()
 }
 - (void)dateFormatters
 {
-	formatter		=	nil;
-	dayFormatter	=	nil;
-	dateFormatter	=	nil;
-	timeFormatter	=	nil;
 	twitterSearchFormatter	=	nil;
 	twitterUserFormatter	=	nil;
-}
-- (NSDateFormatter *)formatter
-{
-	if (formatter)
-		return formatter;
-	//	
-	//	Initial formatter for creating data object for event
-	//	
-	formatter	=	[[NSDateFormatter alloc] init];
-	[formatter setDateStyle: NSDateFormatterLongStyle];
-	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[formatter setDateFormat:@"MM/dd/yyyy HH:mm"];
-	NSTimeZone	*	timeZone	=	[NSTimeZone timeZoneWithName:@"America/New_York"];
-	[formatter setTimeZone:timeZone];
-	return formatter;
-}
-- (NSDateFormatter *)dayFormatter
-{
-	if (dayFormatter)
-		return dayFormatter;
-	//	
-	//	Create localized data string for Day of the Week
-	//	
-	dayFormatter	=	[[NSDateFormatter alloc] init];
-	[dayFormatter setDateStyle: NSDateFormatterLongStyle];
-	[dayFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[dayFormatter setDateFormat: @"EEE"];
-	[dayFormatter setLocale:[NSLocale currentLocale]];
-	return dayFormatter;
-}
-- (NSDateFormatter *)dateFormatter
-{
-	if (dateFormatter)
-		return dateFormatter;
-	//	
-	//	Create localized data string for Month and Day of the Month
-	//	
-	dateFormatter	=	[[NSDateFormatter alloc] init];
-	[dateFormatter setDateStyle: NSDateFormatterLongStyle];
-	[dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[dateFormatter setDateFormat: @"MM/dd"];
-	[dateFormatter setLocale:[NSLocale currentLocale]];
-	return dateFormatter;
-}
-- (NSDateFormatter *)timeFormatter
-{
-	if (timeFormatter)
-		return timeFormatter;
-	//	
-	//	Create localized data string for Time of Day
-	//	
-	timeFormatter	=	[[NSDateFormatter alloc] init];
-	[timeFormatter setDateStyle: NSDateFormatterLongStyle];
-	[timeFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[timeFormatter setDateFormat: @"h:mm aa"];
-	[timeFormatter setLocale:[NSLocale currentLocale]];
-	return timeFormatter;
 }
 - (NSDateFormatter *)twitterSearchFormatter
 {
@@ -244,10 +183,6 @@ NSMutableArray * CreateNonRetainingArray()
 }
 - (void)cleanupDateFormatters
 {
-	CleanRelease(formatter);
-	CleanRelease(dayFormatter);
-	CleanRelease(dateFormatter);
-	CleanRelease(timeFormatter);
 	CleanRelease(twitterSearchFormatter);
 	CleanRelease(twitterUserFormatter);
 }

@@ -40,6 +40,10 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
+- (void)events:(NSArray *)events;
+//	
+//	/*UNREVISEDCOMMENT*/
+//	
 - (void)showDetails:(NSString *)ID;
 //	
 //	/*UNREVISEDCOMMENT*/

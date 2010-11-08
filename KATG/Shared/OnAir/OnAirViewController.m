@@ -30,7 +30,6 @@
 - (void)registerNotifications;
 @end
 
-
 @implementation OnAirViewController
 @synthesize feedbackView, nameField, locationField, commentView, submitButton, infoButton;
 @synthesize audioButton;
@@ -56,8 +55,6 @@
 	[self setupAudioAssets];
 	
 	[model liveShowStatus];
-	
-	[model events];
 	
 	[model nextLiveShowTime];
 		

@@ -22,13 +22,15 @@
 #import "DataModel+Processing.h"
 #import "DataModel+Notifications.h"
 #import "Event.h"
+#import "EGOCache.h"
+#import "EventFormattingOperation.h"
 
 @implementation DataModel
 @synthesize delegates;
 @synthesize connected, connectionType;
 @synthesize managedObjectContext;
 @synthesize twitterSearchRefreshURL, twitterExtendedSearchRefreshURL, twitterHashSearchRefreshURL;
-@dynamic	formatter, dayFormatter, dateFormatter, timeFormatter, twitterSearchFormatter, twitterUserFormatter;
+@dynamic	twitterSearchFormatter, twitterUserFormatter;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 
@@ -114,49 +116,25 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 /******************************************************************************/
 - (void)nextLiveShowTime
 {
-	NSFetchRequest		*	request			=	[[NSFetchRequest alloc] init];
-	NSEntityDescription	*	entity			=	[NSEntityDescription 
-												 entityForName:@"Event" 
-												 inManagedObjectContext:self.managedObjectContext];
-	request.entity							=	entity;
-	NSSortDescriptor	*	sortDescriptor	=	[[NSSortDescriptor alloc] 
-												 initWithKey:@"DateTime" 
-												 ascending:YES];
-	NSArray				*	sortDescriptors	=	[[NSArray alloc] initWithObjects:sortDescriptor, nil];
-	request.sortDescriptors					=	sortDescriptors;
-	[sortDescriptors release];
-	[sortDescriptor release];
-	NSPredicate	*	predicate				=	[NSPredicate predicateWithFormat:
-												 @"(DateTime >= %@) AND (DateTime <= %@)", 
-												 [[NSDate date] dateByAddingTimeInterval:-(60 /*Seconds*/ * 60 /*Minutes*/ * 12 /*Hours*/)], 
-												 [[NSDate date] dateByAddingTimeInterval:(60 /*Seconds*/ * 60 /*Minutes*/ * 24 /*Hours*/)]];
-	[request setPredicate:predicate];
-	NSError		*	error;
-	NSArray		*	fetchResults	=
-	[self.managedObjectContext executeFetchRequest:request 
-											 error:&error];
-	if (error)
-	{
-		//ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
-#ifdef DEVELOPMENTBUILD
-		//abort();
-#endif
-	}	
-	[request release];
-	
+	NSArray		*	events;
 	Event		*	nextShowEvent	=	nil;
 	NSString	*	guestText		=	nil;
-	for (Event *event in fetchResults)
+	
+	events	=	[self events];
+	
+	for (Event *event in events)
 	{
 		//	
-		//	Make sure event is a live show
-		//	is scheduled within the
-		//	last 12 hours or in the future,
-		//	if in the past 
+		//	
+		//	
+		if (![[event ShowType] boolValue])
+			continue;
+		//	
+		//	
 		//	
 		NSDate		*	date		=	[event DateTime];
 		NSInteger		since		=	[date timeIntervalSinceNow];
-		if ((since < 0 && live) || (since >= 0))
+		if (((since > -(12 * 3600)) && (since < 0)  && live) || (since >= 0))
 			nextShowEvent			=	event;
 		else
 			continue;
@@ -171,7 +149,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 		  nextShowEvent,	@"event",
 		  guestText,		@"guest", nil]];
 	else
-		[self notifyError:[NSError errorWithDomain:@"Core Data Fetch Failed - Entity: Event" 
+		[self notifyError:[NSError errorWithDomain:@"Events Unavailable" 
 											  code:kNextLiveShowCode 
 										  userInfo:nil] 
 				  display:NO];
@@ -285,16 +263,40 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 #pragma mark Events
 #pragma mark -
 /******************************************************************************/
-- (void)events
+- (NSArray *)events
 {
+	EGOCache	*	cache		=	[EGOCache currentCache];
+	if ([cache hasCacheForKey:@"events.archive"])
+	{
+#if 1
+		NSLog(@"Retrieve Events from cache");
+#endif
+		NSArray		*	events		=	[cache objectForKey:@"events.archive"];
+		if (events)
+			return events;
+	}
+#if 1
+	NSLog(@"Retrieve Events from web");
+#endif
 	//	
 	//	First make sure there isn't already an events operation happening
 	//	
 	NSArray	*	ops	=	[NSArray arrayWithArray:[operationQueue operations]];
-	for (NetworkOperation	*anOp in ops)
+	for (NetworkOperation *anOp in ops)
 	{
 		if (anOp.instanceCode == kEventsListCode)
-			return;
+			return nil;
+	}
+	for (NetworkOperation *anOp in delayedOperations)
+	{
+		if (anOp.instanceCode == kEventsListCode)
+			return nil;
+	}
+	ops	=	[NSArray arrayWithArray:[coreDataQueue operations]];
+	for (NSOperation *anOp in ops)
+	{
+		if ([anOp isKindOfClass:[EventFormattingOperation class]])
+			return nil;
 	}
 	//	
 	//	Then go get an updated events list
@@ -310,6 +312,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	else
 		[delayedOperations addObject:op];
 	[op release];
+	//	
+	//	
+	//	
+	return nil;
 }
 /******************************************************************************/
 #pragma mark -
@@ -325,7 +331,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	op.delegate					=	self;
 	op.instanceCode				=	kShowArchivesCode;
 	op.URI						=	kShowListURIAddress;
-	NSDate	*	start			=	[self.formatter dateFromString:@"03/01/2010 12:00"];
+	// Using the twitter date formatter to avoid creating another dateformatter just for this
+	NSDate	*	start			=	[self.twitterSearchFormatter dateFromString:@"Mon, 01 Nov 2010 07:36:57 +0000"];
 	if (start)
 	{
 		NSInteger	days		=	[start timeIntervalSinceDate:[NSDate date]] / -(60 /*Seconds*/ * 60 /*Minutes*/ * 24 /*Hours*/);

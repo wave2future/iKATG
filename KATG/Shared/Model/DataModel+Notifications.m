@@ -75,6 +75,21 @@
 }
 /******************************************************************************/
 #pragma mark -
+#pragma mark 
+#pragma mark -
+/******************************************************************************/
+- (void)notifyEvents:(NSArray *)events
+{
+	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
+	for (id delegate in dlgts)
+	{
+		if ([delegate respondsToSelector:@selector(events:)])
+			[delegate events:events];
+	}
+	[dlgts release];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark Chat
 #pragma mark -
 /******************************************************************************/

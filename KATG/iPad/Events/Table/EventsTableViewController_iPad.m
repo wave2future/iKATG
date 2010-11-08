@@ -90,7 +90,6 @@
 	EventTableViewCell *cell = (EventTableViewCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
 	cell.accessoryViewColor = [UIColor clearColor];
 	cell.selectedAccessoryViewColor = [UIColor whiteColor];
-	
     return cell;
 }
 /******************************************************************************/
@@ -101,7 +100,7 @@
 - (void)tableView:(UITableView *)tableView 
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	Event	*	event	=	(Event *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+	Event	*	event	=	[self.items objectAtIndex:indexPath.row];
 	self.detailViewController.event	=	event;
 	[self.detailViewController updateFields];
 }

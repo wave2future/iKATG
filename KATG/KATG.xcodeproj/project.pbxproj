@@ -17,7 +17,11 @@
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
+		914685AE1286AAF0004BE24A /* EGOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 914685AD1286AAF0004BE24A /* EGOCache.m */; };
+		914686D21286C353004BE24A /* EventFormattingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 914686D11286C353004BE24A /* EventFormattingOperation.m */; };
 		917E90FB1285CBB400875294 /* NetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E90FA1285CBB400875294 /* NetworkCache.m */; };
+		917E91A51285DFA600875294 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91A41285DFA600875294 /* Event.m */; };
+		917E91B71285E1EC00875294 /* ModelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91B61285E1EC00875294 /* ModelTableViewController.m */; };
 		C512DB4E12559EB6003D94BB /* PlayerController+Cellular.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DB4912559EB6003D94BB /* PlayerController+Cellular.m */; };
 		C512DB4F12559EB6003D94BB /* PlayerController+Wifi.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DB4B12559EB6003D94BB /* PlayerController+Wifi.m */; };
 		C512DB5012559EB6003D94BB /* PlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DB4D12559EB6003D94BB /* PlayerController.m */; };
@@ -165,14 +169,13 @@
 		C57A40601242BBFC00D6BA3B /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A405F1242BBFC00D6BA3B /* AudioStreamer.m */; };
 		C57A41FF12431D0B00D6BA3B /* KATG.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C57A41FD12431D0B00D6BA3B /* KATG.xcdatamodeld */; };
 		C57A421112431D4800D6BA3B /* Guest.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A420B12431D4800D6BA3B /* Guest.m */; };
-		C57A421312431D4800D6BA3B /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A420F12431D4800D6BA3B /* Event.m */; };
 		C57A421812431DBD00D6BA3B /* DataModel+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A421512431DBD00D6BA3B /* DataModel+Notifications.m */; };
 		C57A421912431DBD00D6BA3B /* DataModel+Processing.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A421712431DBD00D6BA3B /* DataModel+Processing.m */; };
 		C57A42671243D13500D6BA3B /* AccView.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A42661243D13500D6BA3B /* AccView.m */; };
 		C57A43EF12442B5400D6BA3B /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A43EA12442B5400D6BA3B /* MGSplitCornersView.m */; };
 		C57A43F012442B5400D6BA3B /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A43EC12442B5400D6BA3B /* MGSplitDividerView.m */; };
 		C57A43F112442B5400D6BA3B /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A43EE12442B5400D6BA3B /* MGSplitViewController.m */; };
-		C585CBE7124BD4C900F56AE8 /* ModelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CBC7124BD4C900F56AE8 /* ModelTableViewController.m */; };
+		C585CBE7124BD4C900F56AE8 /* ModelFetchedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CBC7124BD4C900F56AE8 /* ModelFetchedTableViewController.m */; };
 		C585CBE8124BD4C900F56AE8 /* ModelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CBC9124BD4C900F56AE8 /* ModelViewController.m */; };
 		C585CBF2124BD4C900F56AE8 /* ModalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CBDC124BD4C900F56AE8 /* ModalWebViewController.m */; };
 		C585CBF3124BD4C900F56AE8 /* OnAirViewController+AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CBDF124BD4C900F56AE8 /* OnAirViewController+AudioStreamer.m */; };
@@ -238,8 +241,16 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* KATG_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KATG_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* KATG-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "KATG-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		914685AC1286AAF0004BE24A /* EGOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGOCache.h; path = Shared/Model/EGOCache.h; sourceTree = "<group>"; };
+		914685AD1286AAF0004BE24A /* EGOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EGOCache.m; path = Shared/Model/EGOCache.m; sourceTree = "<group>"; };
+		914686D01286C353004BE24A /* EventFormattingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormattingOperation.h; sourceTree = "<group>"; };
+		914686D11286C353004BE24A /* EventFormattingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormattingOperation.m; sourceTree = "<group>"; };
 		917E90F91285CBB400875294 /* NetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkCache.h; sourceTree = "<group>"; };
 		917E90FA1285CBB400875294 /* NetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkCache.m; sourceTree = "<group>"; };
+		917E91A31285DFA600875294 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		917E91A41285DFA600875294 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		917E91B51285E1EC00875294 /* ModelTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelTableViewController.h; sourceTree = "<group>"; };
+		917E91B61285E1EC00875294 /* ModelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelTableViewController.m; sourceTree = "<group>"; };
 		C512DB4812559EB6003D94BB /* PlayerController+Cellular.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayerController+Cellular.h"; sourceTree = "<group>"; };
 		C512DB4912559EB6003D94BB /* PlayerController+Cellular.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlayerController+Cellular.m"; sourceTree = "<group>"; };
 		C512DB4A12559EB6003D94BB /* PlayerController+Wifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayerController+Wifi.h"; sourceTree = "<group>"; };
@@ -455,8 +466,6 @@
 		C57A41FE12431D0B00D6BA3B /* KATG.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = KATG.xcdatamodel; sourceTree = "<group>"; };
 		C57A420A12431D4800D6BA3B /* Guest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Guest.h; sourceTree = "<group>"; };
 		C57A420B12431D4800D6BA3B /* Guest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Guest.m; sourceTree = "<group>"; };
-		C57A420E12431D4800D6BA3B /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
-		C57A420F12431D4800D6BA3B /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		C57A421412431DBD00D6BA3B /* DataModel+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DataModel+Notifications.h"; path = "Shared/Model/DataModel+Notifications.h"; sourceTree = "<group>"; };
 		C57A421512431DBD00D6BA3B /* DataModel+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DataModel+Notifications.m"; path = "Shared/Model/DataModel+Notifications.m"; sourceTree = "<group>"; };
 		C57A421612431DBD00D6BA3B /* DataModel+Processing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DataModel+Processing.h"; path = "Shared/Model/DataModel+Processing.h"; sourceTree = "<group>"; };
@@ -469,8 +478,8 @@
 		C57A43EC12442B5400D6BA3B /* MGSplitDividerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitDividerView.m; sourceTree = "<group>"; };
 		C57A43ED12442B5400D6BA3B /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitViewController.h; sourceTree = "<group>"; };
 		C57A43EE12442B5400D6BA3B /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitViewController.m; sourceTree = "<group>"; };
-		C585CBC6124BD4C900F56AE8 /* ModelTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelTableViewController.h; sourceTree = "<group>"; };
-		C585CBC7124BD4C900F56AE8 /* ModelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelTableViewController.m; sourceTree = "<group>"; };
+		C585CBC6124BD4C900F56AE8 /* ModelFetchedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelFetchedTableViewController.h; sourceTree = "<group>"; };
+		C585CBC7124BD4C900F56AE8 /* ModelFetchedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelFetchedTableViewController.m; sourceTree = "<group>"; };
 		C585CBC8124BD4C900F56AE8 /* ModelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelViewController.h; sourceTree = "<group>"; };
 		C585CBC9124BD4C900F56AE8 /* ModelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelViewController.m; sourceTree = "<group>"; };
 		C585CBDB124BD4C900F56AE8 /* ModalWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalWebViewController.h; sourceTree = "<group>"; };
@@ -596,9 +605,6 @@
 				C57A3E6912429E7100D6BA3B /* ViewControllers */,
 				C57A3E8E1242A1FC00D6BA3B /* UsefulBits */,
 				C57A3D7812429A5800D6BA3B /* Images */,
-				C57A41FD12431D0B00D6BA3B /* KATG.xcdatamodeld */,
-				C585CDA3124BF99E00F56AE8 /* Tweet.h */,
-				C585CDA4124BF99E00F56AE8 /* Tweet.m */,
 				8D1107310486CEB800E47090 /* KATG-Info.plist */,
 			);
 			name = Shared;
@@ -654,6 +660,21 @@
 				C57A3D5E124299B400D6BA3B /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9146871C1286CF1C004BE24A /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				C57A41FD12431D0B00D6BA3B /* KATG.xcdatamodeld */,
+				917E91A31285DFA600875294 /* Event.h */,
+				917E91A41285DFA600875294 /* Event.m */,
+				C585CDA3124BF99E00F56AE8 /* Tweet.h */,
+				C585CDA4124BF99E00F56AE8 /* Tweet.m */,
+				914685AC1286AAF0004BE24A /* EGOCache.h */,
+				914685AD1286AAF0004BE24A /* EGOCache.m */,
+				C5F6B17A1252AEC800905096 /* KATG.sqlite */,
+			);
+			name = Storage;
 			sourceTree = "<group>";
 		};
 		C512DB4712559EB6003D94BB /* Player */ = {
@@ -914,7 +935,7 @@
 		C57A3E3012429B0F00D6BA3B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C5F6B17A1252AEC800905096 /* KATG.sqlite */,
+				9146871C1286CF1C004BE24A /* Storage */,
 				C57A3F2F1242ABDB00D6BA3B /* DataModelDelegate.h */,
 				C57A3F301242ABDB00D6BA3B /* DataModelMetaData.h */,
 				C57A3F2B1242ABDB00D6BA3B /* DataModel.h */,
@@ -925,6 +946,8 @@
 				C57A421512431DBD00D6BA3B /* DataModel+Notifications.m */,
 				C57A3F2D1242ABDB00D6BA3B /* DataModel+SetupCleanup.h */,
 				C57A3F2E1242ABDB00D6BA3B /* DataModel+SetupCleanup.m */,
+				914686D01286C353004BE24A /* EventFormattingOperation.h */,
+				914686D11286C353004BE24A /* EventFormattingOperation.m */,
 				C57A3E3112429B1800D6BA3B /* NetworkQueue */,
 			);
 			name = Model;
@@ -1185,8 +1208,10 @@
 			children = (
 				C585CBC8124BD4C900F56AE8 /* ModelViewController.h */,
 				C585CBC9124BD4C900F56AE8 /* ModelViewController.m */,
-				C585CBC6124BD4C900F56AE8 /* ModelTableViewController.h */,
-				C585CBC7124BD4C900F56AE8 /* ModelTableViewController.m */,
+				917E91B51285E1EC00875294 /* ModelTableViewController.h */,
+				917E91B61285E1EC00875294 /* ModelTableViewController.m */,
+				C585CBC6124BD4C900F56AE8 /* ModelFetchedTableViewController.h */,
+				C585CBC7124BD4C900F56AE8 /* ModelFetchedTableViewController.m */,
 				C585CE68124C20FE00F56AE8 /* PullRefreshTableViewController.h */,
 				C585CE69124C20FE00F56AE8 /* PullRefreshTableViewController.m */,
 				C55B3352124DAC9E00676D45 /* ModelTwitterTableViewController.h */,
@@ -1681,7 +1706,6 @@
 				C57A40321242BB7000D6BA3B /* RoundedView.m in Sources */,
 				C57A40601242BBFC00D6BA3B /* AudioStreamer.m in Sources */,
 				C57A421112431D4800D6BA3B /* Guest.m in Sources */,
-				C57A421312431D4800D6BA3B /* Event.m in Sources */,
 				C57A421812431DBD00D6BA3B /* DataModel+Notifications.m in Sources */,
 				C57A421912431DBD00D6BA3B /* DataModel+Processing.m in Sources */,
 				C57A42671243D13500D6BA3B /* AccView.m in Sources */,
@@ -1691,7 +1715,7 @@
 				C53CCEE5124AF2130072D28A /* UIViewController+Nib.m in Sources */,
 				C53CCEE6124AF2130072D28A /* UIWebView+SetText.m in Sources */,
 				C53CD09D124B24C40072D28A /* Show.m in Sources */,
-				C585CBE7124BD4C900F56AE8 /* ModelTableViewController.m in Sources */,
+				C585CBE7124BD4C900F56AE8 /* ModelFetchedTableViewController.m in Sources */,
 				C585CBE8124BD4C900F56AE8 /* ModelViewController.m in Sources */,
 				C585CBF2124BD4C900F56AE8 /* ModalWebViewController.m in Sources */,
 				C585CBF3124BD4C900F56AE8 /* OnAirViewController+AudioStreamer.m in Sources */,
@@ -1736,6 +1760,10 @@
 				C512DBAE1255A69B003D94BB /* TitleBarButton.m in Sources */,
 				C512DCC71256AF91003D94BB /* Picture.m in Sources */,
 				917E90FB1285CBB400875294 /* NetworkCache.m in Sources */,
+				917E91A51285DFA600875294 /* Event.m in Sources */,
+				917E91B71285E1EC00875294 /* ModelTableViewController.m in Sources */,
+				914685AE1286AAF0004BE24A /* EGOCache.m in Sources */,
+				914686D21286C353004BE24A /* EventFormattingOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1826,7 +1854,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = (
 					"-DDEVELOPMENTBUILD",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -1836,7 +1864,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EA8F75EC-E902-47F8-8DC6-7D762274937E";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Adhoc;
@@ -1884,8 +1912,6 @@
 			isa = XCVersionGroup;
 			children = (
 				C57A41FE12431D0B00D6BA3B /* KATG.xcdatamodel */,
-				C57A420E12431D4800D6BA3B /* Event.h */,
-				C57A420F12431D4800D6BA3B /* Event.m */,
 				C53CD09B124B24C40072D28A /* Show.h */,
 				C53CD09C124B24C40072D28A /* Show.m */,
 				C57A420A12431D4800D6BA3B /* Guest.h */,

@@ -20,26 +20,26 @@
 #import <UIKit/UIKit.h>
 #import "DataModel.h"
 
-@interface ModelTableViewController : UITableViewController 
-<DataModelDelegate>
+@interface ModelFetchedTableViewController : UITableViewController 
+<DataModelDelegate, NSFetchedResultsControllerDelegate>
 {
 	//	
 	//	Data Model
 	//	
 	DataModel	*	model;
 	//	
-	//	Data Items
 	//	
-	NSArray		*	items;
+	//	
+	NSFetchedResultsController	*	_fetchedResultsController;
+	NSManagedObjectContext		*	_context;
 	//	
 	//	
 	//	
 	UIActivityIndicatorView		*	activityIndicator;
 }
 
-@property (nonatomic, retain)	NSArray						*	items;
+@property (nonatomic, retain)	NSFetchedResultsController	*	fetchedResultsController;
+@property (nonatomic, retain)	NSManagedObjectContext		*	context;
 @property (nonatomic, retain)	UIActivityIndicatorView		*	activityIndicator;
-
-- (void)reloadTableView;
 
 @end

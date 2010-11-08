@@ -46,11 +46,6 @@
 #pragma mark -
 /******************************************************************************/
 - (void)processEvents:(id)result;
-- (NSDictionary *)dateFormatters:(NSDictionary *)event;
-- (NSNumber *)detectShowType:(NSDictionary *)event;
-- (BOOL)futureTest:(NSDate *)date;
-- (NSArray *)currentEvents:(NSManagedObjectContext *)context;
-- (Event *)hasEvent:(NSArray *)events withEventID:(NSString *)eventID;
 /******************************************************************************/
 #pragma mark -
 #pragma mark Shows

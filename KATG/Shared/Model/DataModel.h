@@ -69,14 +69,6 @@
 	//	NSOperationQueue to handle core data work
 	//	
 	NSOperationQueue		*	coreDataQueue;
-	//
-	//  Date Formatters to make datetime
-	//  human readable and localized
-	//
-	NSDateFormatter			*	formatter;
-	NSDateFormatter			*	dayFormatter;
-	NSDateFormatter			*	dateFormatter;
-	NSDateFormatter			*	timeFormatter;
 	//	
 	//	Twitter
 	//	
@@ -152,10 +144,7 @@
 - (void)chatLogin:(NSString *)userName 
 		 password:(NSString *)password;
 //	
-//	Update events in core data store from the web
-//	
-//  Stores results in core data store as
-//  NSManagedObject subclass Event:
+//  Model Object Event:
 //  @property (nonatomic, retain) NSString * Title;
 //  @property (nonatomic, retain) NSString * EventID;
 //  @property (nonatomic, retain) NSDate   * DateTime;
@@ -165,7 +154,7 @@
 //  @property (nonatomic, retain) NSNumber * ShowType; (BOOL: YES for Show, No for Event)
 //  @property (nonatomic, retain) NSString * Details;
 //	
-- (void)events;
+- (NSArray *)events;
 //
 //  Retrieve list of shows in archive
 //  Returns on - (void)shows:(NSArray *)shows;
@@ -235,10 +224,6 @@
 @property (nonatomic, retain)	NSString	*	twitterSearchRefreshURL;
 @property (nonatomic, retain)	NSString	*	twitterExtendedSearchRefreshURL;
 @property (nonatomic, retain)	NSString	*	twitterHashSearchRefreshURL;
-@property (nonatomic, readonly)	NSDateFormatter	*	formatter;
-@property (nonatomic, readonly)	NSDateFormatter	*	dayFormatter;
-@property (nonatomic, readonly)	NSDateFormatter	*	dateFormatter;
-@property (nonatomic, readonly)	NSDateFormatter	*	timeFormatter;
 @property (nonatomic, readonly)	NSDateFormatter	*	twitterSearchFormatter;
 @property (nonatomic, readonly)	NSDateFormatter	*	twitterUserFormatter;
 @end
