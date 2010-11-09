@@ -27,6 +27,11 @@
 		917E90FB1285CBB400875294 /* NetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E90FA1285CBB400875294 /* NetworkCache.m */; };
 		917E91A51285DFA600875294 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91A41285DFA600875294 /* Event.m */; };
 		917E91B71285E1EC00875294 /* ModelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91B61285E1EC00875294 /* ModelTableViewController.m */; };
+		91D91F131289B24E00D0EED8 /* TwitterDetailView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91D91F091289B24E00D0EED8 /* TwitterDetailView_iPad.xib */; };
+		91D91F141289B24E00D0EED8 /* TwitterDetailViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D91F0B1289B24E00D0EED8 /* TwitterDetailViewController_iPad.m */; };
+		91D91F151289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D91F0E1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m */; };
+		91D91F161289B24E00D0EED8 /* TwitterTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D91F101289B24E00D0EED8 /* TwitterTableViewController_iPad.m */; };
+		91D91F171289B24E00D0EED8 /* TwitterUserTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D91F121289B24E00D0EED8 /* TwitterUserTableViewController_iPad.m */; };
 		C512DB4E12559EB6003D94BB /* PlayerController+Cellular.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DB4912559EB6003D94BB /* PlayerController+Cellular.m */; };
 		C512DB4F12559EB6003D94BB /* PlayerController+Wifi.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DB4B12559EB6003D94BB /* PlayerController+Wifi.m */; };
 		C512DB5012559EB6003D94BB /* PlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DB4D12559EB6003D94BB /* PlayerController.m */; };
@@ -47,10 +52,7 @@
 		C55B3360124E475000676D45 /* TwitterDetailView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55B335F124E475000676D45 /* TwitterDetailView_iPhone.xib */; };
 		C55B3373124E493400676D45 /* TwitterUserTableViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B3372124E493400676D45 /* TwitterUserTableViewController_iPhone.m */; };
 		C55B3376124E4A0D00676D45 /* TwitterDetailViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B3375124E4A0D00676D45 /* TwitterDetailViewController_iPhone.m */; };
-		C55B36E012513D2C00676D45 /* TwitterDetailView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55B36DF12513D2C00676D45 /* TwitterDetailView_iPad.xib */; };
-		C55B370612515A1400676D45 /* TwitterUserTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B370512515A1400676D45 /* TwitterUserTableViewController_iPad.m */; };
 		C55B3785125243F200676D45 /* TwitterHashTagTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B3784125243F200676D45 /* TwitterHashTagTableViewController.m */; };
-		C55B379E125244F100676D45 /* TwitterHashTagTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B379D125244F100676D45 /* TwitterHashTagTableViewController_iPad.m */; };
 		C56BDBAD1255413D002263CF /* ArrowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C56BDBAC1255413D002263CF /* ArrowButton.m */; };
 		C57A3CF91242997C00D6BA3B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A3CF81242997C00D6BA3B /* AudioToolbox.framework */; };
 		C57A3CFB1242997C00D6BA3B /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A3CFA1242997C00D6BA3B /* iAd.framework */; };
@@ -210,10 +212,8 @@
 		C585CC62124BD67800F56AE8 /* ModalWebViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC59124BD67800F56AE8 /* ModalWebViewController_iPad.m */; };
 		C585CC63124BD67800F56AE8 /* OnAirView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC5B124BD67800F56AE8 /* OnAirView_iPad.xib */; };
 		C585CC64124BD67800F56AE8 /* OnAirViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC5D124BD67800F56AE8 /* OnAirViewController_iPad.m */; };
-		C585CD4F124BEF3000F56AE8 /* TwitterTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CD4E124BEF3000F56AE8 /* TwitterTableViewController_iPad.m */; };
 		C585CD59124BF02300F56AE8 /* TwitterTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CD58124BF02300F56AE8 /* TwitterTableView.xib */; };
 		C585CD69124BF27000F56AE8 /* TwitterDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CD68124BF27000F56AE8 /* TwitterDetailViewController.m */; };
-		C585CD6C124BF2D900F56AE8 /* TwitterDetailViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CD6B124BF2D900F56AE8 /* TwitterDetailViewController_iPad.m */; };
 		C585CDA5124BF99E00F56AE8 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CDA4124BF99E00F56AE8 /* Tweet.m */; };
 		C585CE66124C205E00F56AE8 /* Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C585CE64124C205E00F56AE8 /* Arrow.png */; };
 		C585CE67124C205E00F56AE8 /* Arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C585CE65124C205E00F56AE8 /* Arrow@2x.png */; };
@@ -265,6 +265,15 @@
 		917E91A41285DFA600875294 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		917E91B51285E1EC00875294 /* ModelTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelTableViewController.h; sourceTree = "<group>"; };
 		917E91B61285E1EC00875294 /* ModelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelTableViewController.m; sourceTree = "<group>"; };
+		91D91F091289B24E00D0EED8 /* TwitterDetailView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterDetailView_iPad.xib; sourceTree = "<group>"; };
+		91D91F0A1289B24E00D0EED8 /* TwitterDetailViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDetailViewController_iPad.h; sourceTree = "<group>"; };
+		91D91F0B1289B24E00D0EED8 /* TwitterDetailViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDetailViewController_iPad.m; sourceTree = "<group>"; };
+		91D91F0D1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterHashTagTableViewController_iPad.h; sourceTree = "<group>"; };
+		91D91F0E1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterHashTagTableViewController_iPad.m; sourceTree = "<group>"; };
+		91D91F0F1289B24E00D0EED8 /* TwitterTableViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTableViewController_iPad.h; sourceTree = "<group>"; };
+		91D91F101289B24E00D0EED8 /* TwitterTableViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterTableViewController_iPad.m; sourceTree = "<group>"; };
+		91D91F111289B24E00D0EED8 /* TwitterUserTableViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUserTableViewController_iPad.h; sourceTree = "<group>"; };
+		91D91F121289B24E00D0EED8 /* TwitterUserTableViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUserTableViewController_iPad.m; sourceTree = "<group>"; };
 		C512DB4812559EB6003D94BB /* PlayerController+Cellular.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayerController+Cellular.h"; sourceTree = "<group>"; };
 		C512DB4912559EB6003D94BB /* PlayerController+Cellular.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlayerController+Cellular.m"; sourceTree = "<group>"; };
 		C512DB4A12559EB6003D94BB /* PlayerController+Wifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayerController+Wifi.h"; sourceTree = "<group>"; };
@@ -301,13 +310,8 @@
 		C55B3372124E493400676D45 /* TwitterUserTableViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUserTableViewController_iPhone.m; sourceTree = "<group>"; };
 		C55B3374124E4A0D00676D45 /* TwitterDetailViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDetailViewController_iPhone.h; sourceTree = "<group>"; };
 		C55B3375124E4A0D00676D45 /* TwitterDetailViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDetailViewController_iPhone.m; sourceTree = "<group>"; };
-		C55B36DF12513D2C00676D45 /* TwitterDetailView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterDetailView_iPad.xib; sourceTree = "<group>"; };
-		C55B370412515A1400676D45 /* TwitterUserTableViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUserTableViewController_iPad.h; sourceTree = "<group>"; };
-		C55B370512515A1400676D45 /* TwitterUserTableViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUserTableViewController_iPad.m; sourceTree = "<group>"; };
 		C55B3783125243F200676D45 /* TwitterHashTagTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterHashTagTableViewController.h; sourceTree = "<group>"; };
 		C55B3784125243F200676D45 /* TwitterHashTagTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterHashTagTableViewController.m; sourceTree = "<group>"; };
-		C55B379C125244F100676D45 /* TwitterHashTagTableViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterHashTagTableViewController_iPad.h; sourceTree = "<group>"; };
-		C55B379D125244F100676D45 /* TwitterHashTagTableViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterHashTagTableViewController_iPad.m; sourceTree = "<group>"; };
 		C56BDBAB1255413D002263CF /* ArrowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrowButton.h; sourceTree = "<group>"; };
 		C56BDBAC1255413D002263CF /* ArrowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArrowButton.m; sourceTree = "<group>"; };
 		C57A3CF81242997C00D6BA3B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -542,13 +546,9 @@
 		C585CC5B124BD67800F56AE8 /* OnAirView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnAirView_iPad.xib; sourceTree = "<group>"; };
 		C585CC5C124BD67800F56AE8 /* OnAirViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnAirViewController_iPad.h; sourceTree = "<group>"; };
 		C585CC5D124BD67800F56AE8 /* OnAirViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnAirViewController_iPad.m; sourceTree = "<group>"; };
-		C585CD4D124BEF3000F56AE8 /* TwitterTableViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTableViewController_iPad.h; sourceTree = "<group>"; };
-		C585CD4E124BEF3000F56AE8 /* TwitterTableViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterTableViewController_iPad.m; sourceTree = "<group>"; };
 		C585CD58124BF02300F56AE8 /* TwitterTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterTableView.xib; sourceTree = "<group>"; };
 		C585CD67124BF27000F56AE8 /* TwitterDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDetailViewController.h; sourceTree = "<group>"; };
 		C585CD68124BF27000F56AE8 /* TwitterDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDetailViewController.m; sourceTree = "<group>"; };
-		C585CD6A124BF2D900F56AE8 /* TwitterDetailViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDetailViewController_iPad.h; sourceTree = "<group>"; };
-		C585CD6B124BF2D900F56AE8 /* TwitterDetailViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDetailViewController_iPad.m; sourceTree = "<group>"; };
 		C585CDA3124BF99E00F56AE8 /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tweet.h; path = Shared/Tweet.h; sourceTree = "<group>"; };
 		C585CDA4124BF99E00F56AE8 /* Tweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Tweet.m; path = Shared/Tweet.m; sourceTree = "<group>"; };
 		C585CE64124C205E00F56AE8 /* Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Arrow.png; sourceTree = "<group>"; };
@@ -689,6 +689,39 @@
 				C5F6B17A1252AEC800905096 /* KATG.sqlite */,
 			);
 			name = Storage;
+			sourceTree = "<group>";
+		};
+		91D91F071289B24E00D0EED8 /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				91D91F081289B24E00D0EED8 /* Detail */,
+				91D91F0C1289B24E00D0EED8 /* Table */,
+			);
+			name = Twitter;
+			path = iPad/Twitter;
+			sourceTree = "<group>";
+		};
+		91D91F081289B24E00D0EED8 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				91D91F091289B24E00D0EED8 /* TwitterDetailView_iPad.xib */,
+				91D91F0A1289B24E00D0EED8 /* TwitterDetailViewController_iPad.h */,
+				91D91F0B1289B24E00D0EED8 /* TwitterDetailViewController_iPad.m */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		91D91F0C1289B24E00D0EED8 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				91D91F0D1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.h */,
+				91D91F0E1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m */,
+				91D91F0F1289B24E00D0EED8 /* TwitterTableViewController_iPad.h */,
+				91D91F101289B24E00D0EED8 /* TwitterTableViewController_iPad.m */,
+				91D91F111289B24E00D0EED8 /* TwitterUserTableViewController_iPad.h */,
+				91D91F121289B24E00D0EED8 /* TwitterUserTableViewController_iPad.m */,
+			);
+			path = Table;
 			sourceTree = "<group>";
 		};
 		C512DB4712559EB6003D94BB /* Player */ = {
@@ -996,8 +1029,8 @@
 				C57A43E812442B5400D6BA3B /* MGSplitViewController */,
 				C585CC5A124BD67800F56AE8 /* OnAir */,
 				C585CC4E124BD67800F56AE8 /* Events */,
-				C585CD4A124BEF1200F56AE8 /* Twitter */,
 				C585CC56124BD67800F56AE8 /* ModalWeb */,
+				91D91F071289B24E00D0EED8 /* Twitter */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1460,39 +1493,6 @@
 			path = iPad/OnAir;
 			sourceTree = "<group>";
 		};
-		C585CD4A124BEF1200F56AE8 /* Twitter */ = {
-			isa = PBXGroup;
-			children = (
-				C585CD4C124BEF1200F56AE8 /* Table */,
-				C585CD4B124BEF1200F56AE8 /* Detail */,
-			);
-			name = Twitter;
-			path = iPad/Twitter;
-			sourceTree = "<group>";
-		};
-		C585CD4B124BEF1200F56AE8 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				C585CD6A124BF2D900F56AE8 /* TwitterDetailViewController_iPad.h */,
-				C585CD6B124BF2D900F56AE8 /* TwitterDetailViewController_iPad.m */,
-				C55B36DF12513D2C00676D45 /* TwitterDetailView_iPad.xib */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		C585CD4C124BEF1200F56AE8 /* Table */ = {
-			isa = PBXGroup;
-			children = (
-				C585CD4D124BEF3000F56AE8 /* TwitterTableViewController_iPad.h */,
-				C585CD4E124BEF3000F56AE8 /* TwitterTableViewController_iPad.m */,
-				C55B370412515A1400676D45 /* TwitterUserTableViewController_iPad.h */,
-				C55B370512515A1400676D45 /* TwitterUserTableViewController_iPad.m */,
-				C55B379C125244F100676D45 /* TwitterHashTagTableViewController_iPad.h */,
-				C55B379D125244F100676D45 /* TwitterHashTagTableViewController_iPad.m */,
-			);
-			path = Table;
-			sourceTree = "<group>";
-		};
 		C5F6B2541252F7E400905096 /* Archive */ = {
 			isa = PBXGroup;
 			children = (
@@ -1667,13 +1667,13 @@
 				C585CED9124C261A00F56AE8 /* TwitterTableViewCell.xib in Resources */,
 				C55B2FEA124D30E500676D45 /* PushKeys.h.example in Resources */,
 				C55B3360124E475000676D45 /* TwitterDetailView_iPhone.xib in Resources */,
-				C55B36E012513D2C00676D45 /* TwitterDetailView_iPad.xib in Resources */,
 				C5F6B17B1252AEC800905096 /* KATG.sqlite in Resources */,
 				C5F6B27B1252F82200905096 /* ArchiveDetailView_iPhone.xib in Resources */,
 				C512DB921255A38D003D94BB /* PlayerController.xib in Resources */,
 				C512DC2F1255B21D003D94BB /* Pause.png in Resources */,
 				C512DC301255B21D003D94BB /* Pause@2x.png in Resources */,
 				914687DF128783E0004BE24A /* ArchivePictureView_iPhone.xib in Resources */,
+				91D91F131289B24E00D0EED8 /* TwitterDetailView_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1759,9 +1759,7 @@
 				C585CC60124BD67800F56AE8 /* EventsTableViewController_iPad.m in Sources */,
 				C585CC62124BD67800F56AE8 /* ModalWebViewController_iPad.m in Sources */,
 				C585CC64124BD67800F56AE8 /* OnAirViewController_iPad.m in Sources */,
-				C585CD4F124BEF3000F56AE8 /* TwitterTableViewController_iPad.m in Sources */,
 				C585CD69124BF27000F56AE8 /* TwitterDetailViewController.m in Sources */,
-				C585CD6C124BF2D900F56AE8 /* TwitterDetailViewController_iPad.m in Sources */,
 				C585CDA5124BF99E00F56AE8 /* Tweet.m in Sources */,
 				C585CE6A124C20FE00F56AE8 /* PullRefreshTableViewController.m in Sources */,
 				C585CED8124C261A00F56AE8 /* TwitterTableViewCell.m in Sources */,
@@ -1772,9 +1770,7 @@
 				C55B3354124DAC9E00676D45 /* ModelTwitterTableViewController.m in Sources */,
 				C55B3373124E493400676D45 /* TwitterUserTableViewController_iPhone.m in Sources */,
 				C55B3376124E4A0D00676D45 /* TwitterDetailViewController_iPhone.m in Sources */,
-				C55B370612515A1400676D45 /* TwitterUserTableViewController_iPad.m in Sources */,
 				C55B3785125243F200676D45 /* TwitterHashTagTableViewController.m in Sources */,
-				C55B379E125244F100676D45 /* TwitterHashTagTableViewController_iPad.m in Sources */,
 				C5F6B2181252E03C00905096 /* TwitterHashTagTableViewController_iPhone.m in Sources */,
 				C5F6B23B1252E59300905096 /* ArchiveDetailViewController.m in Sources */,
 				C56BDBAD1255413D002263CF /* ArrowButton.m in Sources */,
@@ -1792,6 +1788,10 @@
 				914687E512878544004BE24A /* ArchiveDetailViewController_iPhone.m in Sources */,
 				914687E81287865C004BE24A /* ArchivePictureViewController_iPhone.m in Sources */,
 				914687EC12878808004BE24A /* ArchiveTableViewController_iPhone.m in Sources */,
+				91D91F141289B24E00D0EED8 /* TwitterDetailViewController_iPad.m in Sources */,
+				91D91F151289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m in Sources */,
+				91D91F161289B24E00D0EED8 /* TwitterTableViewController_iPad.m in Sources */,
+				91D91F171289B24E00D0EED8 /* TwitterUserTableViewController_iPad.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1882,7 +1882,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				OTHER_CFLAGS = (
 					"-DDEVELOPMENTBUILD",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -1892,7 +1892,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EA8F75EC-E902-47F8-8DC6-7D762274937E";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos4.2;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Adhoc;

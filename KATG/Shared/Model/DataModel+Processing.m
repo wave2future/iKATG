@@ -444,6 +444,7 @@
 /******************************************************************************/
 - (void)processShowsList:(id)result count:(NSInteger)count
 {
+#define kCutoffShow 1200
 	[coreDataQueue addOperationWithBlock:^() {
 		//	
 		//	/*UNREVISEDCOMMENTS*/
@@ -464,7 +465,7 @@
 		request.entity					=	entity;
         request.relationshipKeyPathsForPrefetching  =   [NSArray arrayWithObject:@"Guest"];
 		request.fetchLimit				=	count + 100;
-		NSPredicate	*	predicate		=	[NSPredicate predicateWithFormat:@"Number >= 1050 or TV == YES"];
+		NSPredicate	*	predicate		=	[NSPredicate predicateWithFormat:@"Number >= kCutoffShow or TV == YES"];
 		[request setPredicate:predicate];
 		NSError		*	anError;
 		NSArray		*	fetchResults	=	[managedObjectContext executeFetchRequest:request 
@@ -487,8 +488,8 @@
 			if (isKATGTV)
 				isTV						=	[isKATGTV boolValue];
 			
-			if (numInt < 1050 && !isTV)
-				continue;
+			//if (numInt > kCutoffShow) continue;
+			if (numInt < kCutoffShow && !isTV) continue;
 			
 			NSString	*	ID				=	[show objectForKey:@"I"];
 			

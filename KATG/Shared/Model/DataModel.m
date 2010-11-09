@@ -337,7 +337,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	op.instanceCode				=	kShowArchivesCode;
 	op.URI						=	kShowListURIAddress;
 	// Using the twitter date formatter to avoid creating another dateformatter just for this
-	NSDate	*	start			=	[self.twitterSearchFormatter dateFromString:@"Mon, 01 Nov 2010 07:36:57 +0000"];
+	NSDate	*	start			=	[self.twitterSearchFormatter dateFromString:@"Mon, 01 Apr 2010 07:36:57 +0000"];
 	if (start)
 	{
 		NSInteger	days		=	[start timeIntervalSinceDate:[NSDate date]] / -(60 /*Seconds*/ * 60 /*Minutes*/ * 24 /*Hours*/);

@@ -18,7 +18,7 @@
 //  
 
 #import "ArchiveTableViewController_iPhone.h"
-#import "ArchiveDetailViewController.h"
+#import "ArchiveDetailViewController_iPhone.h"
 
 @implementation ArchiveTableViewController_iPhone
 
@@ -30,9 +30,9 @@
 - (void)tableView:(UITableView *)tableView 
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	ArchiveDetailViewController	*	viewController	=	
-	[[ArchiveDetailViewController alloc] initWithNibName:@"ArchiveDetailView_iPhone" 
-												  bundle:nil];
+	ArchiveDetailViewController_iPhone	*	viewController	=	
+	[[ArchiveDetailViewController_iPhone alloc] initWithNibName:@"ArchiveDetailView_iPhone" 
+														 bundle:nil];
 	viewController.show	=	(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath];
 	[self.navigationController pushViewController:viewController animated:YES];
 	[viewController release];

@@ -39,14 +39,6 @@
 	//	
 	//	
 	//	
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:self 
-	 selector:@selector(mergeChangesFromContextDidSaveNotification:) 
-	 name:NSManagedObjectContextDidSaveNotification 
-	 object:nil];
-	//	
-	//	
-	//	
 	UIActivityIndicatorView	*	anActivityIndicator	=
 	[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 	if (anActivityIndicator)
