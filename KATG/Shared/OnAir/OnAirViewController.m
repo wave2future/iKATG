@@ -117,9 +117,9 @@
 {
 	if (error.code == kNextLiveShowCode)
 	{
-		self.guestLabel.text		=	@"Unknown";
+		self.guestLabel.text		=	@"Unavailable";
 		[self.guestActivityIndicator stopAnimating];
-		self.nextLiveShowLabel.text	=	@"Unknown";
+		self.nextLiveShowLabel.text	=	@"Unavailable";
 		[self.nextLiveShowActivityIndicator stopAnimating];
 	}
 }

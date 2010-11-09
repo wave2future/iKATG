@@ -39,7 +39,7 @@
 - (void)clearCache;
 - (void)removeCacheForKey:(NSString*)key;
 
-- (BOOL)hasCacheForKey:(NSString*)key;
+- (NSInteger)hasCacheForKey:(NSString*)key;
 
 - (NSData*)dataForKey:(NSString*)key;
 - (void)setData:(NSData*)data forKey:(NSString*)key;

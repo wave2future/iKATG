@@ -266,16 +266,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 - (NSArray *)events
 {
 	EGOCache	*	cache		=	[EGOCache currentCache];
-	if ([cache hasCacheForKey:@"events.archive"])
+	NSInteger		hasKey		=	[cache hasCacheForKey:@"events.archive"];
+	if (hasKey == 1)
 	{
-#if 1
+#if LogEventCaching
 		NSLog(@"Retrieve Events from cache");
 #endif
 		NSArray		*	events		=	[cache objectForKey:@"events.archive"];
 		if (events)
 			return events;
 	}
-#if 1
+	else if (hasKey == 2)
+	{
+		return nil;
+	}
+#if LogEventCaching
 	NSLog(@"Retrieve Events from web");
 #endif
 	//	

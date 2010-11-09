@@ -128,11 +128,11 @@ static EGOCache* __instance;
 	[cacheDictionary removeObjectForKey:key];
 }
 
-- (BOOL)hasCacheForKey:(NSString*)key {
+- (NSInteger)hasCacheForKey:(NSString*)key {
 	NSDate* date = [cacheDictionary objectForKey:key];
-	if(!date) return NO;
-	if([[[NSDate date] earlierDate:date] isEqualToDate:date]) return NO;
-	return [[NSFileManager defaultManager] fileExistsAtPath:cachePathForKey(key)];
+	if(!date) return 0;
+	if([[[NSDate date] earlierDate:date] isEqualToDate:date]) return 0;
+	return (2 - (NSInteger)[[NSFileManager defaultManager] fileExistsAtPath:cachePathForKey(key)]);
 }
 
 #pragma mark -

@@ -19,6 +19,11 @@
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
 		914685AE1286AAF0004BE24A /* EGOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 914685AD1286AAF0004BE24A /* EGOCache.m */; };
 		914686D21286C353004BE24A /* EventFormattingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 914686D11286C353004BE24A /* EventFormattingOperation.m */; };
+		914687C512877EAF004BE24A /* ArchivePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687C412877EAF004BE24A /* ArchivePictureViewController.m */; };
+		914687DF128783E0004BE24A /* ArchivePictureView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 914687DE128783E0004BE24A /* ArchivePictureView_iPhone.xib */; };
+		914687E512878544004BE24A /* ArchiveDetailViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687E412878544004BE24A /* ArchiveDetailViewController_iPhone.m */; };
+		914687E81287865C004BE24A /* ArchivePictureViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687E71287865C004BE24A /* ArchivePictureViewController_iPhone.m */; };
+		914687EC12878808004BE24A /* ArchiveTableViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687EB12878808004BE24A /* ArchiveTableViewController_iPhone.m */; };
 		917E90FB1285CBB400875294 /* NetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E90FA1285CBB400875294 /* NetworkCache.m */; };
 		917E91A51285DFA600875294 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91A41285DFA600875294 /* Event.m */; };
 		917E91B71285E1EC00875294 /* ModelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91B61285E1EC00875294 /* ModelTableViewController.m */; };
@@ -245,6 +250,15 @@
 		914685AD1286AAF0004BE24A /* EGOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EGOCache.m; path = Shared/Model/EGOCache.m; sourceTree = "<group>"; };
 		914686D01286C353004BE24A /* EventFormattingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormattingOperation.h; sourceTree = "<group>"; };
 		914686D11286C353004BE24A /* EventFormattingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormattingOperation.m; sourceTree = "<group>"; };
+		914687C312877EAF004BE24A /* ArchivePictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchivePictureViewController.h; sourceTree = "<group>"; };
+		914687C412877EAF004BE24A /* ArchivePictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchivePictureViewController.m; sourceTree = "<group>"; };
+		914687DE128783E0004BE24A /* ArchivePictureView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArchivePictureView_iPhone.xib; sourceTree = "<group>"; };
+		914687E312878544004BE24A /* ArchiveDetailViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveDetailViewController_iPhone.h; sourceTree = "<group>"; };
+		914687E412878544004BE24A /* ArchiveDetailViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveDetailViewController_iPhone.m; sourceTree = "<group>"; };
+		914687E61287865C004BE24A /* ArchivePictureViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchivePictureViewController_iPhone.h; sourceTree = "<group>"; };
+		914687E71287865C004BE24A /* ArchivePictureViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchivePictureViewController_iPhone.m; sourceTree = "<group>"; };
+		914687EA12878808004BE24A /* ArchiveTableViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveTableViewController_iPhone.h; sourceTree = "<group>"; };
+		914687EB12878808004BE24A /* ArchiveTableViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveTableViewController_iPhone.m; sourceTree = "<group>"; };
 		917E90F91285CBB400875294 /* NetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkCache.h; sourceTree = "<group>"; };
 		917E90FA1285CBB400875294 /* NetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkCache.m; sourceTree = "<group>"; };
 		917E91A31285DFA600875294 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
@@ -1260,6 +1274,8 @@
 			children = (
 				C5F6B2391252E59300905096 /* ArchiveDetailViewController.h */,
 				C5F6B23A1252E59300905096 /* ArchiveDetailViewController.m */,
+				914687C312877EAF004BE24A /* ArchivePictureViewController.h */,
+				914687C412877EAF004BE24A /* ArchivePictureViewController.m */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -1489,7 +1505,12 @@
 		C5F6B2551252F7E400905096 /* Details */ = {
 			isa = PBXGroup;
 			children = (
+				914687E312878544004BE24A /* ArchiveDetailViewController_iPhone.h */,
+				914687E412878544004BE24A /* ArchiveDetailViewController_iPhone.m */,
 				C5F6B27A1252F82200905096 /* ArchiveDetailView_iPhone.xib */,
+				914687E61287865C004BE24A /* ArchivePictureViewController_iPhone.h */,
+				914687E71287865C004BE24A /* ArchivePictureViewController_iPhone.m */,
+				914687DE128783E0004BE24A /* ArchivePictureView_iPhone.xib */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -1497,6 +1518,8 @@
 		C5F6B2561252F7E400905096 /* Table */ = {
 			isa = PBXGroup;
 			children = (
+				914687EA12878808004BE24A /* ArchiveTableViewController_iPhone.h */,
+				914687EB12878808004BE24A /* ArchiveTableViewController_iPhone.m */,
 			);
 			path = Table;
 			sourceTree = "<group>";
@@ -1650,6 +1673,7 @@
 				C512DB921255A38D003D94BB /* PlayerController.xib in Resources */,
 				C512DC2F1255B21D003D94BB /* Pause.png in Resources */,
 				C512DC301255B21D003D94BB /* Pause@2x.png in Resources */,
+				914687DF128783E0004BE24A /* ArchivePictureView_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1764,6 +1788,10 @@
 				917E91B71285E1EC00875294 /* ModelTableViewController.m in Sources */,
 				914685AE1286AAF0004BE24A /* EGOCache.m in Sources */,
 				914686D21286C353004BE24A /* EventFormattingOperation.m in Sources */,
+				914687C512877EAF004BE24A /* ArchivePictureViewController.m in Sources */,
+				914687E512878544004BE24A /* ArchiveDetailViewController_iPhone.m in Sources */,
+				914687E81287865C004BE24A /* ArchivePictureViewController_iPhone.m in Sources */,
+				914687EC12878808004BE24A /* ArchiveTableViewController_iPhone.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -533,7 +533,7 @@
 					<string>EventsTableViewController_iPhone</string>
 					<string>AppDelegate_iPhone</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>ArchiveTableViewController</string>
+					<string>ArchiveTableViewController_iPhone</string>
 					<string>TwitterTableViewController_iPhone</string>
 					<string>{{302, 52}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -618,8 +618,16 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">ArchiveTableViewController_iPhone</string>
+					<string key="superclassName">ArchiveTableViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">iPhone/Archive/Table/ArchiveTableViewController_iPhone.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">EventsTableViewController</string>
-					<string key="superclassName">ModelFetchedTableViewController</string>
+					<string key="superclassName">ModelTableViewController</string>
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">adView</string>
 						<string key="NS.object.0">ADBannerView</string>
@@ -656,8 +664,32 @@
 					<string key="className">ModelFetchedTableViewController</string>
 					<string key="superclassName">UITableViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Shared/AbstractSuperClasses/ModelFetchedTableViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ModelFetchedTableViewController</string>
+					<string key="superclassName">UITableViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ModelTableViewController</string>
+					<string key="superclassName">UITableViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Shared/AbstractSuperClasses/ModelTableViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ModelTwitterTableViewController</string>
+					<string key="superclassName">PullRefreshTableViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Shared/Twitter/Table/ModelTwitterTableViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -912,7 +944,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">TwitterTableViewController</string>
-					<string key="superclassName">PullRefreshTableViewController</string>
+					<string key="superclassName">ModelTwitterTableViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Shared/Twitter/Table/TwitterTableViewController.h</string>

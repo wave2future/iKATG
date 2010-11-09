@@ -189,6 +189,7 @@
 		//	that the cache has commited to disk
 		//	
 		[self.delegate performSelector:@selector(nextLiveShowTime) withObject:nil afterDelay:1.0];
+		//[self.delegate nextLiveShowTime];
 	});
 	[processedEvents release];
 	[pool drain]; pool = nil;

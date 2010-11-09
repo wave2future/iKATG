@@ -32,7 +32,7 @@
 
 /******************************************************************************/
 #pragma mark -
-#pragma mark 
+#pragma mark View Life Cycle
 #pragma mark -
 /******************************************************************************/
 - (void)viewDidLoad
@@ -40,7 +40,7 @@
 	[super viewDidLoad];
 	[self updateFields];
 	[model showDetails:[NSString stringWithFormat:@"%@", show.ID]];
-	[model showPictures:[NSString stringWithFormat:@"%@", show.ID]];
+	//[model showPictures:[NSString stringWithFormat:@"%@", show.ID]];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -72,6 +72,9 @@
 	ArrowButton	*	picButton	=
 	[[ArrowButton alloc] initWithFrame:CGRectMake(0, 0, 70, 30)];
 	[picButton setTitle:@"Pictures" forState:UIControlStateNormal];
+	[picButton addTarget:self 
+				  action:@selector(pushPicturesViewController:) 
+		forControlEvents:UIControlEventTouchUpInside];
 	UIBarButtonItem	*	picBarButton	=
 	[[UIBarButtonItem alloc] initWithCustomView:picButton];
 	self.navigationItem.rightBarButtonItem	=	picBarButton;
@@ -89,7 +92,7 @@
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark 
+#pragma mark Memory Management
 #pragma mark -
 /******************************************************************************/
 - (void)dealloc
@@ -103,7 +106,7 @@
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark 
+#pragma mark Data Model Delegates
 #pragma mark -
 /******************************************************************************/
 - (void)showDetails:(NSString *)ID
@@ -132,7 +135,7 @@
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark 
+#pragma mark Player
 #pragma mark -
 /******************************************************************************/
 - (IBAction)playButtonPressed:(id)sender
@@ -153,4 +156,5 @@
 	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:viewController animated:YES];
 }
+
 @end

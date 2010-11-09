@@ -81,3 +81,9 @@ typedef enum {
 #define	kProfileImageKey		@"profile_image_url"
 #define	kTextKey				@"text"
 #define	kDateKey				@"created_at"
+
+//	
+//	Logging
+//	
+
+#define LogEventCaching 1

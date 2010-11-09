@@ -161,12 +161,7 @@
 - (void)tableView:(UITableView *)tableView 
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	ArchiveDetailViewController	*	viewController	=	
-	[[ArchiveDetailViewController alloc] initWithNibName:@"ArchiveDetailView_iPhone" 
-												  bundle:nil];
-	viewController.show	=	(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath];
-	[self.navigationController pushViewController:viewController animated:YES];
-	[viewController release];
+	
 }
 /******************************************************************************/
 #pragma mark -
@@ -246,7 +241,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark 
+#pragma mark Player
 #pragma mark -
 /******************************************************************************/
 - (void)presentPlayer

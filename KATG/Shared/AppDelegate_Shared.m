@@ -20,6 +20,10 @@
 #import "AppDelegate_Shared.h"
 #import "DataModel.h"
 
+#if DEVELOPMENTBUILD
+#import "EGOCache.h"
+#endif
+
 @implementation AppDelegate_Shared
 @synthesize window, tabBarController;
 
@@ -34,6 +38,9 @@ void uncaughtExceptionHandler(NSException *exception)
 /******************************************************************************/
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
+#if DEVELOPMENTBUILD
+	[[EGOCache currentCache] clearCache];
+#endif
 	//	
 	//	
 	//	

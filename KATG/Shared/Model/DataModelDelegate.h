@@ -48,6 +48,10 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
+- (void)showPictures:(NSString *)ID;
+//	
+//	/*UNREVISEDCOMMENT*/
+//	
 - (void)twitterSearchFeed:(NSArray *)tweets;
 //	
 //	/*UNREVISEDCOMMENT*/
