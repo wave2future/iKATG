@@ -37,8 +37,9 @@
 }
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	if (self = [super initWithCoder:aDecoder])
-		[self setup];
+	self = [super initWithCoder:aDecoder];
+	//if (self = [super initWithCoder:aDecoder])
+	//	[self setup];
 	return self;
 }
 - (id)initWithFrame:(CGRect)frame
@@ -48,6 +49,10 @@
 	return self;
 }
 - (void)awakeFromNib
+{
+	[self setup];
+}
+- (void)setup
 {
 	self.layer.cornerRadius		=	10.0;
 	self.layer.borderWidth		=	2.0;
@@ -75,13 +80,13 @@
 		[self.layer insertSublayer:gradient atIndex:0];
 	}
 }
-- (void)setup
+//- (void)drawRect:(CGRect)rect
+//{
+//	[super drawRect:rect];
+//}
+- (void)layoutSubviews
 {
-	gradient	=	nil;
-}
-- (void)drawRect:(CGRect)rect
-{
-	[super drawRect:rect];
+	[super layoutSubviews];
 	gradient.frame	=	self.bounds;
 }
 #pragma mark -
