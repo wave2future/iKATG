@@ -21,25 +21,14 @@
 #import "OnAirViewController.h"
 
 @class GradButton;
-@interface OnAirViewController_iPad : OnAirViewController <UITableViewDelegate>
+@interface OnAirViewController_iPad : OnAirViewController
 {
-	NSMutableArray	*	chatEntries;
-	UITableView		*	chatTable;
-	UIView			*	playerView;
+	UIView		*	playerView;
 	UIViewAutoresizing	feedbackResizingMask;
-	GradButton		*	sendButton;
-	GradButton		*	pauseButton;
-	BOOL				paused;
+	UIWebView	*	chatView;
 }
 
-@property (nonatomic, retain)			NSMutableArray	*	chatEntries;
-@property (nonatomic, retain)	IBOutlet	UITableView	*	chatTable;
 @property (nonatomic, retain)	IBOutlet	UIView		*	playerView;
-@property (nonatomic, retain)	IBOutlet	GradButton	*	sendButton;
-@property (nonatomic, retain)	IBOutlet	GradButton	*	pauseButton;
-
-- (IBAction)sendButtonPressed:(id)sender;
-- (IBAction)pauseButtonPressed:(id)sender;
-- (IBAction)logoutButtonPressed:(id)sender;
+@property (nonatomic, retain)	IBOutlet	UIWebView	*	chatView;
 
 @end

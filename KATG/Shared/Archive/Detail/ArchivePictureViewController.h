@@ -20,11 +20,12 @@
 #import <UIKit/UIKit.h>
 #import "ModelViewController.h"
 
+@class Show;
 @interface ArchivePictureViewController : ModelViewController 
 {
-	NSString	*	showID;
+	Show	*	show;
 }
 
-@property (nonatomic, retain)	NSString	*	showID;
+@property (nonatomic, assign)	Show	*	show;
 
 @end

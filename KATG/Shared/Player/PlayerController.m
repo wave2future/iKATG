@@ -24,7 +24,6 @@
 #import "ModalWebViewController_iPhone.h"
 #import "DataModel.h"
 #import "AudioStreamer.h"
-#import "UIWebView+SetText.h"
 
 @interface PlayerController ()
 - (void)setup;

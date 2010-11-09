@@ -23,6 +23,7 @@
 #import "Show.h"
 #import "Guest.h"
 #import "Tweet.h"
+#import "Picture.h"
 #import "TouchXML.h"
 #import "UIImage+MyAdditions.h"
 #import "EventFormattingOperation.h"
@@ -100,7 +101,8 @@
 		case kShowPicturesCode:
 			NSParameterAssert([result isKindOfClass:[NSArray class]]);
 			//NSParameterAssert(([(NSArray *)result count] > 0));
-			NSLog(@"%@", result);
+			[self procesShowPictures:result 
+							  withID:[operation.bodyBufferDict objectForKey:kShowIDKey]];
 			break;
 		case kTwitterSearchCode:
 			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
@@ -281,7 +283,7 @@
 	if ([response rangeOfString:@"Login successful!"].location != NSNotFound)
 	{
 		[self notifyLogin];
-		[self chatStart];
+		//[self chatStart];
 	}
 	else
 	{
@@ -465,7 +467,7 @@
 		request.entity					=	entity;
         request.relationshipKeyPathsForPrefetching  =   [NSArray arrayWithObject:@"Guest"];
 		request.fetchLimit				=	count + 100;
-		NSPredicate	*	predicate		=	[NSPredicate predicateWithFormat:@"Number >= kCutoffShow or TV == YES"];
+		NSPredicate	*	predicate		=	[NSPredicate predicateWithFormat:@"Number >= %d or TV == YES", kCutoffShow];
 		[request setPredicate:predicate];
 		NSError		*	anError;
 		NSArray		*	fetchResults	=	[managedObjectContext executeFetchRequest:request 
@@ -581,9 +583,8 @@
 				[managedShow setHasNotes:[NSNumber numberWithBool:hasShwNts]];
 			}
 			if (title)
-			{
 				[managedShow setTitle:title];
-			}
+			
 			if (isKATGTV)
 				[managedShow setTV:[NSNumber numberWithBool:isTV]];
 		}
@@ -717,8 +718,56 @@
 		}
 		if (fetchResults.count > 0)
 		{
-			Show		*	show	=	[fetchResults objectAtIndex:0];
-			
+			Show	*	show	=	[fetchResults objectAtIndex:0];
+			for (NSDictionary *picture in pictures)
+			{
+				//NSLog(@"%@", picture);
+				//description = "";
+				//title = "Chris Ingle, the guy who changes the clocks";
+				//url = "http://www.KeithAndTheGirl.com/Show/Pictures/Q4ULEG6J2WXGZYO9P4BI-Thumb.jpg";
+				
+				NSString	*	url	=	[picture objectForKey:@"url"];
+				if (!url || (url.length == 0)) continue;
+				
+				Picture	*	managedPicture	=	nil;
+				for (Picture *aPicture in [show Pictures])
+				{
+					if ([managedPicture.URL isEqualToString:url])
+					{
+						managedPicture		=	aPicture;
+						break;
+					}
+				}
+				if (managedPicture == nil)
+				{
+					managedPicture	=	
+					(Picture *)[NSEntityDescription insertNewObjectForEntityForName:@"Picture" 
+															 inManagedObjectContext:showContext];
+					
+					managedPicture.URL			=	ReplaceString(url, @"-Thumb", @"");
+					managedPicture.ThumbURL		=	url;
+					
+					NSString	*	description	=	[picture objectForKey:@"description"];
+					NSString	*	title		=	[picture objectForKey:@"title"];
+					
+					if (description)
+						managedPicture.Description	=	description;
+					
+					if (title)
+						managedPicture.Title		=	title;
+					
+					[show addPicturesObject:managedPicture];
+				}
+			}
+			NSLog(@"Save Pictures");
+			NSError	*	error;
+			if (![showContext save:&error])
+			{	// Handle Error
+				ESLog(@"Core Data Error %@", error);
+#ifdef DEVELOPMENTBUILD
+				abort();
+#endif
+			}
 		}
 		[request release];
 		[showContext release];

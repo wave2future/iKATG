@@ -19,6 +19,7 @@
 
 #import "ArchiveDetailViewController_iPhone.h"
 #import "ArchivePictureViewController_iPhone.h"
+#import "Show.h"
 
 @implementation ArchiveDetailViewController_iPhone
 
@@ -32,6 +33,7 @@
 	ArchivePictureViewController_iPhone	*	viewController	=	
 	[[ArchivePictureViewController_iPhone alloc] initWithNibName:@"ArchivePictureView_iPhone" 
 														  bundle:nil];
+	viewController.show	=	self.show;
 	[self.navigationController pushViewController:viewController 
 										 animated:YES];
 	[viewController release];

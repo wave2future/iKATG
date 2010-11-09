@@ -22,6 +22,8 @@
 #import "DataModel+Processing.h"
 #import "DataModel+Notifications.h"
 #import "Event.h"
+#import "Picture.h"
+#import "Show.h"
 #import "EGOCache.h"
 #import "EventFormattingOperation.h"
 
@@ -378,7 +380,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 {
 	NSParameterAssert([ID isKindOfClass:[NSString class]]);
 	//	
-	//	Update given show with details
+	//	/*UNREVISEDCOMMENTS*/
 	//	
 	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
 	op.delegate					=	self;

@@ -117,9 +117,9 @@
 {
 	if (error.code == kNextLiveShowCode)
 	{
-		self.guestLabel.text		=	@"Unavailable";
+		self.guestLabel.text		=	@"No Scheduled Guests";
 		[self.guestActivityIndicator stopAnimating];
-		self.nextLiveShowLabel.text	=	@"Unavailable";
+		self.nextLiveShowLabel.text	=	@"No Scheduled Show";
 		[self.nextLiveShowActivityIndicator stopAnimating];
 	}
 }

@@ -236,7 +236,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	NSError *error = nil;
     if (![self.fetchedResultsController performFetch:&error]) {
         // Handle error
-#if DEVELOPMENTBUILD
+#ifdef DEVELOPMENTBUILD
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         exit(-1);  // Fail
 #endif
@@ -249,7 +249,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	NSError *error = nil;
     if (![self.fetchedResultsController performFetch:&error]) {
         // Handle error
-#if DEVELOPMENTBUILD
+#ifdef DEVELOPMENTBUILD
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         exit(-1);  // Fail
 #endif

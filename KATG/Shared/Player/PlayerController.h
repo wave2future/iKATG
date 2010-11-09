@@ -44,7 +44,7 @@
 	//	Episode Info
 	//	
 	UILabel			*	titleLabel;
-	UIWebView		*	textView;
+	UITextView		*	textView;
 	//	
 	//	
 	//	
@@ -63,7 +63,7 @@
 @property (nonatomic, readonly)				MPMoviePlaybackState		playbackState;
 
 @property (nonatomic, retain)	IBOutlet	UILabel			*	titleLabel;
-@property (nonatomic, retain)	IBOutlet	UIWebView		*	textView;
+@property (nonatomic, retain)	IBOutlet	UITextView		*	textView;
 
 @property (nonatomic, retain)	IBOutlet	UIButton		*	stopButton;
 

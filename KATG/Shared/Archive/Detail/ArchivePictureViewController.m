@@ -18,9 +18,11 @@
 //  
 
 #import "ArchivePictureViewController.h"
+#import "Show.h"
+#import "Picture.h"
 
 @implementation ArchivePictureViewController
-@synthesize showID;
+@synthesize show;
 
 /******************************************************************************/
 #pragma mark -
@@ -30,7 +32,17 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-	[model showPictures:self.showID];
+	
+	NSSet	*	pictures	=	[show Pictures];
+	if (pictures.count == 0)
+		[model showPictures:[self.show.ID stringValue]];
+	else 
+	{
+		for (Picture *picture in pictures)
+		{
+			NSLog(@"%@", picture.URL);
+		}
+	}
 }
 - (void)viewDidUnload 
 {
@@ -43,7 +55,6 @@
 /******************************************************************************/
 - (void)dealloc 
 {
-	[showID release];
     [super dealloc];
 }
 

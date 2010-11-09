@@ -20,7 +20,7 @@
 #import "AppDelegate_Shared.h"
 #import "DataModel.h"
 
-#if DEVELOPMENTBUILD
+#ifdef DEVELOPMENTBUILD
 #import "EGOCache.h"
 #endif
 
@@ -38,7 +38,7 @@ void uncaughtExceptionHandler(NSException *exception)
 /******************************************************************************/
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
-#if DEVELOPMENTBUILD
+#ifdef DEVELOPMENTBUILD
 	//[[EGOCache currentCache] clearCache];
 #endif
 	//	

@@ -57,7 +57,7 @@
 	[dateTimeLabel setText:dateTime];
 	
 	NSString	*	details		=	event.Details;
-	if (details)
+	if (details && details.length != 0)
 	{
 		NSRegularExpression	*	styleRegex	=	
 		[NSRegularExpression regularExpressionWithPattern:@"style=\"[^\"]*\"" 
@@ -77,6 +77,10 @@
 		details	= [details stringByReplacingOccurrencesOfString:@"Here's how to listen:"
 													 withString:@""];
 		[webView setText:details];
+	}
+	else
+	{
+		[webView setText:@"No Event Details"];
 	}
 }
 - (void)viewDidUnload 

@@ -25,6 +25,11 @@
 #import "TitleBarButton.h"
 #import "ArrowButton.h"
 
+@interface ArchiveDetailViewController ()
+- (void)presentPlayer;
+@end
+
+
 @implementation ArchiveDetailViewController
 @synthesize show;
 @synthesize showTitleLabel, showNumberLabel, showGuestsLabel, showNotesTextView;
@@ -148,7 +153,7 @@
 	[self presentPlayer];
 	[[PlayerController sharedPlayerController] preparePlayer:URL];
 	[PlayerController sharedPlayerController].titleLabel.text	=	[self.show Title];
-	//[[PlayerController sharedPlayerController].textView setText:[self.show Notes]];
+	[[PlayerController sharedPlayerController].textView setText:[self.show Notes]];
 }
 - (void)presentPlayer
 {
