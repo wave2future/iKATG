@@ -71,8 +71,9 @@
 }
 - (void)setFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
 {
+	[fetchedResultsController retain];
 	CleanRelease(_fetchedResultsController);
-	_fetchedResultsController	=	[fetchedResultsController retain];
+	_fetchedResultsController	=	fetchedResultsController;
 }
 - (NSManagedObjectContext *)context
 {
@@ -85,8 +86,9 @@
 }
 - (void)setContext:(NSManagedObjectContext *)context
 {
+	[context retain];
 	CleanRelease(_context);
-	_context	=	[context retain];
+	_context	=	context;
 }
 - (void)viewDidUnload 
 {

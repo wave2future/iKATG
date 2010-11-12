@@ -56,11 +56,11 @@
 }
 - (void)dealloc
 {
-	CleanRelease(_unprocessedEvents);
-	CleanRelease(_formatter);
-	CleanRelease(_dayFormatter);
-	CleanRelease(_dateFormatter);
-	CleanRelease(_timeFormatter);
+	[_unprocessedEvents release];
+	[_formatter release];
+	[_dayFormatter release];
+	[_dateFormatter release];
+	[_timeFormatter release];
 	[super dealloc];
 }
 - (NSDateFormatter *)formatter
@@ -180,16 +180,13 @@
 	EGOCache	*	cache		=	[EGOCache currentCache];
 	[cache setObject:processedEvents 
 			  forKey:@"events.archive" 
-// withTimeoutInterval:60];
+// withTimeoutInterval:30];
  withTimeoutInterval:3600];
 	dispatch_async(dispatch_get_main_queue(), ^{
+		// Notify that events are available
 		[self.delegate notifyEvents:[[processedEvents copy] autorelease]];
-		//	
-		//	This is a temporary kludge until I decide how to observe
-		//	that the cache has commited to disk
-		//	
-		[self.delegate performSelector:@selector(nextLiveShowTime) withObject:nil afterDelay:1.0];
-		//[self.delegate nextLiveShowTime];
+		// Update UI with next live show
+		[self.delegate nextLiveShowTime];
 	});
 	[processedEvents release];
 	[pool drain]; pool = nil;

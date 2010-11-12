@@ -13,12 +13,6 @@ static NSString * const kLiveShowStatusAddress	=	@"/Api/App/Feed/Live/";
 static NSString * const kFeedbackBaseURLAddress	=	@"http://www.attackwork.com";
 static NSString * const kFeedbackURIAddress		=	@"/Voxback/Comment-Form-Iframe.aspx";
 
-static NSString * const kChatLoginBaseURLAddress=	@"http://www.keithandthegirl.com";
-static NSString * const kChatLoginURIAddress	=	@"/Chat/Chat-Login.aspx";
-
-static NSString * const kChatStartBaseURLAddress=	@"http://www.keithandthegirl.com";
-static NSString * const kChatStartURIAddress	=	@"/Chat/Chatroom.aspx";
-
 static NSString * const kEventsFeedAddress		=	@"/Api/App/Events/";
 
 static NSString * const kShowListURIAddress		=	@"/Api/App/ShowArchive/ListCompact/";
@@ -44,12 +38,6 @@ typedef enum {
 	kNextLiveShowCode,
 	//	Live Show Feed Back
 	kFeedbackCode,
-	//	
-	kChatLoginPhaseOneCode,
-	kChatLoginPhaseTwoCode,
-	kChatStartCodePhaseOne,
-	kChatStartCodePhaseTwo,
-	kChatPollingCode,
 	//	Events List
 	kEventsListCode,
 	//	Archive Shows List And Details
@@ -62,6 +50,13 @@ typedef enum {
 	kTwitterHashTagCode,
 	kGetTwitterImageCode,
 } DataOperationCodes;
+
+typedef enum {
+	kEventsAvailable,
+	kEventsWaitingOnCache,
+	kEventsWaitingOnWeb,
+	kEventsUnavailable
+} EventsAvailability;
 
 //	
 //	Data object keys for node objects and xpaths
@@ -87,3 +82,9 @@ typedef enum {
 //	
 
 #define LogEventCaching 1
+
+//	
+//	Testing
+//	
+
+#define TestErrorEventHandling 0

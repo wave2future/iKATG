@@ -90,21 +90,6 @@
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark Chat
-#pragma mark -
-/******************************************************************************/
-- (void)notifyLogin
-{
-	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
-	for (id delegate in dlgts)
-	{
-		if ([delegate respondsToSelector:@selector(loggedIn)])
-			[delegate loggedIn];
-	}
-	[dlgts release];
-}
-/******************************************************************************/
-#pragma mark -
 #pragma mark Shows
 #pragma mark -
 /******************************************************************************/

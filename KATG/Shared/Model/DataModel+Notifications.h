@@ -29,31 +29,20 @@
 - (void)notifyError:(NSError *)error display:(BOOL)display;
 /******************************************************************************/
 #pragma mark -
-#pragma mark Live Show Status
+#pragma mark Live Show
 #pragma mark -
 /******************************************************************************/
 - (void)notifyLiveShowStatus:(BOOL)onAir;
-/******************************************************************************/
-#pragma mark -
-#pragma mark 
-#pragma mark -
-/******************************************************************************/
 - (void)notifyNextLiveShowTime:(NSDictionary *)nextLiveShow;
 /******************************************************************************/
 #pragma mark -
-#pragma mark 
+#pragma mark Events
 #pragma mark -
 /******************************************************************************/
 - (void)notifyEvents:(NSArray *)events;
 /******************************************************************************/
 #pragma mark -
-#pragma mark Chat
-#pragma mark -
-/******************************************************************************/
-- (void)notifyLogin;
-/******************************************************************************/
-#pragma mark -
-#pragma mark 
+#pragma mark Twitter
 #pragma mark -
 /******************************************************************************/
 - (void)notifyTwitterSearchFeed:(NSArray *)result;

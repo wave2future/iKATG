@@ -51,32 +51,11 @@
 		case kFeedbackCode:
 			
 			break;
-		case kChatLoginPhaseOneCode:
-			NSParameterAssert([result isKindOfClass:[NSData class]]);
-			NSParameterAssert(([operation.userInfo objectForKey:@"Username"] != nil));
-			NSParameterAssert(([operation.userInfo objectForKey:@"password"] != nil));
-			[self processChatLoginPhaseOne:[[result copy] autorelease] 
-								  userName:[operation.userInfo objectForKey:@"Username"] 
-								  password:[operation.userInfo objectForKey:@"password"]];
-			break;
-		case kChatLoginPhaseTwoCode:
-			NSParameterAssert([result isKindOfClass:[NSData class]]);
-			[self processChatLoginPhaseTwo:[[result copy] autorelease]];
-			break;
-		case kChatStartCodePhaseOne:
-			NSParameterAssert([result isKindOfClass:[NSData class]]);
-			[self processChatStartPhaseOne:result];
-			break;
-		case kChatStartCodePhaseTwo:
-			NSParameterAssert([result isKindOfClass:[NSData class]]);
-			[self processChatStartPhaseTwo:result];
-			break;
-		case kChatPollingCode:
-			
-			break;
 		case kEventsListCode:
+#if TestErrorEventHandling == 0
 			NSParameterAssert([result isKindOfClass:[NSArray class]]);
 			NSParameterAssert(([(NSArray *)result count] > 0));
+#endif
 			if ([(NSArray *)result count] > 0)
 				[self processEvents:result];
 			else
@@ -147,21 +126,6 @@
 		case kFeedbackCode:
 			
 			break;
-		case kChatLoginPhaseOneCode:
-			
-			break;
-		case kChatLoginPhaseTwoCode:
-			
-			break;
-		case kChatStartCodePhaseOne:
-			
-			break;
-		case kChatStartCodePhaseTwo:
-			
-			break;
-		case kChatPollingCode:
-			
-			break;
 		case kEventsListCode:
 			[self notifyError:[NSError errorWithDomain:@"Events Unavailable" 
 												  code:kEventsListCode 
@@ -212,214 +176,6 @@
 		[self nextLiveShowTime];
 	live			=	onAir;
 	[self notifyLiveShowStatus:live];
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Chat
-#pragma mark -
-/******************************************************************************/
-- (void)processChatLoginPhaseOne:(id)result 
-				userName:(NSString *)userName 
-				password:(NSString *)password
-{
-	CXMLDocument	*	htmlParser	=	[[[CXMLDocument alloc] 
-										  initWithData:(NSData *)result 
-										  options:0 
-										  error:nil] autorelease];
-	NSParameterAssert((htmlParser != nil));
-	
-	NSDictionary	*	nameSpace	=	[NSDictionary dictionaryWithObject:@"http://www.w3.org/1999/xhtml" 
-																	forKey:@"xhtml"];
-	NSArray			*	inputArray	=	[htmlParser nodesForXPath:@"//xhtml:input"
-												namespaceMappings:nameSpace 
-															error:nil];
-	NSParameterAssert((inputArray != nil));
-	NSParameterAssert((inputArray.count != 0));
-	
-	NSString		*	viewState	=	nil;
-	NSString		*	eventValidation	=	nil;
-	
-	for (CXMLElement *input in inputArray)
-	{
-		if ([[[input attributeForName:@"name"] stringValue] isEqualToString:@"__VIEWSTATE"])
-			viewState	=	[[[input attributeForName:@"value"] stringValue] copy];
-		else if ([[[input attributeForName:@"name"] stringValue] isEqualToString:@"__EVENTVALIDATION"])
-			eventValidation	=	[[[input attributeForName:@"value"] stringValue] copy];
-		if (viewState && eventValidation)
-			break;
-	}
-	if (viewState && 
-		eventValidation && 
-		userName && 
-		password)
-	{
-		NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
-		op.delegate					=	self;
-		op.instanceCode				=	kChatLoginPhaseTwoCode;
-		op.baseURL					=	kChatLoginBaseURLAddress;
-		op.URI						=	kChatLoginURIAddress;
-		op.requestType				=	POST;
-		op.bodyBufferDict			=	[NSDictionary dictionaryWithObjectsAndKeys:
-										 userName,			@"Username",
-										 password,			@"password",
-										 @"Login",			@"ButtonLogin",
-										 viewState,			@"__VIEWSTATE", 
-										 eventValidation,	@"__EVENTVALIDATION", nil];
-		[operationQueue addOperation:op];
-		[op release];
-	}
-	else
-	{
-		//	error
-	}
-	[viewState release];
-	[eventValidation release];
-}
-- (void)processChatLoginPhaseTwo:(id)result
-{
-	NSString	*	response	=	[[[NSString alloc] 
-									  initWithData:(NSData *)result 
-									  encoding:NSUTF8StringEncoding] autorelease];
-	if ([response rangeOfString:@"Login successful!"].location != NSNotFound)
-	{
-		[self notifyLogin];
-		//[self chatStart];
-	}
-	else
-	{
-		CXMLDocument	*	htmlParser	=	[[[CXMLDocument alloc] initWithData:(NSData *)result 
-																		options:0 
-																		  error:nil] autorelease];
-		NSParameterAssert((htmlParser != nil));
-		
-		NSDictionary	*	nameSpace	=	[NSDictionary dictionaryWithObject:@"http://www.w3.org/1999/xhtml" 
-															   forKey:@"xhtml"];
-		NSArray			*	fontArray	=	[htmlParser nodesForXPath:@"//xhtml:font" 
-										 namespaceMappings:nameSpace 
-													 error:nil];
-		NSParameterAssert((fontArray != nil));
-		NSParameterAssert((fontArray.count != 0));
-		
-		CXMLElement		*	font		=	[fontArray objectAtIndex:0];
-		NSParameterAssert((font != nil));
-		
-		if ([[font stringValue] isEqualToString:@"Incorrect password"])
-		{
-			[self notifyError:[NSError errorWithDomain:@"Login Failed - Incorrect Password" 
-												  code:kChatLoginPhaseTwoCode 
-											  userInfo:nil] 
-					  display:YES];
-		}
-		else if ([[font stringValue] rangeOfString:@"Not a valid user name"].location != NSNotFound)
-		{
-			[self notifyError:[NSError errorWithDomain:@"Login Failed - Invalid Username" 
-												  code:kChatLoginPhaseTwoCode 
-											  userInfo:nil] 
-					  display:YES];
-		}
-		else 
-		{
-			[self notifyError:[NSError errorWithDomain:@"Login Failed" 
-												  code:kChatLoginPhaseTwoCode 
-											  userInfo:nil] 
-					  display:YES];
-		}
-	}
-}
-- (void)processChatStartPhaseOne:(id)result
-{
-	NSString			*	html	=	[[[NSString alloc] initWithData:(NSData *)result encoding:NSUTF8StringEncoding] autorelease];
-	NSError				*	error	=	NULL;
-	NSRegularExpression	*	regex	=	[NSRegularExpression regularExpressionWithPattern:@"clientid='([0-9a-fA-F-]*)"
-																				  options:0
-																					error:&error];
-	NSArray				*	matches	=	[regex matchesInString:html
-													   options:0
-														 range:NSMakeRange(0, [html length])];
-	NSString			*	clientID=	nil;
-	if (matches.count > 0)
-	{
-		NSTextCheckingResult	*	result	=	[matches objectAtIndex:0];
-		NSRange	range;
-		if (result.numberOfRanges == 1)
-		{
-			range	=	[result rangeAtIndex:0];
-			NSArray	*	splitArray	=	[[html substringWithRange:range] componentsSeparatedByString:@"='"];
-			if (splitArray.count == 2)
-				clientID	=	[[splitArray objectAtIndex:1] retain];
-		}
-		else if (result.numberOfRanges > 1)
-		{
-			range	=	[result rangeAtIndex:1];
-			clientID=	[[html substringWithRange:range] retain];
-		}
-		[clientID autorelease];
-	}
-	if (clientID != nil)
-	{
-		NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
-		op.delegate					=	self;
-		op.instanceCode				=	kChatStartCodePhaseTwo;	
-		
-		NSString	*	unixTime	=	[NSString stringWithFormat:@"%d-%18.17f", 
-										 (long)[[NSDate date] timeIntervalSince1970],
-										 (float)random()/RAND_MAX];
-		NSString	*	url			=	[NSString stringWithFormat:@"http://www.keithandthegirl.com/Chat/ChatClient/chat.rane.js.aspx?type=invoke&rand=%@", unixTime];
-		
-		NSMutableURLRequest	*	request	=
-		[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] 
-								cachePolicy:NSURLRequestUseProtocolCachePolicy 
-							timeoutInterval:15.0];
-		[request setHTTPMethod:@"POST"];
-		[request addValue:@"CuteSoft.Chat.ChatRaneService, CuteSoft.Chat, Version=3.1.0.0, Culture=neutral, PublicKeyToken=da0fc3a24b6f18ba" 
-		 forHTTPHeaderField:@"ranetype"];
-		[request addValue:@"Connect" 
-		 forHTTPHeaderField:@"ranemethod"];
-		[request addValue:@"no-cache" 
-	   forHTTPHeaderField:@"Pragma"];
-		[request addValue:@"no-cache" 
-	   forHTTPHeaderField:@"Cache-Control"];
-		[request addValue:@"Referer" 
-	   forHTTPHeaderField:@"http://www.keithandthegirl.com/chat/chatroom.aspx"];
-		NSString	*	bodyPayload	=	[NSString stringWithFormat:@"#<rane><request><arg#Ct=\"complex\"><i#Cv=\"%@\"#Ct=\"string\"#Cp=\"ClientId\"></i><i#Cv=\"Lobby\"#Ct=\"string\"#Cp=\"Location\"></i><i#Cv=\"1\"#Ct=\"string\"#Cp=\"LocationId\"></i><i#Ct=\"undefined\"#Cp=\"GuestName\"></i><i#Ct=\"undefined\"#Cp=\"Password\"></i><i#Cv=\"DHTML\"#Ct=\"string\"#Cp=\"Software\"></i><i#Ct=\"undefined\"#Cp=\"InstantTargetUserId\"></i></arg></request></rane>", clientID];
-		//NSString	*	bodyPayload	=	EncodeHTMLEntities([NSString stringWithFormat:@"#<rane><request><arg#Ct=\"complex\"><i#Cv=\"%@\"#Ct=\"string\"#Cp=\"ClientId\"></i><i#Cv=\"Lobby\"#Ct=\"string\"#Cp=\"Location\"></i><i#Cv=\"1\"#Ct=\"string\"#Cp=\"LocationId\"></i><i#Ct=\"undefined\"#Cp=\"GuestName\"></i><i#Ct=\"undefined\"#Cp=\"Password\"></i><i#Cv=\"DHTML\"#Ct=\"string\"#Cp=\"Software\"></i><i#Ct=\"undefined\"#Cp=\"InstantTargetUserId\"></i></arg></request></rane>", clientID]);
-		[request setHTTPBody:
-		 [bodyPayload dataUsingEncoding:NSUTF8StringEncoding]];
-		op.request					=	request;
-		
-		[operationQueue addOperation:op];
-		[op release];
-	}
-}
-- (void)processChatStartPhaseTwo:(id)result
-{
-	NSLog(@"%@", [[[NSString alloc] initWithData:(NSData *)result encoding:NSUTF8StringEncoding] autorelease]);
-}
-- (void)processChatPolling:(id)result
-{
-	CXMLDocument	*	parser	=	[[[CXMLDocument alloc] 
-									  initWithData:(NSData *)result 
-									  options:0 
-									  error:nil] autorelease];
-	NSArray	*	resultNodes	=
-	[parser nodesForXPath:@"//i[@p='Message']" 
-					error:nil];
-	for (CXMLNode *node in resultNodes)
-	{
-		NSArray		*	textNodes	=	[node nodesForXPath:@"//i[@p='MessageText']" error:nil];
-		CXMLElement	*	textNode	=	[textNodes objectAtIndex:0];
-		NSString	*	text		=	[[textNode attributeForName:@"v"] stringValue];
-		
-		NSArray		*	whisperNodes	=	[node nodesForXPath:@"//i[@p='Whisper']" error:nil];
-		CXMLElement	*	whisperNode		=	[whisperNodes objectAtIndex:0];
-		NSString	*	whisper			=	[[whisperNode attributeForName:@"v"] stringValue];
-		
-		NSArray		*	senderNodes	=	[node nodesForXPath:@"//i[@p='DisplayName']" error:nil];
-		CXMLElement	*	senderNode	=	[senderNodes objectAtIndex:0];
-		NSString	*	sender		=	[[senderNode attributeForName:@"v"] stringValue];
-		
-		NSLog(@"Message From %@ : %@ (Whisper: %@)", sender, text, whisper);
-	}
 }
 /******************************************************************************/
 #pragma mark -
@@ -722,9 +478,6 @@
 			for (NSDictionary *picture in pictures)
 			{
 				//NSLog(@"%@", picture);
-				//description = "";
-				//title = "Chris Ingle, the guy who changes the clocks";
-				//url = "http://www.KeithAndTheGirl.com/Show/Pictures/Q4ULEG6J2WXGZYO9P4BI-Thumb.jpg";
 				
 				NSString	*	url	=	[picture objectForKey:@"url"];
 				if (!url || (url.length == 0)) continue;
@@ -759,7 +512,7 @@
 					[show addPicturesObject:managedPicture];
 				}
 			}
-			NSLog(@"Save Pictures");
+			//NSLog(@"Save Pictures");
 			NSError	*	error;
 			if (![showContext save:&error])
 			{	// Handle Error

@@ -92,6 +92,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 /******************************************************************************/
 - (void)liveShowStatus
 {
+	LogCmd(_cmd);
 	//
 	//  Checks the Live Show Status
 	//	This is based on the hosts turning on
@@ -122,7 +123,29 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	Event		*	nextShowEvent	=	nil;
 	NSString	*	guestText		=	nil;
 	
-	events	=	[self events];
+	EventsAvailability status;
+	events	=	[self events:&status];
+	
+	switch (status) {
+		case kEventsAvailable:
+			// Proceed as normal
+			break;
+		case kEventsWaitingOnWeb:
+			// Stop here, events processing will call nextLiveShowTime when it's
+			// done formatting and caching the events list
+			return;
+			break;
+		case kEventsWaitingOnCache:
+			// delay 1.0 second to let cache finish commiting to disk
+			[self performSelector:_cmd withObject:nil afterDelay:1.0];
+			return;
+			break;
+		case kEventsUnavailable:
+			// currently this should never happen
+			break;
+		default:
+			break;
+	}
 	
 	for (Event *event in events)
 	{
@@ -211,62 +234,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark Chat
-#pragma mark -
-/******************************************************************************/
-- (void)chatLogin:(NSString *)userName 
-		 password:(NSString *)password
-{
-	//	
-	//	/*UNREVISEDCOMMENTS*/
-	//	
-	if (userName &&
-		userName.length > 0 &&
-		password &&
-		password.length >0)
-	{
-		NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
-		op.delegate					=	self;
-		op.instanceCode				=	kChatLoginPhaseOneCode;
-		op.baseURL					=	kChatLoginBaseURLAddress;
-		op.URI						=	kChatLoginURIAddress;
-		op.userInfo					=	[NSDictionary dictionaryWithObjectsAndKeys:
-										 userName, @"Username",
-										 password, @"password", nil];
-		if (connected)
-			[operationQueue addOperation:op];
-		else
-			[delayedOperations addObject:op];
-		[op release];
-	}
-	else
-	{
-		//	error
-	}
-}
-- (void)chatStart
-{
-	//	
-	//	/*UNREVISEDCOMMENTS*/
-	//	
-	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
-	op.delegate					=	self;
-	op.instanceCode				=	kChatStartCodePhaseOne;
-	op.baseURL					=	kChatStartBaseURLAddress;
-	op.URI						=	kChatStartURIAddress;
-	if (connected)
-		[operationQueue addOperation:op];
-	else
-		[delayedOperations addObject:op];
-	[op release];
-}
-/******************************************************************************/
-#pragma mark -
 #pragma mark Events
 #pragma mark -
 /******************************************************************************/
 - (NSArray *)events
 {
+	EventsAvailability status;
+	return [self events:&status];
+}
+- (NSArray *)events:(EventsAvailability *)status
+{
+	//	
+	//	Attempt to get events array from cache
+	//	Events may be not available, available, or not yet available (0/1/2)
+	//	
 	EGOCache	*	cache		=	[EGOCache currentCache];
 	NSInteger		hasKey		=	[cache hasCacheForKey:@"events.archive"];
 	if (hasKey == 1)
@@ -276,34 +257,47 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 #endif
 		NSArray		*	events		=	[cache objectForKey:@"events.archive"];
 		if (events)
+		{
+			*status = kEventsAvailable;
 			return events;
+		}
 	}
 	else if (hasKey == 2)
 	{
+		*status = kEventsWaitingOnCache;
 		return nil;
 	}
 #if LogEventCaching
 	NSLog(@"Retrieve Events from web");
 #endif
 	//	
-	//	First make sure there isn't already an events operation happening
+	//	Make sure there isn't already an events operation happening
 	//	
 	NSArray	*	ops	=	[NSArray arrayWithArray:[operationQueue operations]];
 	for (NetworkOperation *anOp in ops)
 	{
 		if (anOp.instanceCode == kEventsListCode)
+		{
+			*status = kEventsWaitingOnWeb;
 			return nil;
+		}
 	}
 	for (NetworkOperation *anOp in delayedOperations)
 	{
 		if (anOp.instanceCode == kEventsListCode)
+		{
+			*status = kEventsWaitingOnWeb;
 			return nil;
+		}
 	}
 	ops	=	[NSArray arrayWithArray:[coreDataQueue operations]];
 	for (NSOperation *anOp in ops)
 	{
 		if ([anOp isKindOfClass:[EventFormattingOperation class]])
+		{
+			*status = kEventsWaitingOnWeb;
 			return nil;
+		}
 	}
 	//	
 	//	Then go get an updated events list
@@ -311,7 +305,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
 	op.delegate					=	self;
 	op.instanceCode				=	kEventsListCode;
+#if TestErrorEventHandling
+	op.baseURL					=	@"http://getitdownonpaper.com";
+	//op.URI						=	@"/somegarbage"; // this could be any random chunk of html to see how parser will handle it
+	//op.URI					=	@"/ESModelAPI/Delay/"; // this stalls for 20 seconds then returns garbage
+	op.URI						=	@"/ESModelAPI/Timeout/"; // this stalls long enough to cause a timeout
+#else
 	op.URI						=	kEventsFeedAddress;
+#endif
 	op.parseType				=	ParseXML;
 	op.xPath					=	kEventsXPath;
 	if (connected)
@@ -319,9 +320,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	else
 		[delayedOperations addObject:op];
 	[op release];
-	//	
-	//	
-	//	
+	
+	*status = kEventsWaitingOnWeb;
 	return nil;
 }
 /******************************************************************************/

@@ -79,9 +79,7 @@
 		[webView setText:details];
 	}
 	else
-	{
 		[webView setText:@"No Event Details"];
-	}
 }
 - (void)viewDidUnload 
 {

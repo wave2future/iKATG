@@ -21,23 +21,4 @@
 
 @implementation ModalWebViewController_iPhone
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	float	osVer	=	[[[UIDevice currentDevice] systemVersion] floatValue];
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
-	{
-		if (osVer >= 4.0 && osVer < 4.2)
-			self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifier480x32;
-		//else if (osVer >= 4.2)
-		//	self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifierLandscape;
-	}
-    else
-	{
-		if (osVer >= 4.0 && osVer < 4.2)
-			self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifier320x50;
-		//else if (osVer >= 4.2)
-		//	self.adBanner.currentContentSizeIdentifier	=	ADBannerContentSizeIdentifierPortrait;
-	}
-}
-
 @end

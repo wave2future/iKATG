@@ -26,7 +26,11 @@
 #import "Event.h"
 
 @interface OnAirViewController ()
-- (void)updateNextLiveShowLabel:(NSDate *)date;
+- (void)startLiveShowStatusTimer;
+- (void)stopLiveShowStatusTimer;
+- (void)startNextLiveShowTimer:(NSDate *)dateTime;
+- (void)stopNextLiveShowTimer;
+- (void)updateNextLiveShowLabel:(NSTimer *)timer;
 - (void)registerNotifications;
 @end
 
@@ -54,7 +58,7 @@
 	
 	[self setupAudioAssets];
 	
-	[model liveShowStatus];
+	[self startLiveShowStatusTimer];
 	
 	[model nextLiveShowTime];
 		
@@ -91,6 +95,9 @@
 }
 - (void)dealloc 
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self stopLiveShowStatusTimer];
+	[self stopNextLiveShowTimer];
 	[feedbackView release];
 	[nameField release];
 	[locationField release];
@@ -115,7 +122,8 @@
 /******************************************************************************/
 - (void)error:(NSError *)error display:(BOOL)display
 {
-	if (error.code == kNextLiveShowCode)
+	if (error.code == kNextLiveShowCode ||
+		error.code == kEventsListCode)
 	{
 		self.guestLabel.text		=	@"No Scheduled Guests";
 		[self.guestActivityIndicator stopAnimating];
@@ -131,18 +139,56 @@
 }
 - (void)nextLiveShowTime:(NSDictionary *)nextLiveShow
 {
+	// Get Event
 	Event	*	event		=	[nextLiveShow objectForKey:@"event"];
-	[self updateNextLiveShowLabel:event.DateTime];
+	// Cleanup any existing timer and start a new one to update countdown to live show
+	[self startNextLiveShowTimer:event.DateTime];
+	// Set guest label
 	self.guestLabel.text	=	[nextLiveShow objectForKey:@"guest"];
 	[self.guestActivityIndicator stopAnimating];
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark 
+#pragma mark Timer Methods
 #pragma mark -
 /******************************************************************************/
-- (void)updateNextLiveShowLabel:(NSDate *)date
+- (void)startLiveShowStatusTimer
 {
+	[liveShowStatusTimer invalidate]; CleanRelease(liveShowStatusTimer);
+	NSInvocation	*	pollLiveShowStatusInvocation	=	
+	[NSInvocation invocationWithMethodSignature:[model methodSignatureForSelector:@selector(liveShowStatus)]];
+	[pollLiveShowStatusInvocation setTarget:model];
+	[pollLiveShowStatusInvocation setSelector:@selector(liveShowStatus)];
+	liveShowStatusTimer	=	[[NSTimer scheduledTimerWithTimeInterval:180.0 
+														invocation:pollLiveShowStatusInvocation 
+														   repeats:YES] retain];
+	[liveShowStatusTimer fire];
+}
+- (void)stopLiveShowStatusTimer
+{
+	[liveShowStatusTimer invalidate]; 
+	CleanRelease(liveShowStatusTimer);
+}
+- (void)startNextLiveShowTimer:(NSDate *)dateTime
+{
+	// Cleanup any existing timer and start a new one to update countdown to live show
+	[nextLiveShowTimer invalidate]; CleanRelease(nextLiveShowTimer);
+	nextLiveShowTimer		=	[[NSTimer scheduledTimerWithTimeInterval:60.0 
+														   target:self 
+														 selector:@selector(updateNextLiveShowLabel:) 
+														 userInfo:dateTime 
+														  repeats:YES] retain];
+	[nextLiveShowTimer fire];
+}
+- (void)stopNextLiveShowTimer
+{
+	[nextLiveShowTimer invalidate]; 
+	CleanRelease(nextLiveShowTimer);
+}
+- (void)updateNextLiveShowLabel:(NSTimer *)timer
+{
+	LogCmd(_cmd);
+	NSDate		*	date		=	(NSDate *)[timer userInfo];
 	NSString	*	timeString	=	nil;
 	NSInteger		since		=	[date timeIntervalSinceNow];
 	if (since < 0 && self.live)
@@ -180,42 +226,78 @@
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark UserDefaults
+#pragma mark Notification
 #pragma mark -
 /******************************************************************************/
 - (void)registerNotifications
 {
 	[[NSNotificationCenter defaultCenter] 
 	 addObserver:self
-	 selector:@selector(handleBackgroundNotification) 
+	 selector:@selector(handleBackgroundNotification:) 
 	 name:UIApplicationDidEnterBackgroundNotification 
 	 object:nil];
 	[[NSNotificationCenter defaultCenter]
 	 addObserver:self 
-	 selector:@selector(handleForegroundNotification) 
+	 selector:@selector(handleForegroundNotification:) 
 	 name:UIApplicationWillEnterForegroundNotification 
 	 object:nil];
+	
+	[[NSNotificationCenter defaultCenter] 
+	 addObserver:self
+	 selector:@selector(handleActiveNotification:) 
+	 name:UIApplicationDidBecomeActiveNotification 
+	 object:nil];
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self 
+	 selector:@selector(handleInactiveNotification:) 
+	 name:UIApplicationWillResignActiveNotification 
+	 object:nil];
 }
-- (void)handleForegroundNotification
+
+- (void)handleForegroundNotification:(NSNotification *)note
 {
-	[model liveShowStatus];
+#ifdef DEVELOPMENTBUILD
+	ESLog(@"Foreground");
+#endif
 	
-//	liveShowTimer	=
-//	[[NSTimer scheduledTimerWithTimeInterval:180.0 
-//									  target:self 
-//									selector:@selector(updateLiveShowStatusTimer:) 
-//									userInfo:nil 
-//									 repeats:YES] retain];
+	self.liveShowStatusLabel.text	=	@"";
+	[self.liveShowStatusActivityIndicator startAnimating];
 	
-	[model events];
+	[self startLiveShowStatusTimer];
+	
+	self.nextLiveShowLabel.text		=	@"";
+	[self.nextLiveShowActivityIndicator startAnimating];
+	
+	self.guestLabel.text			=	@"";
+	[self.guestActivityIndicator startAnimating];
+	
+	[model nextLiveShowTime];
 	
 	[self loadDefaults];
 }
-- (void)handleBackgroundNotification
+- (void)handleBackgroundNotification:(NSNotification *)note
 {
-//	[liveShowTimer invalidate]; 
-//	CleanRelease(liveShowTimer);
+#ifdef DEVELOPMENTBUILD
+	ESLog(@"Background");
+#endif
+	
+	[self stopLiveShowStatusTimer];
+	[self stopNextLiveShowTimer];
+	
 	[self writeDefaults];
+}
+
+- (void)handleActiveNotification:(NSNotification *)note
+{
+#ifdef DEVELOPMENTBUILD
+	ESLog(@"Active");
+#endif
+}
+- (void)handleInactiveNotification:(NSNotification *)note
+{
+#ifdef DEVELOPMENTBUILD
+	ESLog(@"Inactive");
+#endif
 }
 
 @end

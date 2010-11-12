@@ -30,18 +30,6 @@
 - (void)processLiveShowStatus:(id)result;
 /******************************************************************************/
 #pragma mark -
-#pragma mark Chat
-#pragma mark -
-/******************************************************************************/
-- (void)processChatLoginPhaseOne:(id)result 
-						userName:(NSString *)userName 
-						password:(NSString *)password;
-- (void)processChatLoginPhaseTwo:(id)result;
-- (void)processChatStartPhaseOne:(id)result;
-- (void)processChatStartPhaseTwo:(id)result;
-- (void)processChatPolling:(id)result;
-/******************************************************************************/
-#pragma mark -
 #pragma mark Events
 #pragma mark -
 /******************************************************************************/

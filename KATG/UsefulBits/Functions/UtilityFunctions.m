@@ -247,3 +247,14 @@ NSString * ReplaceString(NSString *stringToOperateOn, NSString *stringToReplace,
 {
 	return [stringToOperateOn stringByReplacingOccurrencesOfString:stringToReplace withString:replacementString];
 }
+
+void _LogCmd(const char *file, int lineNumber, SEL cmd)
+{
+	NSString *fileName = [[NSString stringWithUTF8String:file] lastPathComponent];
+	
+	NSLog(@"%@:%d:%@:%f", 
+		  fileName, 
+		  lineNumber,
+		  NSStringFromSelector(cmd),
+		  CFAbsoluteTimeGetCurrent());	
+}

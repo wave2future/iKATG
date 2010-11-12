@@ -48,16 +48,21 @@
 	UILabel					*	nextLiveShowLabel;
 	UIActivityIndicatorView	*	nextLiveShowActivityIndicator;
 	//	
-	//	
+	//	/*UNREVISEDCOMMENTS*/
 	//	
 	BOOL						_live;
 	UILabel					*	liveShowStatusLabel;
 	UIActivityIndicatorView	*	liveShowStatusActivityIndicator;
 	//	
-	//	
+	//	/*UNREVISEDCOMMENTS*/
 	//	
 	UILabel					*	guestLabel;
 	UIActivityIndicatorView	*	guestActivityIndicator;
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	NSTimer					*	nextLiveShowTimer;
+	NSTimer					*	liveShowStatusTimer;
 }
 
 //	
@@ -71,26 +76,26 @@
 @property (nonatomic, retain)	IBOutlet	UIButton				*	infoButton;
 
 //	
-//	
+//	/*UNREVISEDCOMMENTS*/
 //	
 @property (nonatomic, retain)	IBOutlet	UIButton				*	audioButton;
 //	
-//	
+//	/*UNREVISEDCOMMENTS*/
 //	
 @property (nonatomic, retain)	IBOutlet	MPVolumeView			*	volumeView;
 //	
-//	
+//	/*UNREVISEDCOMMENTS*/
 //	
 @property (nonatomic, retain)	IBOutlet	UILabel					*	nextLiveShowLabel;
 @property (nonatomic, retain)	IBOutlet	UIActivityIndicatorView	*	nextLiveShowActivityIndicator;
 //	
-//	
+//	/*UNREVISEDCOMMENTS*/
 //	
 @property (nonatomic, assign, getter=isLive) BOOL						live;
 @property (nonatomic, retain)	IBOutlet	UILabel					*	liveShowStatusLabel;
 @property (nonatomic, retain)	IBOutlet	UIActivityIndicatorView	*	liveShowStatusActivityIndicator;
 //	
-//	
+//	/*UNREVISEDCOMMENTS*/
 //	
 @property (nonatomic, retain)	IBOutlet	UILabel					*	guestLabel;
 @property (nonatomic, retain)	IBOutlet	UIActivityIndicatorView	*	guestActivityIndicator;

@@ -67,16 +67,16 @@
 {
 	delegate = nil;
 	[_connection cancel];
-	CleanRelease(_connection);
-	CleanRelease(_request);
-	CleanRelease(_data);
-	CleanRelease(url);
-	CleanRelease(connectionID);
-	CleanRelease(headerDict);
-	CleanRelease(bodyBufferDict);
-	CleanRelease(bodyDataArray);
-	CleanRelease(userInfo);
-	CleanRelease(_response);
+	[_connection release];
+	[_request release];
+	[_data release];
+	[url release];
+	[connectionID release];
+	[headerDict release];
+	[bodyBufferDict release];
+	[bodyDataArray release];
+	[userInfo release];
+	[_response release];
 	[super dealloc];
 }
 /******************************************************************************/
@@ -155,7 +155,7 @@
 	NSMutableURLRequest	*	aRequest	=
 	[NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.url]
 							cachePolicy:NSURLRequestUseProtocolCachePolicy
-						timeoutInterval:15.0];
+						timeoutInterval:60.0];
 	if (headerDict != nil)
 		[aRequest setAllHTTPHeaderFields:headerDict];
 	switch (requestType) {

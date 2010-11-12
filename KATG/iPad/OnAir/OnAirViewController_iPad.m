@@ -26,7 +26,7 @@
 @end
 
 @implementation OnAirViewController_iPad
-@synthesize playerView, chatView;
+@synthesize playerView, chatView, activityIndicator;
 
 /******************************************************************************/
 #pragma mark -
@@ -37,7 +37,7 @@
 {
 	[super viewDidLoad];
 	feedbackResizingMask	=	self.feedbackView.autoresizingMask;
-	[self.chatView loadHTMLString:@"<html><body style=\"background-color: red;\">Noodles<body></html>" baseURL:nil];
+	[self.chatView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.keithandthegirl.com/chat/iChatroom.aspx"]]];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -49,6 +49,7 @@
 	[super viewDidUnload];
 	self.playerView	=	nil;
 	self.chatView	=	nil;
+	self.activityIndicator	=	nil;
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {return YES;}
@@ -67,6 +68,7 @@
 {
 	[playerView release];
 	[chatView release];
+	[activityIndicator release];
 	[super dealloc];
 }
 /******************************************************************************/
@@ -135,9 +137,45 @@
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark Chat
+#pragma mark Notifications
 #pragma mark -
 /******************************************************************************/
-
+- (void)handleActiveNotification:(NSNotification *)note
+{
+	[super performSelector:@selector(handleActiveNotification) withObject:note];
+	[self.chatView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.keithandthegirl.com/chat/iChatroom.aspx"]]];
+}
+- (void)handleInactiveNotification:(NSNotification *)note
+{
+	[super performSelector:@selector(handleInactiveNotification) withObject:note];
+	[self.chatView loadHTMLString:@"" baseURL:nil];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark WebViewDelegate
+#pragma mark -
+/******************************************************************************/
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+	[self.chatView loadHTMLString:@"Error" baseURL:nil];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+	[self.activityIndicator stopAnimating];
+}
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+	[self.activityIndicator startAnimating];
+}
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+#if 0
+	NSLog(@"\nRequest: %@\nHeaders: %@\nBody: %@", 
+		  request, 
+		  [request allHTTPHeaderFields], 
+		  [[[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding] autorelease]);	
+#endif
+	return YES;
+}
 
 @end

@@ -72,8 +72,9 @@
 }
 - (void)setItem:(Tweet *)anItem
 {
-	[item release]; item = nil;
-	item	=	[anItem retain];
+	[anItem retain];
+	CleanRelease(item);
+	item	=	anItem;
 	if (item != nil)
 		[self updateFields];
 }

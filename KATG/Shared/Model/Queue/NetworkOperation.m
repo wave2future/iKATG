@@ -71,18 +71,18 @@
 {
 	delegate	=	nil;
 	queue		=	nil;
-	CleanRelease(baseURL);
-	CleanRelease(URI);
-	CleanRelease(request);
-	CleanRelease(connectionID);
-	CleanRelease(headerDict);
-	CleanRelease(bodyBufferDict);
-	CleanRelease(bodyDataArray);
-	CleanRelease(userInfo);
-	CleanRelease(xPath);
+	[baseURL release];
+	[URI release];
+	[request release];
+	[connectionID release];
+	[headerDict release];
+	[bodyBufferDict release];
+	[bodyDataArray release];
+	[userInfo release];
+	[xPath release];
 	_request.delegate = nil;
-	CleanRelease(_request);
-	CleanRelease(response);
+	[_request release];
+	[response release];
 	[super dealloc];
 }
 - (NSString *)xPath

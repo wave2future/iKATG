@@ -29,7 +29,6 @@
 - (void)presentPlayer;
 @end
 
-
 @implementation ArchiveDetailViewController
 @synthesize show;
 @synthesize showTitleLabel, showNumberLabel, showGuestsLabel, showNotesTextView;

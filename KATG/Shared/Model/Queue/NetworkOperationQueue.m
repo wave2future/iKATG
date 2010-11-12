@@ -49,9 +49,9 @@
 }
 - (void)dealloc
 {
-	CleanRelease(_operations);
+	[_operations release];
 	[_parseQueue cancelAllOperations];
-	CleanRelease(_parseQueue);
+	[_parseQueue release];
 	[[NetworkCache sharedNetworkCache] superRelease];
 	[super dealloc];
 }

@@ -26,9 +26,11 @@
 	UIView		*	playerView;
 	UIViewAutoresizing	feedbackResizingMask;
 	UIWebView	*	chatView;
+	UIActivityIndicatorView	*	activityIndicator;
 }
 
 @property (nonatomic, retain)	IBOutlet	UIView		*	playerView;
 @property (nonatomic, retain)	IBOutlet	UIWebView	*	chatView;
+@property (nonatomic, retain)	IBOutlet	UIActivityIndicatorView	*	activityIndicator;
 
 @end

@@ -20,13 +20,14 @@
 #import <UIKit/UIKit.h>
 #import <iAd/iAd.h>
 
-@interface ModalWebViewController : UIViewController <UIActionSheetDelegate>
+@interface ModalWebViewController : UIViewController <UIActionSheetDelegate, ADBannerViewDelegate>
 {
 	NSURLRequest			*	request;
 	UIWebView				*	webView;
 	UIActivityIndicatorView	*	activityIndicator;
 	UIToolbar				*	navToolbar;
 	ADBannerView			*	adBanner;
+	BOOL						bannerIsVisible;
 }
 
 @property (nonatomic, retain)				NSURLRequest			*	request;
@@ -34,6 +35,7 @@
 @property (nonatomic, retain)	IBOutlet	UIActivityIndicatorView	*	activityIndicator;
 @property (nonatomic, retain)	IBOutlet	UIToolbar				*	navToolbar;
 @property (nonatomic, retain)	IBOutlet	ADBannerView			*	adBanner;
+@property (nonatomic, assign)				BOOL						bannerIsVisible;
 
 - (IBAction)doneButtonPressed:(id)sender;
 - (IBAction)openButtonPressed:(id)sender;

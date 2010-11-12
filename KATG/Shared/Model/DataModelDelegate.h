@@ -36,10 +36,6 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
-- (void)loggedIn;
-//	
-//	/*UNREVISEDCOMMENT*/
-//	
 - (void)events:(NSArray *)events;
 //	
 //	/*UNREVISEDCOMMENT*/

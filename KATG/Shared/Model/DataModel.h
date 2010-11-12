@@ -139,11 +139,6 @@
 		location:(NSString *)location 
 		 comment:(NSString *)comment;
 //	
-//	/*UNREVISEDCOMMENTS*/
-//	
-- (void)chatLogin:(NSString *)userName 
-		 password:(NSString *)password;
-//	
 //  Model Object Event:
 //  @property (nonatomic, retain) NSString * Title;
 //  @property (nonatomic, retain) NSString * EventID;
@@ -226,4 +221,5 @@
 @property (nonatomic, retain)	NSString	*	twitterHashSearchRefreshURL;
 @property (nonatomic, readonly)	NSDateFormatter	*	twitterSearchFormatter;
 @property (nonatomic, readonly)	NSDateFormatter	*	twitterUserFormatter;
+- (NSArray *)events:(EventsAvailability *)status;
 @end
