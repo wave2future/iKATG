@@ -33,9 +33,9 @@
 {
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	[self.window addSubview:tabBarController.view];
-    [window makeKeyAndVisible];
+	[window makeKeyAndVisible];
 	
-    return YES;
+	return YES;
 }
 - (void)applicationWillResignActive:(UIApplication *)application 
 {
@@ -67,7 +67,7 @@
     /*
      Free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later.
      */
-    [super applicationDidReceiveMemoryWarning:application];
+	[super applicationDidReceiveMemoryWarning:application];
 }
 - (void)dealloc 
 {

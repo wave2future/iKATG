@@ -112,7 +112,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 		[self.activityIndicator stopAnimating];
 	}
 }
-- (void)events:(NSArray *)events
+- (void)eventsAvailable:(NSArray *)events
 {
 	self.items	=	events;
 	[self reloadTableView];

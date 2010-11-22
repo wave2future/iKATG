@@ -121,7 +121,7 @@ NSString *DescriptionForObject(NSObject *object, id locale, NSUInteger indent)
 		NSMutableArray      *aray = [storedOrderedDict objectAtIndex:1];
 		if (dict && aray)
 		{
-			if (self = [self initWithObject:dict withArray:aray])
+			if ((self = [self initWithObject:dict withArray:aray]))
 			{
 				return self;
 			}

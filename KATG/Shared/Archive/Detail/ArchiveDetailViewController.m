@@ -27,6 +27,7 @@
 
 @interface ArchiveDetailViewController ()
 - (void)presentPlayer;
+- (void)presentPlayer:(NSURL *)URL;
 @end
 
 @implementation ArchiveDetailViewController

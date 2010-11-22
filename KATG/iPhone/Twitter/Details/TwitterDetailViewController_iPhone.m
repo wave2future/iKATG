@@ -21,9 +21,19 @@
 #import "TwitterUserTableViewController_iPhone.h"
 #import "TwitterHashTagTableViewController_iPhone.h"
 #import "ModalWebViewController_iPhone.h"
+#import "Tweet.h"
 
 @implementation TwitterDetailViewController_iPhone
 
+/******************************************************************************/
+#pragma mark -
+#pragma mark View Life Cycle
+#pragma mark -
+/******************************************************************************/
+- (void)viewDidLoad 
+{
+	[super viewDidLoad];
+}
 /******************************************************************************/
 #pragma mark -
 #pragma mark Rotation
@@ -39,6 +49,10 @@
 #pragma mark 
 #pragma mark -
 /******************************************************************************/
+- (IBAction)userImageButtonPressed:(id)sender
+{
+	[self openTweet:[item From]];
+}
 - (void)openTweet:(NSString *)user
 {
 	TwitterUserTableViewController_iPhone	*	viewController	=	

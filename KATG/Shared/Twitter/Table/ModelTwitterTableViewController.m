@@ -41,6 +41,10 @@
 	//	
 	//	
 	//	
+	self.clearsSelectionOnViewWillAppear = YES;
+	//	
+	//	
+	//	
 	self.items	=	[NSMutableArray arrayWithCapacity:50];
 	//	
 	//	
@@ -85,7 +89,7 @@
 			BasicAlert(@"Twitter Error", error.domain, nil, @"OK", nil);
 	}
 }
-- (void)imageAvailableForURL:(NSString *)url
+- (void)twitterImageAvailableForURL:(NSString *)url
 {
 	NSArray				*	indexPaths				=	nil;
 	indexPaths										=	[self.tableView indexPathsForVisibleRows];

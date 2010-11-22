@@ -32,6 +32,10 @@
 {
 	[super viewDidLoad];
 	//	
+	//	
+	//	
+	self.clearsSelectionOnViewWillAppear = YES;
+	//	
 	//	Instantiate Model and add self as delegate
 	//	
 	model	=	[DataModel sharedDataModel];

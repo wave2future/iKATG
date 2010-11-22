@@ -19,6 +19,11 @@
 
 #import "ModelFetchedTableViewController.h"
 
+@interface ModelFetchedTableViewController ()
+- (void)decorateCell:(UITableViewCell *)cell 
+	   withIndexPath:(NSIndexPath *)indexPath;
+@end
+
 @implementation ModelFetchedTableViewController
 @dynamic fetchedResultsController, context;
 @synthesize activityIndicator;
@@ -31,6 +36,10 @@
 - (void)viewDidLoad 
 {
 	[super viewDidLoad];
+	//	
+	//	
+	//	
+	self.clearsSelectionOnViewWillAppear = YES;
 	//	
 	//	Instantiate Model and add self as delegate
 	//	
@@ -156,6 +165,11 @@
 		 cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     return nil;
+}
+- (void)decorateCell:(UITableViewCell *)cell 
+	   withIndexPath:(NSIndexPath *)indexPath
+{
+	
 }
 - (void)reloadTableView
 {

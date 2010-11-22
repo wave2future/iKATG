@@ -489,7 +489,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	NSParameterAssert([url isKindOfClass:[NSString class]]);
 	NSParameterAssert((url.length != 0));
 	//	
-	//  /*UNREVISEDCOMMENTS*/
+	//  See if image is in cache already
 	//	
 	NSData	*	imageData	=	[pictureCacheDictionary objectForKey:url];
 	if (imageData)
@@ -504,25 +504,38 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 				return image;
 		}
 	}
-	BOOL			inQueue		=	NO;
+	//	
+	//	Make sure there isn't already a queued request for this image
+	//	
+	BOOL	inQueue	=	NO;
 	for (NetworkOperation *anOp in [operationQueue operations])
 	{
 		if ([[anOp baseURL] isEqualToString:url])
 			inQueue					=	YES;
+		if (inQueue)
+			break;
 	}
-	
-	if (!inQueue)
+	for (NetworkOperation *anOp in delayedOperations)
 	{
-		NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
-		op.delegate					=	self;
-		op.instanceCode				=	kGetTwitterImageCode;
-		op.baseURL					=	url;
-		if (connected)
-			[operationQueue addOperation:op];
-		else
-			[delayedOperations addObject:op];
-		[op release];
+		if (inQueue)
+			break;
+		if ([[anOp baseURL] isEqualToString:url])
+			inQueue					=	YES;
 	}
+	if (inQueue)
+		return nil;
+	//	
+	//	Go get the image
+	//	
+	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+	op.delegate					=	self;
+	op.instanceCode				=	kGetTwitterImageCode;
+	op.baseURL					=	url;
+	if (connected)
+		[operationQueue addOperation:op];
+	else
+		[delayedOperations addObject:op];
+	[op release];
 	return nil;
 }
 

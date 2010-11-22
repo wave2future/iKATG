@@ -212,24 +212,28 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	[self setPredicateForSearchText:[self.searchDisplayController.searchBar text] scope:searchOption];
     return YES;
 }
+typedef enum {
+	scopeTitle,
+	scopeGuests,
+	scopeNumber
+} ScopeButtons;
 - (void)setPredicateForSearchText:(NSString*)searchText 
 							scope:(NSInteger)scope
 {
 	[NSFetchedResultsController deleteCacheWithName:@"archives"];
 	NSPredicate	*	predicate	=	nil;
 	switch (scope) {
-		case 1: //title
+		case scopeTitle: //title
 			predicate	=	[NSPredicate predicateWithFormat:@"Title contains[cd] %@", searchText];
 			break;
-		case 2: //guests
+		case scopeGuests: //guests
 			predicate	=	[NSPredicate predicateWithFormat:@"Guests.Guest contains[cd] %@", searchText];
 			break;
-		case 3://number
+		case scopeNumber://number
 			predicate	=	[NSPredicate predicateWithFormat:@"Number == %@", searchText];
 			break;
-		case 0: //all
 		default:
-			predicate	=	[NSPredicate predicateWithFormat:@"Title contains[cd] %@ or Guests.Guest contains[cd] %@ or Number == %@", searchText, searchText, searchText];
+			predicate	=	nil;
 			break;
 	}
 	self.fetchedResultsController = [self newFetchedResultsControllerForPredicate:predicate];
@@ -237,8 +241,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     if (![self.fetchedResultsController performFetch:&error]) {
         // Handle error
 #ifdef DEVELOPMENTBUILD
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        exit(-1);  // Fail
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		exit(-1);  // Fail
 #endif
     }
 }

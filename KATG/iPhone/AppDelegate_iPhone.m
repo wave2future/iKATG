@@ -30,8 +30,9 @@
 {
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	[self.window addSubview:tabBarController.view];
-    [window makeKeyAndVisible];
-    return YES;
+	[window makeKeyAndVisible];
+	
+	return YES;
 }
 - (void)applicationWillResignActive:(UIApplication *)application 
 {

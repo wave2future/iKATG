@@ -25,4 +25,6 @@
 	
 }
 
+- (IBAction)userImageButtonPressed:(id)sender;
+
 @end

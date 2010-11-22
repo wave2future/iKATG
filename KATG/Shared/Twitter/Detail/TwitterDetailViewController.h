@@ -25,14 +25,14 @@
 <UIWebViewDelegate>
 {
 	Tweet			*	item;
-	UIImageView		*	imageView;
+	UIButton		*	userImageButton;
 	UILabel			*	fromLabel;
 	UIWebView		*	webView;
 	UILabel			*	timeSinceLabel;
 }
 
 @property (nonatomic, retain)				Tweet			*	item;
-@property (nonatomic, retain)	IBOutlet	UIImageView		*	imageView;
+@property (nonatomic, retain)	IBOutlet	UIButton		*	userImageButton;
 @property (nonatomic, retain)	IBOutlet	UILabel			*	fromLabel;
 @property (nonatomic, retain)	IBOutlet	UIWebView		*	webView;
 @property (nonatomic, retain)	IBOutlet	UILabel			*	timeSinceLabel;
@@ -40,5 +40,6 @@
 - (void)openTweet:(NSString *)user;
 - (void)openHashTag:(NSString *)hashTag;
 - (void)openRequest:(NSURLRequest *)request;
+- (IBAction)userImageButtonPressed:(id)sender;
 
 @end

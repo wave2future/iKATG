@@ -36,7 +36,7 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
-- (void)events:(NSArray *)events;
+- (void)eventsAvailable:(NSArray *)events;
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
@@ -48,7 +48,7 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
-- (void)twitterSearchFeed:(NSArray *)tweets;
+- (void)twitterSearchFeedAvailable:(NSArray *)tweets;
 //	
 //	/*UNREVISEDCOMMENT*/
 //	

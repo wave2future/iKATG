@@ -203,7 +203,7 @@
 - (void)processShowsList:(id)result count:(NSInteger)count
 {
 #define kCutoffShow 1200
-	[coreDataQueue addOperationWithBlock:^() {
+	[coreDataQueue addOperationWithBlock:^(void) {
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	
@@ -368,7 +368,7 @@
 }
 - (void)procesShowDetails:(NSDictionary *)details withID:(NSString *)ID
 {
-	[coreDataQueue addOperationWithBlock:^() {
+	[coreDataQueue addOperationWithBlock:^(void) {
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	
@@ -441,7 +441,7 @@
 }
 - (void)procesShowPictures:(NSArray *)pictures withID:(NSString *)ID
 {
-	[coreDataQueue addOperationWithBlock:^() {
+	[coreDataQueue addOperationWithBlock:^(void) {
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	
@@ -687,7 +687,7 @@
 	//	
 	//	/*UNREVISEDCOMMENTS*/
 	//	
-	[coreDataQueue addOperationWithBlock:^() {
+	[coreDataQueue addOperationWithBlock:^(void) {
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	

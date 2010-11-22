@@ -20,7 +20,7 @@
 #pragma mark -
 - (id)init
 {
-	if (self = [super init])
+	if ((self = [super init]))
 	{
 		[self setup];
 	}
@@ -28,7 +28,7 @@
 }
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	if (self = [super initWithCoder:aDecoder])
+	if ((self = [super initWithCoder:aDecoder]))
 	{
 		[self setup];
 	}
@@ -36,7 +36,7 @@
 }
 - (id)initWithFrame:(CGRect)frame
 {
-	if (self = [super initWithFrame:frame])
+	if ((self = [super initWithFrame:frame]))
 	{
 		[self setup];
 	}

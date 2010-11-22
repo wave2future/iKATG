@@ -52,18 +52,36 @@
 {
     [super viewDidLoad];
 	
+	//	
+	//	Start activity indicators for show info
+	//	
+	
 	[self.nextLiveShowActivityIndicator startAnimating];
 	[self.liveShowStatusActivityIndicator startAnimating];
 	[self.guestActivityIndicator startAnimating];
 	
+	//	
+	//	Setup audiostreamer and volume control
+	//	
+	
 	[self setupAudioAssets];
+	
+	//	
+	//	Poll for show info and set timers to keep things up to date
+	//	
 	
 	[self startLiveShowStatusTimer];
 	
-	[model nextLiveShowTime];
+	//	
+	//	Register for notifications of application state
+	//	
 		
 	[self registerNotifications];
-		
+	
+	//	
+	//	Resume playback and set name and location
+	//	
+	
 	[self loadDefaults];
 }
 - (void)viewDidUnload 
@@ -136,6 +154,7 @@
 	self.live					=	live;
 	liveShowStatusLabel.text	=	[NSString stringWithFormat:@"%@", self.live ? @"Live" : @"Not Live"];
 	[self.liveShowStatusActivityIndicator stopAnimating];
+	[model nextLiveShowTime];
 }
 - (void)nextLiveShowTime:(NSDictionary *)nextLiveShow
 {
@@ -187,7 +206,7 @@
 }
 - (void)updateNextLiveShowLabel:(NSTimer *)timer
 {
-	LogCmd(_cmd);
+	//LogCmd(_cmd);
 	NSDate		*	date		=	(NSDate *)[timer userInfo];
 	NSString	*	timeString	=	nil;
 	NSInteger		since		=	[date timeIntervalSinceNow];
@@ -259,11 +278,14 @@
 #ifdef DEVELOPMENTBUILD
 	ESLog(@"Foreground");
 #endif
+	//	
+	//	Clear the show info being displayed and
+	//	start activity indicators until new info can
+	//	replace it
+	//	
 	
 	self.liveShowStatusLabel.text	=	@"";
 	[self.liveShowStatusActivityIndicator startAnimating];
-	
-	[self startLiveShowStatusTimer];
 	
 	self.nextLiveShowLabel.text		=	@"";
 	[self.nextLiveShowActivityIndicator startAnimating];
@@ -271,7 +293,15 @@
 	self.guestLabel.text			=	@"";
 	[self.guestActivityIndicator startAnimating];
 	
-	[model nextLiveShowTime];
+	//	
+	//	Go get fresh data for next live show, live show status, and show guests
+	//	
+	
+	[self startLiveShowStatusTimer];
+	
+	//	
+	//	Resume playback, set name and location
+	//	
 	
 	[self loadDefaults];
 }
@@ -281,8 +311,16 @@
 	ESLog(@"Background");
 #endif
 	
+	//	
+	//	Invalidate and release UI update timers
+	//	
+	
 	[self stopLiveShowStatusTimer];
 	[self stopNextLiveShowTimer];
+	
+	//	
+	//	Store playback state, name and location
+	//	
 	
 	[self writeDefaults];
 }

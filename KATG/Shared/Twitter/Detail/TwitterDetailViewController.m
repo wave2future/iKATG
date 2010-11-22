@@ -33,7 +33,7 @@
 
 @implementation TwitterDetailViewController
 @dynamic	item;
-@synthesize	imageView;
+@synthesize	userImageButton;
 @synthesize	fromLabel;
 @synthesize	webView;
 @synthesize timeSinceLabel;
@@ -59,12 +59,12 @@
 	//	
 	//	
 	//	
-	self.imageView.layer.borderColor	=	[[UIColor blackColor] CGColor];
-	self.imageView.layer.borderWidth	=	1.0;
-	self.imageView.layer.shadowColor	=	[[UIColor blackColor] CGColor];
-	self.imageView.layer.shadowOffset	=	CGSizeMake(2.0, 2.0);
-	self.imageView.layer.shadowRadius	=	3.0;
-	self.imageView.layer.shadowOpacity	=	0.5;
+	self.userImageButton.layer.borderColor	=	[[UIColor blackColor] CGColor];
+	self.userImageButton.layer.borderWidth	=	1.0;
+	self.userImageButton.layer.shadowColor	=	[[UIColor blackColor] CGColor];
+	self.userImageButton.layer.shadowOffset	=	CGSizeMake(2.0, 2.0);
+	self.userImageButton.layer.shadowRadius	=	3.0;
+	self.userImageButton.layer.shadowOpacity	=	0.5;
 }
 - (Tweet *)item
 {
@@ -80,7 +80,8 @@
 }
 - (void)updateFields
 {
-	self.imageView.image	=	[model twitterImageForURL:[item ImageURL]];
+	UIImage *userImage = [model twitterImageForURL:[item ImageURL]];
+	[self.userImageButton setBackgroundImage:userImage forState:UIControlStateNormal];
 	self.fromLabel.text		=	[item From];
 	self.navigationItem.title	=	[item From];
 	[self.webView setText:[item WebViewText]];
@@ -112,7 +113,7 @@
 - (void)viewDidUnload 
 {
 	[super viewDidUnload];
-	self.imageView	=	nil;
+	self.userImageButton	=	nil;
 	self.fromLabel	=	nil;
 	self.webView	=	nil;
 	self.timeSinceLabel	=	nil;
@@ -137,11 +138,11 @@
 }
 - (void)dealloc
 {
-	CleanRelease(item);
-	CleanRelease(imageView);
-	CleanRelease(fromLabel);
-	CleanRelease(webView);
-	CleanRelease(timeSinceLabel);
+	[item release];
+	[userImageButton release];
+	[fromLabel release];
+	[webView release];
+	[timeSinceLabel release];
 	[super dealloc];
 }
 /******************************************************************************/
@@ -149,14 +150,28 @@
 #pragma mark Data Model Delegate Methods
 #pragma mark -
 /******************************************************************************/
-- (void)imageAvailableForURL:(NSString *)url
+- (void)twitterImageAvailableForURL:(NSString *)url
 {
 	if ([url isEqualToString:[item ImageURL]])
-		self.imageView.image	=	[model twitterImageForURL:[item ImageURL]];
+	{
+		UIImage *userImage = [model twitterImageForURL:[item ImageURL]];
+		[self.userImageButton setBackgroundImage:userImage forState:UIControlStateNormal];
+	}
 }
+/******************************************************************************/
+#pragma mark -
+#pragma mark 
+#pragma mark -
+/******************************************************************************/
+- (IBAction)userImageButtonPressed:(id)sender
+{
+	
+}
+/******************************************************************************/
 #pragma mark -
 #pragma mark Web View
 #pragma mark -
+/******************************************************************************/
 - (BOOL)webView:(UIWebView *)webView 
 shouldStartLoadWithRequest:(NSURLRequest *)request 
  navigationType:(UIWebViewNavigationType)navigationType

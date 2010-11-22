@@ -59,7 +59,7 @@
 #pragma mark Data Model Delegates
 #pragma mark -
 /******************************************************************************/
-- (void)twitterSearchFeed:(NSArray *)tweets
+- (void)twitterSearchFeedAvailable:(NSArray *)tweets
 {
 	[self.items addObjectsFromArray:tweets];
 	[self reloadTableView];

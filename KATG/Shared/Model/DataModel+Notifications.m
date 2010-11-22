@@ -83,8 +83,9 @@
 	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
 	for (id delegate in dlgts)
 	{
-		if ([delegate respondsToSelector:@selector(events:)])
-			[delegate events:events];
+		
+		if ([delegate respondsToSelector:@selector(eventsAvailable:)])
+			[delegate eventsAvailable:events];
 	}
 	[dlgts release];
 }
@@ -113,8 +114,8 @@
 	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
 	for (id delegate in dlgts)
 	{
-		if ([delegate respondsToSelector:@selector(twitterSearchFeed:)])
-			[delegate twitterSearchFeed:result];
+		if ([delegate respondsToSelector:@selector(twitterSearchFeedAvailable:)])
+			[delegate twitterSearchFeedAvailable:result];
 	}
 	[dlgts release];
 }
@@ -143,8 +144,8 @@
 	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
 	for (id delegate in dlgts)
 	{
-		if ([delegate respondsToSelector:@selector(imageAvailableForURL:)])
-			[delegate imageAvailableForURL:url];
+		if ([delegate respondsToSelector:@selector(twitterImageAvailableForURL:)])
+			[delegate twitterImageAvailableForURL:url];
 	}
 	[dlgts release];
 }
