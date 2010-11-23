@@ -24,6 +24,10 @@
 		914687E512878544004BE24A /* ArchiveDetailViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687E412878544004BE24A /* ArchiveDetailViewController_iPhone.m */; };
 		914687E81287865C004BE24A /* ArchivePictureViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687E71287865C004BE24A /* ArchivePictureViewController_iPhone.m */; };
 		914687EC12878808004BE24A /* ArchiveTableViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687EB12878808004BE24A /* ArchiveTableViewController_iPhone.m */; };
+		915BED30129AC5620016FC42 /* ChemdaRelief.png in Resources */ = {isa = PBXBuildFile; fileRef = 915BED2C129AC5620016FC42 /* ChemdaRelief.png */; };
+		915BED31129AC5620016FC42 /* ChemdaRelief@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 915BED2D129AC5620016FC42 /* ChemdaRelief@2x.png */; };
+		915BED32129AC5620016FC42 /* KeithRelief.png in Resources */ = {isa = PBXBuildFile; fileRef = 915BED2E129AC5620016FC42 /* KeithRelief.png */; };
+		915BED33129AC5620016FC42 /* KeithRelief@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 915BED2F129AC5620016FC42 /* KeithRelief@2x.png */; };
 		917E90FB1285CBB400875294 /* NetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E90FA1285CBB400875294 /* NetworkCache.m */; };
 		917E91A51285DFA600875294 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91A41285DFA600875294 /* Event.m */; };
 		917E91B71285E1EC00875294 /* ModelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91B61285E1EC00875294 /* ModelTableViewController.m */; };
@@ -259,6 +263,10 @@
 		914687E71287865C004BE24A /* ArchivePictureViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchivePictureViewController_iPhone.m; sourceTree = "<group>"; };
 		914687EA12878808004BE24A /* ArchiveTableViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveTableViewController_iPhone.h; sourceTree = "<group>"; };
 		914687EB12878808004BE24A /* ArchiveTableViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveTableViewController_iPhone.m; sourceTree = "<group>"; };
+		915BED2C129AC5620016FC42 /* ChemdaRelief.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChemdaRelief.png; sourceTree = "<group>"; };
+		915BED2D129AC5620016FC42 /* ChemdaRelief@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChemdaRelief@2x.png"; sourceTree = "<group>"; };
+		915BED2E129AC5620016FC42 /* KeithRelief.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KeithRelief.png; sourceTree = "<group>"; };
+		915BED2F129AC5620016FC42 /* KeithRelief@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "KeithRelief@2x.png"; sourceTree = "<group>"; };
 		917E90F91285CBB400875294 /* NetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkCache.h; sourceTree = "<group>"; };
 		917E90FA1285CBB400875294 /* NetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkCache.m; sourceTree = "<group>"; };
 		917E91A31285DFA600875294 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
@@ -691,11 +699,22 @@
 			name = Storage;
 			sourceTree = "<group>";
 		};
+		915BED2B129AC5620016FC42 /* TwitterHeads */ = {
+			isa = PBXGroup;
+			children = (
+				915BED2C129AC5620016FC42 /* ChemdaRelief.png */,
+				915BED2D129AC5620016FC42 /* ChemdaRelief@2x.png */,
+				915BED2E129AC5620016FC42 /* KeithRelief.png */,
+				915BED2F129AC5620016FC42 /* KeithRelief@2x.png */,
+			);
+			path = TwitterHeads;
+			sourceTree = "<group>";
+		};
 		91D91F071289B24E00D0EED8 /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
-				91D91F081289B24E00D0EED8 /* Detail */,
 				91D91F0C1289B24E00D0EED8 /* Table */,
+				91D91F081289B24E00D0EED8 /* Detail */,
 			);
 			name = Twitter;
 			path = iPad/Twitter;
@@ -704,9 +723,9 @@
 		91D91F081289B24E00D0EED8 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				91D91F091289B24E00D0EED8 /* TwitterDetailView_iPad.xib */,
 				91D91F0A1289B24E00D0EED8 /* TwitterDetailViewController_iPad.h */,
 				91D91F0B1289B24E00D0EED8 /* TwitterDetailViewController_iPad.m */,
+				91D91F091289B24E00D0EED8 /* TwitterDetailView_iPad.xib */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -714,12 +733,12 @@
 		91D91F0C1289B24E00D0EED8 /* Table */ = {
 			isa = PBXGroup;
 			children = (
-				91D91F0D1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.h */,
-				91D91F0E1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m */,
 				91D91F0F1289B24E00D0EED8 /* TwitterTableViewController_iPad.h */,
 				91D91F101289B24E00D0EED8 /* TwitterTableViewController_iPad.m */,
 				91D91F111289B24E00D0EED8 /* TwitterUserTableViewController_iPad.h */,
 				91D91F121289B24E00D0EED8 /* TwitterUserTableViewController_iPad.m */,
+				91D91F0D1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.h */,
+				91D91F0E1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m */,
 			);
 			path = Table;
 			sourceTree = "<group>";
@@ -800,6 +819,7 @@
 		C57A3D7812429A5800D6BA3B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				915BED2B129AC5620016FC42 /* TwitterHeads */,
 				C57A3D9512429A5800D6BA3B /* Icons */,
 				C57A3D9D12429A5800D6BA3B /* LaunchImages */,
 				C57A3DC512429A5800D6BA3B /* TabsIcons */,
@@ -1674,6 +1694,10 @@
 				C512DC301255B21D003D94BB /* Pause@2x.png in Resources */,
 				914687DF128783E0004BE24A /* ArchivePictureView_iPhone.xib in Resources */,
 				91D91F131289B24E00D0EED8 /* TwitterDetailView_iPad.xib in Resources */,
+				915BED30129AC5620016FC42 /* ChemdaRelief.png in Resources */,
+				915BED31129AC5620016FC42 /* ChemdaRelief@2x.png in Resources */,
+				915BED32129AC5620016FC42 /* KeithRelief.png in Resources */,
+				915BED33129AC5620016FC42 /* KeithRelief@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

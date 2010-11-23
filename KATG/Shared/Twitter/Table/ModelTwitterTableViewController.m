@@ -140,8 +140,16 @@
 {
 	NSString	*	userName	=	[[self.items objectAtIndex:indexPath.row] From];
 	if (userName)
-		cell.userNameLabel.text		=	[NSString stringWithFormat:@"@%@", userName];
-	cell.userImageView.image	=	[model twitterImageForURL:[[self.items objectAtIndex:indexPath.row] ImageURL]];
+		cell.userNameLabel.text	=	[NSString stringWithFormat:@"@%@", userName];
+	UIImage		*	cellImage	=	[model twitterImageForURL:[[self.items objectAtIndex:indexPath.row] ImageURL]];
+	if (cellImage == nil)
+	{
+		if ((indexPath.row % 2) == 0)
+			cellImage			=	[UIImage imageNamed:@"KeithRelief"];
+		else
+			cellImage			=	[UIImage imageNamed:@"ChemdaRelief"];
+	}
+	cell.userImageView.image	=	cellImage;
 	cell.tweetTextLabel.text	=	[[self.items objectAtIndex:indexPath.row] Text];
 	NSInteger		timeSince	=	-[[[self.items objectAtIndex:indexPath.row] Date] timeIntervalSinceNow];
 	NSString	*	interval	=	@"s";
@@ -176,6 +184,18 @@
 		[self performSelectorOnMainThread:@selector(reloadTableView) 
 							   withObject:nil 
 							waitUntilDone:NO];
+}
+- (void)selectFirstRow
+{
+	if ([self.tableView numberOfSections] > 0 && 
+		[self.tableView numberOfRowsInSection:0] > 0) 
+	{
+		NSIndexPath	*	indexPath	=	[NSIndexPath indexPathForRow:0 inSection:0];
+		[self.tableView selectRowAtIndexPath:indexPath 
+									animated:YES 
+							  scrollPosition:UITableViewScrollPositionTop];
+		[self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+	}
 }
 /******************************************************************************/
 #pragma mark -

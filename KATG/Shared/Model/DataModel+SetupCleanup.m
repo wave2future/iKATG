@@ -112,6 +112,9 @@ NSMutableArray * CreateNonRetainingArray()
 	twitterSearchFormatter	=	[[NSDateFormatter alloc] init];
 	[twitterSearchFormatter setDateStyle: NSDateFormatterLongStyle];
 	[twitterSearchFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSLocale * locale = [[NSLocale alloc] initWithLocaleIdentifier:@"US"];
+	[twitterSearchFormatter setLocale:locale];
+	[locale release];
 	//@"Mon, 06 Sep 2010 07:36:57 +0000";
 	[twitterSearchFormatter setDateFormat: @"EEE, dd MMM yyyy HH:mm:ss ZZZ"];
 	return twitterSearchFormatter;

@@ -38,5 +38,6 @@
 @property (nonatomic, retain)	NSMutableArray				*	items;
 
 - (void)reloadTableView;
+- (void)selectFirstRow;
 
 @end

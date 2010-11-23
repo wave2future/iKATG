@@ -37,5 +37,7 @@ NSString	*	DecodeHTMLEntities(NSString * source);
 
 NSString * ReplaceString(NSString *stringToOperateOn, NSString *stringToReplace, NSString *replacementString);
 
+//NSString * platform();
+
 #define LogCmd(cmd) _LogCmd(__FILE__,__LINE__, cmd)
 void _LogCmd(const char *file, int lineNumber, SEL cmd);

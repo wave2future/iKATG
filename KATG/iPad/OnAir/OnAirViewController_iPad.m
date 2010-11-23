@@ -145,12 +145,12 @@
 /******************************************************************************/
 - (void)handleActiveNotification:(NSNotification *)note
 {
-	[super performSelector:@selector(handleActiveNotification:) withObject:note];
+	//[super performSelector:@selector(handleActiveNotification:) withObject:note];
 	[self.chatView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.keithandthegirl.com/chat/iChatroom.aspx"]]];
 }
 - (void)handleInactiveNotification:(NSNotification *)note
 {
-	[super performSelector:@selector(handleInactiveNotification:) withObject:note];
+	//[super performSelector:@selector(handleInactiveNotification:) withObject:note];
 	[self.chatView loadHTMLString:@"" baseURL:nil];
 }
 /******************************************************************************/

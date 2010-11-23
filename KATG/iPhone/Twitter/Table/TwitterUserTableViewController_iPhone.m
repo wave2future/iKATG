@@ -32,7 +32,7 @@
 {
 	CGFloat			height		=	27.0;
 	NSString	*	text		=	[[self.items objectAtIndex:indexPath.row] Text];
-	CGSize			textSize	=	[text sizeWithFont:[UIFont boldSystemFontOfSize:18.0] constrainedToSize:CGSizeMake(225, 180)];
+	CGSize			textSize	=	[text sizeWithFont:[UIFont boldSystemFontOfSize:18.0] constrainedToSize:CGSizeMake(225.0, 200.0) lineBreakMode:UILineBreakModeTailTruncation];
 	height						+=	textSize.height + 6;
 	return MAX(56.0, height);
 }

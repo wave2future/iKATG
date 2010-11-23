@@ -32,6 +32,9 @@
 {
 	[super viewDidLoad];
 	
+	self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+	
 	UISegmentedControl *segCon = 
 	[[UISegmentedControl alloc] initWithItems:
 	 [NSArray arrayWithObjects:@"KATG", @"KATG Clan", nil]];
@@ -40,8 +43,8 @@
 	[segCon addTarget:self 
 			   action:@selector(toggleExtendedTweets:) 
 	 forControlEvents:UIControlEventValueChanged];
-	segCon.autoresizingMask	=	UIViewAutoresizingNone;
-	self.navigationItem.titleView	=	segCon;
+	segCon.autoresizingMask	= (UIViewAutoresizingFlexibleRightMargin);
+	self.navigationItem.titleView = segCon;
 	[segCon release];
 	
 	extended	=	NO;

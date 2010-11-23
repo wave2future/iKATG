@@ -35,7 +35,7 @@
 {
 	if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) 
 	{
-		[self setup];
+		
 	}
 	return self;
 }
@@ -49,6 +49,10 @@
 }
 - (void)setup
 {
+	//	
+	//	
+	//	
+	self.autoresizingMask			=	(UIViewAutoresizingFlexibleHeight);	
 	//	
 	//	
 	//	
@@ -81,12 +85,15 @@
 											  blue:(CGFloat)(36.0/255.0) 
 											 alpha:1.0];
 	self.selectedBackgroundView		=	view;
-	[view release];
+	[view release]; view			=	nil;
 	
 }
 - (void)awakeFromNib
 {
-	[super awakeFromNib];
+	//	
+	//	
+	//	
+	[self setup];
 	//	
 	//	
 	//	

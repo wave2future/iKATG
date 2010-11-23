@@ -37,9 +37,14 @@
 {
 	if (self = [super initWithCoder:(NSCoder *)aDecoder]) 
 	{
-		[self setup];
+		
     }
     return self;
+}
+- (void)awakeFromNib
+{
+	[super awakeFromNib];
+	[self setup];
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier 
 {
@@ -51,6 +56,13 @@
 }
 - (void)setup
 {
+	//	
+	//	
+	//	
+	self.autoresizingMask			=	(UIViewAutoresizingFlexibleHeight);
+	//	
+	//	
+	//	
 	UIView			*	view		=	[[UIView alloc] initWithFrame:self.frame];
 	view.autoresizingMask			=	UIViewAutoresizingFlexibleWidth;
 	view.backgroundColor			=	[UIColor clearColor];
@@ -69,7 +81,9 @@
 	[view.layer insertSublayer:gradient atIndex:0];
 	self.backgroundView				=	view;
 	[view release]; view			=	nil;
-	
+	//	
+	//	
+	//	
 	view							=	[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
 	view.backgroundColor			=	[UIColor colorWithRed:(CGFloat)(112.0/255.0) 
 											 green:(CGFloat)(174.0/255.0) 
@@ -78,7 +92,9 @@
 	view.autoresizingMask			=	UIViewAutoresizingFlexibleWidth;
 	self.selectedBackgroundView		=	view;
 	[view release];
-	
+	//	
+	//	
+	//	
 	self.accessoryViewColor			=	[UIColor whiteColor];
 	self.selectedAccessoryViewColor	=	[UIColor colorWithRed:(CGFloat)(174.0/255.0) 
 													  green:(CGFloat)(174.0/255.0) 

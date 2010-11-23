@@ -505,6 +505,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 		}
 	}
 	//	
+	//	
+	//	
+	UIImage * stockImage = nil;//[UIImage imageNamed:@"KeithRelief"];
+	//	
 	//	Make sure there isn't already a queued request for this image
 	//	
 	BOOL	inQueue	=	NO;
@@ -523,7 +527,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 			inQueue					=	YES;
 	}
 	if (inQueue)
-		return nil;
+		return stockImage;
 	//	
 	//	Go get the image
 	//	
@@ -536,7 +540,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	else
 		[delayedOperations addObject:op];
 	[op release];
-	return nil;
+	return stockImage;
 }
 
 @end

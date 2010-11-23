@@ -243,10 +243,36 @@ NSString * DecodeHTMLEntities(NSString * source)
 	return (NSString *)escaped;
 }
 
+// I should probably make this a macro instead of a function
 NSString * ReplaceString(NSString *stringToOperateOn, NSString *stringToReplace, NSString *replacementString)
 {
 	return [stringToOperateOn stringByReplacingOccurrencesOfString:stringToReplace withString:replacementString];
 }
+
+//int sysctlbyname(const char *name, void *oldp, size_t *oldlenp, void *newp, size_t newlen);
+//NSString * platform()
+//{
+//	size_t size;
+//	sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+//	char *machine = malloc(size);
+//	sysctlbyname("hw.machine", machine, &size, NULL, 0);
+//	/*
+//	 Possible values:
+//	 "iPhone1,1" = iPhone 1G
+//	 "iPhone1,2" = iPhone 3G
+//	 "iPhone2,1" = iPhone 3GS
+//	 "iPhone3,1" = iPhone 4
+//	 "iPod1,1"   = iPod touch 1G
+//	 "iPod2,1"   = iPod touch 2G
+//	 "iPod3,1"   = iPod touch 3G
+//	 "iPod4,1"   = iPod touch 4G
+//	 */
+//	NSString *platform = [NSString stringWithCString:machine];
+//	
+//	free(machine);
+//	
+//	return platform;
+//}
 
 void _LogCmd(const char *file, int lineNumber, SEL cmd)
 {

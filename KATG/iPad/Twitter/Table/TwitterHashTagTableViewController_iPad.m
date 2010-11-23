@@ -56,5 +56,15 @@
 {
 	detailViewController.item	=	[self.items objectAtIndex:indexPath.row];
 }
+/******************************************************************************/
+#pragma mark -
+#pragma mark Data Model Delegates
+#pragma mark -
+/******************************************************************************/
+- (void)twitterHashTagFeed:(NSArray *)tweets
+{
+	[super twitterHashTagFeed:tweets];
+	[self selectFirstRow];
+}
 
 @end

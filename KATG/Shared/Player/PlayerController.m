@@ -24,6 +24,7 @@
 #import "ModalWebViewController_iPhone.h"
 #import "DataModel.h"
 #import "AudioStreamer.h"
+#include <AudioToolbox/AudioToolbox.h>
 
 @interface PlayerController ()
 - (void)setup;
@@ -74,6 +75,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PlayerController);
 	 selector:@selector(handleDidFinishNotification:) 
 	 name:MPMoviePlayerPlaybackDidFinishNotification 
 	 object:nil];
+	
+	AudioSessionInitialize (NULL, // 'NULL' to use the default (main) run loop
+							NULL, // 'NULL' to use the default run loop mode
+							NULL, // callbacks
+							NULL); // data to pass to your interruption listener callback
+	UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+	AudioSessionSetProperty (kAudioSessionProperty_AudioCategory,
+							 sizeof (sessionCategory),
+							 &sessionCategory);
+	AudioSessionSetActive(true);
 }
 #pragma mark -
 #pragma mark View Life Cycle
@@ -227,6 +238,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PlayerController);
 //		MPMovieLoadStatePlaythroughOK  = 1 << 1, // Playback will be automatically started in this state when shouldAutoplay is YES
 //		MPMovieLoadStateStalled        = 1 << 2, // Playback will be automatically paused in this state, if started
 //	};
+	// This is poor logic, should check for streamer or player, not connection type 
+	// (connection type can change after instantiation)
 	MPMoviePlaybackState	state	=	MPMovieLoadStateUnknown;
 	switch (connectionType) {
 		case NotReachable:
