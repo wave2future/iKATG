@@ -17,6 +17,12 @@
 //  limitations under the License.
 //  
 
+typedef enum {
+	scopeTitle,
+	scopeGuests,
+	scopeNumber
+} ScopeButtons;
+
 #import "ArchiveTableViewController.h"
 #import "ArchiveTableViewCell.h"
 #import "ArchiveDetailViewController.h"
@@ -43,6 +49,23 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+	if (HasMultitasking())
+	{
+		UISearchBar *searchBar;
+		searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0.0, 320.0, 44.0)];
+		searchBar.tintColor = [UIColor colorWithRed:(48.0/255.0) 
+											  green:(128.0/255.0) 
+											   blue:(40.0/255.0) 
+											  alpha:1.0];
+		searchBar.showsScopeBar = YES;
+		searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"Title", @"Guests", @"Number", nil];
+		searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+		searchController.delegate = self;
+		searchController.searchResultsDataSource = self;
+		searchController.searchResultsDelegate = self;
+		self.tableView.tableHeaderView = searchBar;
+		[searchBar release];
+	}
 	//	
 	//	Retrieve shows list from web api
 	//	
@@ -170,8 +193,7 @@
 #pragma mark Table view delegate
 #pragma mark -
 /******************************************************************************/
-- (void)tableView:(UITableView *)tableView 
-didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	
 }
@@ -212,11 +234,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	[self setPredicateForSearchText:[self.searchDisplayController.searchBar text] scope:searchOption];
     return YES;
 }
-typedef enum {
-	scopeTitle,
-	scopeGuests,
-	scopeNumber
-} ScopeButtons;
 - (void)setPredicateForSearchText:(NSString*)searchText 
 							scope:(NSInteger)scope
 {
@@ -270,5 +287,44 @@ typedef enum {
 	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:viewController animated:YES];
 }
+///******************************************************************************/
+//#pragma mark -
+//#pragma mark Fetched Results Controller Delegates
+//#pragma mark -
+///******************************************************************************/
+//- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
+//{
+//	if (!self.searchDisplayController.active)
+//		[super controllerWillChangeContent:controller];
+//}
+//- (void)controller:(NSFetchedResultsController*)controller 
+//  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo 
+//		   atIndex:(NSUInteger)sectionIndex 
+//	 forChangeType:(NSFetchedResultsChangeType)type
+//{
+//	if (!self.searchDisplayController.active)
+//		[super controller:controller 
+//		 didChangeSection:sectionInfo 
+//				  atIndex:sectionIndex 
+//			forChangeType:type];
+//}
+//- (void)controller:(NSFetchedResultsController*)controller 
+//   didChangeObject:(id)anObject
+//	   atIndexPath:(NSIndexPath*)indexPath 
+//	 forChangeType:(NSFetchedResultsChangeType)type
+//	  newIndexPath:(NSIndexPath*)newIndexPath
+//{
+//	if (!self.searchDisplayController.active)
+//		[super controller:controller 
+//		  didChangeObject:anObject 
+//			  atIndexPath:indexPath 
+//			forChangeType:type 
+//			 newIndexPath:newIndexPath];
+//}
+//- (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
+//{
+//	if (!self.searchDisplayController.active)
+//		[super controllerDidChangeContent:controller];
+//}
 
 @end

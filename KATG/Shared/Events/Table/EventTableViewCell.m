@@ -65,20 +65,26 @@
 	//	
 	UIView			*	view		=	[[UIView alloc] initWithFrame:self.frame];
 	view.autoresizingMask			=	UIViewAutoresizingFlexibleWidth;
-	view.backgroundColor			=	[UIColor clearColor];
-	gradient						=	[[CAGradientLayer layer] retain];
-	CGRect				gradFrame	=	view.bounds;
-	gradient.frame					=	gradFrame;
-	gradient.colors					=	[NSArray arrayWithObjects:
-										 (id)[[UIColor colorWithRed:(CGFloat)(112.0/255.0) 
-															  green:(CGFloat)(174.0/255.0) 
-															   blue:(CGFloat)(36.0/255.0) 
-															  alpha:1.0] CGColor], 
-										 (id)[[UIColor colorWithRed:(CGFloat)(57.0/255.0) 
-															  green:(CGFloat)(143.0/255.0) 
-															   blue:(CGFloat)(47.0/255.0) 
-															  alpha:1.0] CGColor], nil];
-	[view.layer insertSublayer:gradient atIndex:0];
+	view.backgroundColor			=	[UIColor colorWithRed:(CGFloat)(112.0/255.0) 
+											 green:(CGFloat)(174.0/255.0) 
+											  blue:(CGFloat)(36.0/255.0) 
+											 alpha:1.0];
+	if (HasMultitasking())
+	{
+		gradient						=	[[CAGradientLayer layer] retain];
+		CGRect				gradFrame	=	view.bounds;
+		gradient.frame					=	gradFrame;
+		gradient.colors					=	[NSArray arrayWithObjects:
+											 (id)[[UIColor colorWithRed:(CGFloat)(112.0/255.0) 
+																  green:(CGFloat)(174.0/255.0) 
+																   blue:(CGFloat)(36.0/255.0) 
+																  alpha:1.0] CGColor], 
+											 (id)[[UIColor colorWithRed:(CGFloat)(57.0/255.0) 
+																  green:(CGFloat)(143.0/255.0) 
+																   blue:(CGFloat)(47.0/255.0) 
+																  alpha:1.0] CGColor], nil];
+		[view.layer insertSublayer:gradient atIndex:0];
+	}
 	self.backgroundView				=	view;
 	[view release]; view			=	nil;
 	//	

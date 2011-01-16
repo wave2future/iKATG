@@ -31,8 +31,7 @@
 - (IBAction)pushPicturesViewController:(id)sender
 {
 	ArchivePictureViewController_iPhone	*	viewController	=	
-	[[ArchivePictureViewController_iPhone alloc] initWithNibName:@"ArchivePictureView_iPhone" 
-														  bundle:nil];
+	[[ArchivePictureViewController_iPhone alloc] init];
 	viewController.show	=	self.show;
 	[self.navigationController pushViewController:viewController 
 										 animated:YES];

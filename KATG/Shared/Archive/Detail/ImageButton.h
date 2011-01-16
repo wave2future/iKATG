@@ -1,5 +1,5 @@
-//	
-//  ArchivePictureViewController.h
+//
+//  ImageButton.h
 //	
 //  Created by Doug Russell on 5/5/10.
 //  Copyright 2010 Doug Russell. All rights reserved.
@@ -18,16 +18,13 @@
 //  
 
 #import <UIKit/UIKit.h>
-#import "ModelViewController.h"
 
-@class Show;
-@class OrderedDictionary;
-@interface ArchivePictureViewController : ModelViewController 
+@class Picture;
+@interface ImageButton : UIButton 
 {
-	Show				*	show;
-	OrderedDictionary	*	buttons;
+	Picture *picture;
 }
 
-@property (nonatomic, assign)	Show	*	show;
+@property (nonatomic, assign) Picture *picture;
 
 @end

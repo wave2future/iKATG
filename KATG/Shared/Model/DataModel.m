@@ -397,6 +397,65 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 		[delayedOperations addObject:op];
 	[op release];
 }
+- (UIImage *)imageForURL:(NSString *)url
+{
+	NSParameterAssert((url != nil));
+	NSParameterAssert([url isKindOfClass:[NSString class]]);
+	NSParameterAssert((url.length != 0));
+	//	
+	//  See if image is in cache already
+	//	
+	NSData	*	imageData	=	[pictureCacheDictionary objectForKey:url];
+	if (imageData)
+	{
+		UIImage		*	image	=	[UIImage imageWithData:imageData];
+		if (image)
+		{
+			CGFloat		scale	=	[[UIScreen mainScreen] scale];
+			if (scale != 1.0)
+				image			=	[UIImage imageWithCGImage:image.CGImage scale:scale orientation:0];
+			if (image)
+				return image;
+		}
+	}
+	//	
+	//	
+	//	
+	UIImage * stockImage = [UIImage imageNamed:@"ChemdaRelief"];
+	//	
+	//	Make sure there isn't already a queued request for this image
+	//	
+	BOOL	inQueue	=	NO;
+	for (NetworkOperation *anOp in [operationQueue operations])
+	{
+		if ([[anOp baseURL] isEqualToString:url])
+			inQueue					=	YES;
+		if (inQueue)
+			break;
+	}
+	for (NetworkOperation *anOp in delayedOperations)
+	{
+		if (inQueue)
+			break;
+		if ([[anOp baseURL] isEqualToString:url])
+			inQueue					=	YES;
+	}
+	if (inQueue)
+		return stockImage;
+	//	
+	//	Go get the image
+	//	
+	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+	op.delegate					=	self;
+	op.instanceCode				=	kGetImageCode;
+	op.baseURL					=	url;
+	if (connected)
+		[operationQueue addOperation:op];
+	else
+		[delayedOperations addObject:op];
+	[op release];
+	return stockImage;
+}
 /******************************************************************************/
 #pragma mark -
 #pragma mark Twitter

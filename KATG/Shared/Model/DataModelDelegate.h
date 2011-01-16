@@ -44,7 +44,11 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
-- (void)showPictures:(NSString *)ID;
+- (void)showPicturesAvailable:(NSString *)ID;
+//	
+//	/*UNREVISEDCOMMENT*/
+//	
+- (void)imageAvailableForURL:(NSString *)url;
 //	
 //	/*UNREVISEDCOMMENT*/
 //	

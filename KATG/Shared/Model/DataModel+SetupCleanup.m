@@ -129,6 +129,9 @@ NSMutableArray * CreateNonRetainingArray()
 	twitterUserFormatter	=	[[NSDateFormatter alloc] init];
 	[twitterUserFormatter setDateStyle: NSDateFormatterLongStyle];
 	[twitterUserFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSLocale * locale = [[NSLocale alloc] initWithLocaleIdentifier:@"US"];
+	[twitterUserFormatter setLocale:locale];
+	[locale release];
 	//"created_at" = "Wed Sep 08 21:51:09 +0000 2010";
 	[twitterUserFormatter setDateFormat: @"EEE MMM dd HH:mm:ss ZZZ yyyy"];
 	return twitterUserFormatter;

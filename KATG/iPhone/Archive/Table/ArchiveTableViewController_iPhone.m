@@ -27,8 +27,7 @@
 #pragma mark Table view delegate
 #pragma mark -
 /******************************************************************************/
-- (void)tableView:(UITableView *)tableView 
-didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	ArchiveDetailViewController_iPhone	*	viewController	=	
 	[[ArchiveDetailViewController_iPhone alloc] initWithNibName:@"ArchiveDetailView_iPhone" 

@@ -34,9 +34,14 @@
 {
 	if (self = [super initWithCoder:(NSCoder *)aDecoder]) 
 	{
-		[self setup];
+		
     }
     return self;
+}
+- (void)awakeFromNib
+{
+	[super awakeFromNib];
+	[self setup];
 }
 - (void)setup
 {
@@ -45,21 +50,22 @@
 											 green:(CGFloat)(174.0/255.0) 
 											  blue:(CGFloat)(36.0/255.0) 
 											 alpha:1.0];
-	CAGradientLayer	*	gradient	=	[CAGradientLayer layer];
-	CGRect				gradFrame	=	view.bounds;
-//	gradFrame.origin.y				+=	2.0;
-//	gradFrame.size.height			-=	3.0;
-	gradient.frame					=	gradFrame;
-	gradient.colors					=	[NSArray arrayWithObjects:
-										 (id)[[UIColor colorWithRed:(CGFloat)(112.0/255.0) 
-															  green:(CGFloat)(174.0/255.0) 
-															   blue:(CGFloat)(36.0/255.0) 
-															  alpha:1.0] CGColor], 
-										 (id)[[UIColor colorWithRed:(CGFloat)(57.0/255.0) 
-															  green:(CGFloat)(143.0/255.0) 
-															   blue:(CGFloat)(47.0/255.0) 
-															  alpha:1.0] CGColor], nil];
-	[view.layer insertSublayer:gradient atIndex:0];
+	if (HasMultitasking())
+	{
+		CAGradientLayer	*	gradient	=	[CAGradientLayer layer];
+		CGRect				gradFrame	=	view.bounds;
+		gradient.frame					=	gradFrame;
+		gradient.colors					=	[NSArray arrayWithObjects:
+											 (id)[[UIColor colorWithRed:(CGFloat)(112.0/255.0) 
+																  green:(CGFloat)(174.0/255.0) 
+																   blue:(CGFloat)(36.0/255.0) 
+																  alpha:1.0] CGColor], 
+											 (id)[[UIColor colorWithRed:(CGFloat)(57.0/255.0) 
+																  green:(CGFloat)(143.0/255.0) 
+																   blue:(CGFloat)(47.0/255.0) 
+																  alpha:1.0] CGColor], nil];
+		[view.layer insertSublayer:gradient atIndex:0];
+	}
 	self.backgroundView				=	view;
 	[view release]; view			=	nil;
 	

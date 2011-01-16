@@ -44,6 +44,7 @@ typedef enum {
 	kShowArchivesCode,
 	kShowDetailsCode,
 	kShowPicturesCode,
+	kGetImageCode,
 	//	Twitter
 	kTwitterSearchCode,
 	kTwitterUserFeedCode,

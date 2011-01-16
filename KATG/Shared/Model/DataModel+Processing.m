@@ -83,6 +83,10 @@
 			[self procesShowPictures:result 
 							  withID:[operation.bodyBufferDict objectForKey:kShowIDKey]];
 			break;
+		case kGetImageCode:
+			NSParameterAssert([result isKindOfClass:[NSData class]]);
+			[self processGetImage:(NSData *)result forURL:operation.baseURL];
+			break;
 		case kTwitterSearchCode:
 			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
 			[self processTwitterSearchFeed:result];
@@ -135,6 +139,12 @@
 			
 			break;
 		case kShowDetailsCode:
+			
+			break;
+		case kShowPicturesCode:
+			
+			break;
+		case kGetImageCode:
 			
 			break;
 		default:
@@ -524,6 +534,44 @@
 		}
 		[request release];
 		[showContext release];
+		
+		[self performSelectorOnMainThread:@selector(notifyShowPictures:) 
+							   withObject:ID 
+							waitUntilDone:NO];
+		
+	}];
+}
+- (void)processGetImage:(NSData *)imgData forURL:(NSString *)url
+{
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	[coreDataQueue addOperationWithBlock:^(void) {
+		//	
+		//	/*UNREVISEDCOMMENTS*/
+		//	
+		UIImage	*	image	=	[UIImage imageWithData:imgData];
+		if (!image)
+		{
+#ifdef DEVELOPMENTBUILD
+			NSLog(@"%@", [[[NSString alloc] initWithData:imgData encoding:NSUTF8StringEncoding] autorelease]);
+#endif
+			return;
+		}
+		//	
+		//	/*UNREVISEDCOMMENTS*/
+		//	
+		CGFloat		scale	=	1.0;
+		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+			scale			=	[[UIScreen mainScreen] scale];
+		if (scale != 1.0)
+			image = [UIImage imageWithCGImage:image.CGImage scale:scale orientation:UIImageOrientationUp];
+		
+		[self addToCache:imgData key:url];
+		
+		[self performSelectorOnMainThread:@selector(notifyGetImageForURL:) 
+							   withObject:url 
+							waitUntilDone:NO];
 	}];
 }
 /******************************************************************************/

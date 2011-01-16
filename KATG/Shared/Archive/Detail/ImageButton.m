@@ -1,5 +1,5 @@
-//	
-//  ArchivePictureViewController.h
+//
+//  ImageButton.m
 //	
 //  Created by Doug Russell on 5/5/10.
 //  Copyright 2010 Doug Russell. All rights reserved.
@@ -17,17 +17,15 @@
 //  limitations under the License.
 //  
 
-#import <UIKit/UIKit.h>
-#import "ModelViewController.h"
+#import "ImageButton.h"
 
-@class Show;
-@class OrderedDictionary;
-@interface ArchivePictureViewController : ModelViewController 
+@implementation ImageButton
+@synthesize picture;
+
+- (void)dealloc
 {
-	Show				*	show;
-	OrderedDictionary	*	buttons;
+	[picture release];
+	[super dealloc];
 }
-
-@property (nonatomic, assign)	Show	*	show;
 
 @end

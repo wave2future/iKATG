@@ -104,6 +104,26 @@
 	}
 	[dlgts release];
 }
+- (void)notifyShowPictures:(NSString *)ID
+{
+	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
+	for (id delegate in dlgts)
+	{
+		if ([delegate respondsToSelector:@selector(showPicturesAvailable:)])
+			[delegate showPicturesAvailable:ID];
+	}
+	[dlgts release];
+}
+- (void)notifyGetImageForURL:(NSString *)url
+{
+	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
+	for (id delegate in dlgts)
+	{
+		if ([delegate respondsToSelector:@selector(imageAvailableForURL:)])
+			[delegate imageAvailableForURL:url];
+	}
+	[dlgts release];
+}
 /******************************************************************************/
 #pragma mark -
 #pragma mark Twitter
