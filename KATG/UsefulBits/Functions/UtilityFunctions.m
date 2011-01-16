@@ -243,6 +243,11 @@ NSString * DecodeHTMLEntities(NSString * source)
 	return (NSString *)escaped;
 }
 
+BOOL HasMultitasking()
+{
+	return [[UIDevice currentDevice] isMultitaskingSupported];
+}
+
 // I should probably make this a macro instead of a function
 NSString * ReplaceString(NSString *stringToOperateOn, NSString *stringToReplace, NSString *replacementString)
 {

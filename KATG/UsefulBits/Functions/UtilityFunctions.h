@@ -37,6 +37,8 @@ NSString	*	DecodeHTMLEntities(NSString * source);
 
 NSString * ReplaceString(NSString *stringToOperateOn, NSString *stringToReplace, NSString *replacementString);
 
+BOOL HasMultitasking();
+
 //NSString * platform();
 
 #define LogCmd(cmd) _LogCmd(__FILE__,__LINE__, cmd)
