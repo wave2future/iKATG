@@ -19,7 +19,6 @@
 
 #import "ArchiveDetailViewController.h"
 #import "Show.h"
-#import "Guest.h"
 #import "RoundedView.h"
 #import "PlayerController.h"
 #import "TitleBarButton.h"
@@ -74,17 +73,20 @@
 		[button release];
 	}
 	
-	ArrowButton	*	picButton	=
-	[[ArrowButton alloc] initWithFrame:CGRectMake(0, 0, 70, 30)];
-	[picButton setTitle:@"Pictures" forState:UIControlStateNormal];
-	[picButton addTarget:self 
-				  action:@selector(pushPicturesViewController:) 
-		forControlEvents:UIControlEventTouchUpInside];
-	UIBarButtonItem	*	picBarButton	=
-	[[UIBarButtonItem alloc] initWithCustomView:picButton];
-	self.navigationItem.rightBarButtonItem	=	picBarButton;
-	[picBarButton release];
-	[picButton release];
+	if ([show.PictureCount intValue] != 0)
+	{
+		ArrowButton	*	picButton	=
+		[[ArrowButton alloc] initWithFrame:CGRectMake(0, 0, 70, 30)];
+		[picButton setTitle:@"Pictures" forState:UIControlStateNormal];
+		[picButton addTarget:self 
+					  action:@selector(pushPicturesViewController:) 
+			forControlEvents:UIControlEventTouchUpInside];
+		UIBarButtonItem	*	picBarButton	=
+		[[UIBarButtonItem alloc] initWithCustomView:picButton];
+		self.navigationItem.rightBarButtonItem	=	picBarButton;
+		[picBarButton release];
+		[picButton release];
+	}
 }
 - (void)viewDidUnload 
 {
@@ -123,17 +125,7 @@
 {
 	self.showTitleLabel.text	=	[self.show Title];
 	self.showNumberLabel.text	=	[NSString stringWithFormat:@"Show %@", [self.show Number]];
-	NSMutableString	*	guests	=	[NSMutableString string];
-	int	i	=	0;
-	for (Guest *guest in [self.show Guests])
-	{
-		i++;
-		if (i == [[self.show Guests] count])
-			[guests appendString:[guest Guest]];
-		else
-			[guests appendFormat:@"%@, ", [guest Guest]];
-	}
-	self.showGuestsLabel.text	=	guests;
+	self.showGuestsLabel.text	=	[self.show Guests];
 	
 	if ([self.show Notes])
 		self.showNotesTextView.text	=	[self.show Notes];

@@ -43,7 +43,7 @@
 /******************************************************************************/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	TwitterDetailViewController	*	viewController	=	[[TwitterDetailViewController alloc] initWithNibName:@"TwitterDetailView_iPhone" bundle:nil];
+	TwitterDetailViewController	*	viewController	=	[[TwitterDetailViewController alloc] init];
 	viewController.item								=	[self.items objectAtIndex:indexPath.row];
 	[self.navigationController pushViewController:viewController animated:YES];
 	[viewController release];

@@ -33,6 +33,16 @@
 
 /******************************************************************************/
 #pragma mark -
+#pragma mark Setup Cleanup
+#pragma mark -
+/******************************************************************************/
+- (void)dealloc
+{
+	[callButton release];
+	[super dealloc];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark View Life Cycle
 #pragma mark -
 /******************************************************************************/
@@ -67,16 +77,6 @@
 {
 	return (interfaceOrientation == UIInterfaceOrientationPortrait ||
 			interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Memory Management
-#pragma mark -
-/******************************************************************************/
-- (void)dealloc
-{
-	[callButton release];
-	[super dealloc];
 }
 /******************************************************************************/
 #pragma mark -

@@ -23,27 +23,17 @@
 
 /******************************************************************************/
 #pragma mark -
-#pragma mark View Life Cycle
-#pragma mark -
-/******************************************************************************/
-- (void)viewDidLoad 
-{
-	[super viewDidLoad];
-	//	
-	//	Instantiate Model and add self as delegate
-	//	
-	model	=	[DataModel sharedDataModel];
-	[model addDelegate:self];
-}
-- (void)viewDidUnload 
-{
-	[super viewDidUnload];
-}
-/******************************************************************************/
-#pragma mark -
 #pragma mark Memory Management
 #pragma mark -
 /******************************************************************************/
+- (id)init
+{
+	if ((self = [super initWithNibName:nil bundle:nil]))
+	{
+		
+	}
+	return self;
+}
 - (void)didReceiveMemoryWarning 
 {
 	[super didReceiveMemoryWarning];
@@ -53,6 +43,28 @@
 	[model removeDelegate:self];
 	model	=	nil;
 	[super dealloc];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark View Life Cycle
+#pragma mark -
+/******************************************************************************/
+- (void)viewDidLoad 
+{
+	[super viewDidLoad];
+	//	
+	//	Default Background Color
+	//	
+	self.view.backgroundColor = [DefaultValues defaultBackgroundColor];
+	//	
+	//	Instantiate Model and add self as delegate
+	//	
+	model	=	[DataModel sharedDataModel];
+	[model addDelegate:self];
+}
+- (void)viewDidUnload 
+{
+	[super viewDidUnload];
 }
 /******************************************************************************/
 #pragma mark -

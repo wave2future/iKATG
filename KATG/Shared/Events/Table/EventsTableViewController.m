@@ -30,6 +30,28 @@
 
 @implementation EventsTableViewController
 @synthesize adView;
+
+/******************************************************************************/
+#pragma mark -
+#pragma mark Setup Cleanup
+#pragma mark -
+/******************************************************************************/
+- (id)init
+{
+	if ((self = [super init]))
+	{
+		self.tabBarItem = [[[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Events", @"")  
+														 image:[UIImage imageNamed:@"EventsTab"] 
+														   tag:0] autorelease];
+		self.navigationItem.title = NSLocalizedString(@"Events", @"");
+	}
+	return self;
+}
+- (void)dealloc 
+{
+	[adView release];
+	[super dealloc];
+}
 /******************************************************************************/
 #pragma mark -
 #pragma mark View Life Cycle
@@ -38,6 +60,10 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+	//	
+	//	
+	//	
+	self.tableView.rowHeight = 80.0;
 	//	
 	//	
 	//	
@@ -117,20 +143,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	self.items	=	events;
 	[self reloadTableView];
 	[self.activityIndicator stopAnimating];
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Memory management
-#pragma mark -
-/******************************************************************************/
-- (void)didReceiveMemoryWarning
-{
-	[super didReceiveMemoryWarning];
-}
-- (void)dealloc 
-{
-	[adView release];
-	[super dealloc];
 }
 
 @end

@@ -25,6 +25,22 @@
 
 /******************************************************************************/
 #pragma mark -
+#pragma mark Setup Cleanup
+#pragma mark -
+/******************************************************************************/
+- (id)init
+{
+	if ((self = [super init]))
+	{
+		self.tabBarItem = [[[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Twitter", @"")  
+														 image:[UIImage imageNamed:@"TwitterTab"] 
+														   tag:0] autorelease];
+		self.navigationItem.title = NSLocalizedString(@"The Twitters", @"");
+	}
+	return self;
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark View Life Cycle
 #pragma mark -
 /******************************************************************************/

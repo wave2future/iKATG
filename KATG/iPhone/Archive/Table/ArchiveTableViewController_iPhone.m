@@ -30,8 +30,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	ArchiveDetailViewController_iPhone	*	viewController	=	
-	[[ArchiveDetailViewController_iPhone alloc] initWithNibName:@"ArchiveDetailView_iPhone" 
-														 bundle:nil];
+	[[ArchiveDetailViewController_iPhone alloc] init];
 	viewController.show	=	(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath];
 	[self.navigationController pushViewController:viewController animated:YES];
 	[viewController release];

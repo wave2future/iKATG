@@ -25,7 +25,7 @@
 #endif
 
 @implementation AppDelegate_Shared
-@synthesize window, tabBarController;
+@synthesize window, tabBarController, activityIndicator;
 
 void uncaughtExceptionHandler(NSException *exception) 
 {
@@ -78,6 +78,8 @@ void uncaughtExceptionHandler(NSException *exception)
 			BasicAlert(@"Notification", alertMessage, nil, @"Continue", nil);
 	}
 	
+	self.window.backgroundColor = [DefaultValues defaultBackgroundColor];
+	
     return YES;
 }
 - (void)applicationWillTerminate:(UIApplication *)application 
@@ -116,6 +118,14 @@ void uncaughtExceptionHandler(NSException *exception)
 #endif
         } 
     }
+}
+- (UINavigationController *)wrapViewController:(UIViewController *)viewController
+{
+	NSParameterAssert(viewController != nil);
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	NSParameterAssert(navController != nil);
+	navController.navigationBar.tintColor = [DefaultValues defaultToolbarTint];
+	return [navController autorelease];
 }
 /******************************************************************************/
 #pragma mark -
@@ -160,19 +170,19 @@ void uncaughtExceptionHandler(NSException *exception)
         if (persistentStoreCoordinator_ != nil)
             return persistentStoreCoordinator_;
         
-		NSString	*	defaultStorePath	=	[[NSBundle bundleForClass:[self class]] pathForResource:@"KATG" ofType:@"sqlite"];
+//		NSString	*	defaultStorePath	=	[[NSBundle bundleForClass:[self class]] pathForResource:@"KATG" ofType:@"sqlite"];
         NSString	*	storePath			=	[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"KATG.sqlite"];
         
         NSError		*	error;
-        if (![[NSFileManager defaultManager] fileExistsAtPath:storePath]) 
-        {
-            if ([[NSFileManager defaultManager] copyItemAtPath:defaultStorePath 
-														toPath:storePath 
-														 error:&error])
-                NSLog(@"Copied starting data to %@", storePath);
-            else 
-                NSLog(@"Error copying default DB to %@ (%@)", storePath, error);
-        }
+//        if (![[NSFileManager defaultManager] fileExistsAtPath:storePath]) 
+//        {
+//            if ([[NSFileManager defaultManager] copyItemAtPath:defaultStorePath 
+//														toPath:storePath 
+//														 error:&error])
+//                NSLog(@"Copied starting data to %@", storePath);
+//            else 
+//                NSLog(@"Error copying default DB to %@ (%@)", storePath, error);
+//        }
         
         NSURL		*	storeURL			=	[NSURL fileURLWithPath:storePath];
         
@@ -183,7 +193,8 @@ void uncaughtExceptionHandler(NSException *exception)
 												 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
 		
         if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType 
-													   configuration:nil URL:storeURL 
+													   configuration:nil 
+																 URL:storeURL 
 															 options:options 
 															   error:&error]) 
         {
@@ -317,6 +328,7 @@ void uncaughtExceptionHandler(NSException *exception)
 	[persistentStoreCoordinator_ release];
 	
 	[tabBarController release];
+	[activityIndicator release];
 	[window release];
 	[super dealloc];
 }

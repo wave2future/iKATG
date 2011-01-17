@@ -202,8 +202,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 	{
 		viewController	=	
-		[[ModalWebViewController alloc] initWithNibName:@"ModalWebView_iPad" 
-												 bundle:nil];
+		[[ModalWebViewController alloc] init];
 		viewController.request	=	request;
 		
 		// Present Modal with no settings for a full screen browser
@@ -215,8 +214,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     else
 	{
 		viewController	=	
-		[[ModalWebViewController_iPhone alloc] initWithNibName:@"ModalWebView_iPhone" 
-														bundle:nil];
+		[[ModalWebViewController_iPhone alloc] init];
 		viewController.request	=	request;
 		[self presentModalViewController:viewController animated:YES];
 	}

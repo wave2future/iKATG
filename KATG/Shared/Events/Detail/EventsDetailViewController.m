@@ -31,6 +31,24 @@
 @synthesize 	webContainerView, webView;
 @synthesize 	titleLabel, dateTimeLabel;
 
+/******************************************************************************/
+#pragma mark -
+#pragma mark Setup Cleanup
+#pragma mark -
+/******************************************************************************/
+- (void)dealloc 
+{
+	[webContainerView release];
+	[webView release];
+	[titleLabel release];
+	[dateTimeLabel release];
+    [super dealloc];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark View Life Cycle
+#pragma mark -
+/******************************************************************************/
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
@@ -88,18 +106,6 @@
 	self.webView			=	nil;
 	self.titleLabel			=	nil;
 	self.dateTimeLabel		=	nil;
-}
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
-}
-- (void)dealloc 
-{
-	[webContainerView release];
-	[webView release];
-	[titleLabel release];
-	[dateTimeLabel release];
-    [super dealloc];
 }
 /******************************************************************************/
 #pragma mark -

@@ -27,7 +27,6 @@ typedef enum {
 #import "ArchiveTableViewCell.h"
 #import "ArchiveDetailViewController.h"
 #import "Show.h"
-#import "Guest.h"
 #import "UIViewController+Nib.h"
 #import "PlayerController.h"
 
@@ -43,12 +42,40 @@ typedef enum {
 
 /******************************************************************************/
 #pragma mark -
+#pragma mark Setup Cleanup
+#pragma mark -
+/******************************************************************************/
+- (id)init
+{
+	if ((self = [super init]))
+	{
+		self.tabBarItem = [[[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Archives", @"")  
+														 image:[UIImage imageNamed:@"ArchiveTab"] 
+														   tag:0] autorelease];
+		self.navigationItem.title = NSLocalizedString(@"Archives", @"");
+	}
+	return self;
+}
+- (void)dealloc 
+{
+	[super dealloc];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark View Life Cycle
 #pragma mark -
 /******************************************************************************/
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+	
+	//	
+	//	
+	//	
+	self.tableView.rowHeight = 80.0;
+	//	
+	//	
+	//	
 	if (HasMultitasking())
 	{
 		UISearchBar *searchBar;
@@ -161,17 +188,7 @@ typedef enum {
 	// Set Title
 	cell.showTitleLabel.text	=	[show Title];
 	// Set Guests
-	NSMutableString	*	guests	=	[NSMutableString string];
-	int	i	=	0;
-	for (Guest *guest in [show Guests])
-	{
-		i++;
-		if (i == [[show Guests] count])
-			[guests appendString:[guest Guest]];
-		else
-			[guests appendFormat:@"%@, ", [guest Guest]];
-	}
-	cell.showGuestsLabel.text	=	guests;
+	cell.showGuestsLabel.text	=	[show Guests];
 	// Set Show Type Icon (Audio or TV)
 	if ([[show TV] boolValue])
 		cell.showTypeImageView.image	=	[UIImage imageNamed:@"TVShow"];
@@ -196,19 +213,6 @@ typedef enum {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Memory management
-#pragma mark -
-/******************************************************************************/
-- (void)didReceiveMemoryWarning
-{
-	[super didReceiveMemoryWarning];
-}
-- (void)dealloc 
-{
-	[super dealloc];
 }
 /******************************************************************************/
 #pragma mark -
@@ -244,7 +248,7 @@ typedef enum {
 			predicate	=	[NSPredicate predicateWithFormat:@"Title contains[cd] %@", searchText];
 			break;
 		case scopeGuests: //guests
-			predicate	=	[NSPredicate predicateWithFormat:@"Guests.Guest contains[cd] %@", searchText];
+			predicate	=	[NSPredicate predicateWithFormat:@"Guests contains[cd] %@", searchText];
 			break;
 		case scopeNumber://number
 			predicate	=	[NSPredicate predicateWithFormat:@"Number == %@", searchText];
@@ -264,6 +268,10 @@ typedef enum {
     }
 }
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
+{
+	
+}
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
 	[NSFetchedResultsController deleteCacheWithName:@"archives"];
 	self.fetchedResultsController = nil;
@@ -287,44 +295,5 @@ typedef enum {
 	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:viewController animated:YES];
 }
-///******************************************************************************/
-//#pragma mark -
-//#pragma mark Fetched Results Controller Delegates
-//#pragma mark -
-///******************************************************************************/
-//- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
-//{
-//	if (!self.searchDisplayController.active)
-//		[super controllerWillChangeContent:controller];
-//}
-//- (void)controller:(NSFetchedResultsController*)controller 
-//  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo 
-//		   atIndex:(NSUInteger)sectionIndex 
-//	 forChangeType:(NSFetchedResultsChangeType)type
-//{
-//	if (!self.searchDisplayController.active)
-//		[super controller:controller 
-//		 didChangeSection:sectionInfo 
-//				  atIndex:sectionIndex 
-//			forChangeType:type];
-//}
-//- (void)controller:(NSFetchedResultsController*)controller 
-//   didChangeObject:(id)anObject
-//	   atIndexPath:(NSIndexPath*)indexPath 
-//	 forChangeType:(NSFetchedResultsChangeType)type
-//	  newIndexPath:(NSIndexPath*)newIndexPath
-//{
-//	if (!self.searchDisplayController.active)
-//		[super controller:controller 
-//		  didChangeObject:anObject 
-//			  atIndexPath:indexPath 
-//			forChangeType:type 
-//			 newIndexPath:newIndexPath];
-//}
-//- (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
-//{
-//	if (!self.searchDisplayController.active)
-//		[super controllerDidChangeContent:controller];
-//}
 
 @end

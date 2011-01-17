@@ -60,9 +60,7 @@
 /******************************************************************************/
 - (void)openTweet:(NSString *)user
 {
-	TwitterUserTableViewController_iPad	*	viewController	=	
-	[[TwitterUserTableViewController_iPad alloc] initWithNibName:@"TwitterTableView" 
-														  bundle:nil];
+	TwitterUserTableViewController_iPad	*	viewController	=	[[TwitterUserTableViewController_iPad alloc] init];
 	viewController.user						=	user;
 	viewController.mgsplitViewController	=	mgsplitViewController;
 	viewController.detailViewController		=	self;
@@ -73,8 +71,7 @@
 - (void)openHashTag:(NSString *)hashTag
 {
 	TwitterHashTagTableViewController_iPad	*	viewController	=	
-	[[TwitterHashTagTableViewController_iPad alloc] initWithNibName:@"TwitterTableView" 
-															 bundle:nil];
+	[[TwitterHashTagTableViewController_iPad alloc] init];
 	viewController.hashTag					=	hashTag;
 	viewController.mgsplitViewController	=	mgsplitViewController;
 	viewController.detailViewController		=	self;
@@ -85,8 +82,7 @@
 - (void)openRequest:(NSURLRequest *)request
 {
 	ModalWebViewController_iPad	*	viewController	=	
-	[[ModalWebViewController_iPad alloc] initWithNibName:@"ModalWebView_iPad" 
-												  bundle:nil];
+	[[ModalWebViewController_iPad alloc] init];
 	viewController.request					=	request;
 	viewController.modalPresentationStyle	=	UIModalPresentationFormSheet;
 	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;

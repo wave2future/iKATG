@@ -24,16 +24,18 @@
 @interface AppDelegate_Shared : NSObject 
 <UIApplicationDelegate, UITabBarDelegate, PushDelegate> 
 {
-	UIWindow			*	window;
-	UITabBarController	*	tabBarController;
+	UIWindow				*	window;
+	UITabBarController		*	tabBarController;
+	UIActivityIndicatorView	*	activityIndicator;
 @private
 	NSManagedObjectContext			*	managedObjectContext_;
 	NSManagedObjectModel			*	managedObjectModel_;
 	NSPersistentStoreCoordinator	*	persistentStoreCoordinator_;
 }
 
-@property (nonatomic, retain)	IBOutlet	UIWindow			*	window;
-@property (nonatomic, retain)	IBOutlet	UITabBarController	*	tabBarController;
+@property (nonatomic, retain)	IBOutlet	UIWindow				*	window;
+@property (nonatomic, retain)	IBOutlet	UITabBarController		*	tabBarController;
+@property (nonatomic, retain)	IBOutlet	UIActivityIndicatorView	*	activityIndicator;
 
 @property (nonatomic, retain, readonly)	NSManagedObjectContext			*	managedObjectContext;
 @property (nonatomic, retain, readonly)	NSManagedObjectModel			*	managedObjectModel;
@@ -41,6 +43,6 @@
 
 - (NSString *)applicationDocumentsDirectory;
 - (void)saveContext;
+- (UINavigationController *)wrapViewController:(UIViewController *)viewController;
 
 @end
-

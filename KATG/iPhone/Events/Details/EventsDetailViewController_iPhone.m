@@ -30,7 +30,7 @@
 - (void)openRequest:(NSURLRequest *)request
 {
 	ModalWebViewController_iPhone	*	viewController	=	
-	[[ModalWebViewController_iPhone alloc] initWithNibName:@"ModalWebView_iPhone" bundle:nil];
+	[[ModalWebViewController_iPhone alloc] init];
 	viewController.request	=	request;
 	[self presentModalViewController:viewController animated:YES];
 	[viewController release];

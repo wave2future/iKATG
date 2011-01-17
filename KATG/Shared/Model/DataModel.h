@@ -195,7 +195,7 @@
 //	
 //	/*UNREVISEDCOMMENTS*/
 //	
-//- (UIImage *)imageForURL:(NSString *)url;
+- (UIImage *)imageForURL:(NSString *)url;
 //	
 //	Parse a twitter search json feed
 //	

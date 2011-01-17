@@ -21,7 +21,6 @@
 #import "DataModel+Notifications.h"
 #import "Event.h"
 #import "Show.h"
-#import "Guest.h"
 #import "Tweet.h"
 #import "Picture.h"
 #import "TouchXML.h"
@@ -274,58 +273,12 @@
 			NSString	*	hasShowNotes	=	[show objectForKey:@"SN"];
 			NSString	*	title			=	[show objectForKey:@"T"];
 			
-			NSSet		*	existingGuests	=	[managedShow Guests];
-			if (!guests || guests.length == 0 || [guests isEqualToString:@"NULL"])
-				guests						=	@"No Guest";
 			
-			if ([guests rangeOfString:@","].location != NSNotFound)
-			{
-				NSArray	*	guestArray		=	[guests componentsSeparatedByString:@","];
-				if (guestArray && guestArray.count > 0)
-				{
-					for (NSString *guest in guestArray)
-					{
-						BOOL	exists	=	NO;
-						for (Guest *existingGuest in existingGuests)
-						{
-							if ([[existingGuest Guest] isEqualToString:guest])
-							{
-								exists	=	YES;
-								break;
-							}
-						}
-						if (exists)
-							continue;
-						Guest	*	managedGuest	=
-						(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
-															   inManagedObjectContext:showContext];
-						[managedGuest addShowObject:managedShow];
-						[managedGuest setGuest:guest];
-						[managedShow addGuestsObject:managedGuest];
-					}
-				}
-			}
-			else
-			{
-				BOOL	exists	=	NO;
-				for (Guest *existingGuest in existingGuests)
-				{
-					if ([[existingGuest Guest] isEqualToString:guests])
-					{
-						exists	=	YES;
-						break;
-					}
-				}
-				if (!exists)
-				{
-					Guest	*	managedGuest	=
-					(Guest *)[NSEntityDescription insertNewObjectForEntityForName:@"Guest" 
-														   inManagedObjectContext:showContext];
-					[managedGuest addShowObject:managedShow];
-					[managedGuest setGuest:guests];
-					[managedShow addGuestsObject:managedGuest];
-				}
-			}
+			if (!guests || guests.length == 0 || [guests isEqualToString:@"NULL"])
+				guests	=	NSLocalizedString(@"No Guest", @"");
+			
+			[managedShow setGuests:guests];
+			
 			if (ID)
 			{
 				NSInteger	idInt	=	[ID intValue];
@@ -553,9 +506,6 @@
 		UIImage	*	image	=	[UIImage imageWithData:imgData];
 		if (!image)
 		{
-#ifdef DEVELOPMENTBUILD
-			NSLog(@"%@", [[[NSString alloc] initWithData:imgData encoding:NSUTF8StringEncoding] autorelease]);
-#endif
 			return;
 		}
 		//	

@@ -29,6 +29,35 @@ static NSString * landscape = nil;
 @implementation ModalWebViewController
 @synthesize request, webView, activityIndicator, navToolbar, adBanner, bannerIsVisible;
 
+#pragma mark -
+#pragma mark Setup Cleanup
+#pragma mark -
+- (id)init
+{
+	if ((self = [super initWithNibName:nil bundle:nil]))
+	{
+		
+	}
+	return self;
+}
+- (void)didReceiveMemoryWarning 
+{
+    [super didReceiveMemoryWarning];
+}
+- (void)dealloc 
+{
+	[request release];
+	webView.delegate = nil;
+	[webView release];
+	[activityIndicator release];
+	[navToolbar release];
+	adBanner.delegate = nil;
+	[adBanner release];
+    [super dealloc];
+}
+#pragma mark -
+#pragma mark View Life Cycle
+#pragma mark -
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
@@ -73,21 +102,6 @@ static NSString * landscape = nil;
 	self.activityIndicator	=	nil;
 	self.navToolbar			=	nil;
 	self.adBanner			=	nil;
-}
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
-}
-- (void)dealloc 
-{
-	[request release];
-	webView.delegate = nil;
-	[webView release];
-	[activityIndicator release];
-	[navToolbar release];
-	adBanner.delegate = nil;
-	[adBanner release];
-    [super dealloc];
 }
 /******************************************************************************/
 #pragma mark -

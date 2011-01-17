@@ -18,16 +18,17 @@
 //  
 
 #import <UIKit/UIKit.h>
-#import "ModelViewController.h"
+#import "ModelTableViewController.h"
 
 @class Show;
-@class OrderedDictionary;
-@interface ArchivePictureViewController : ModelViewController 
+@interface ArchivePictureViewController : ModelTableViewController 
 {
-	Show				*	show;
-	OrderedDictionary	*	buttons;
+	Show	*	show;
+	NSInteger	imagesAcross;
+	NSArray *	images;
 }
 
 @property (nonatomic, assign)	Show	*	show;
+@property (nonatomic, retain)	NSArray *	images;
 
 @end

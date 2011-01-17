@@ -18,7 +18,6 @@
 //  
 
 #import "EventsDetailViewController_iPad.h"
-#import "MGSplitViewController.h"
 #import "ModalWebViewController_iPad.h"
 
 @implementation EventsDetailViewController_iPad
@@ -27,8 +26,7 @@
 - (void)openRequest:(NSURLRequest *)request
 {
 	ModalWebViewController_iPad	*	viewController	=	
-	[[ModalWebViewController_iPad alloc] initWithNibName:@"ModalWebView_iPad" 
-													bundle:nil];
+	[[ModalWebViewController_iPad alloc] init];
 	viewController.request					=	request;
 	viewController.modalPresentationStyle	=	UIModalPresentationFormSheet;
 	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;

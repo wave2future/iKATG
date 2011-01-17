@@ -18,9 +18,9 @@
 //  
 
 #import "EventsDetailViewController.h"
+#import "MGSplitViewController.h"
 
-@class MGSplitViewController;
-@interface EventsDetailViewController_iPad : EventsDetailViewController 
+@interface EventsDetailViewController_iPad : EventsDetailViewController <MGSplitViewControllerDelegate>
 {
 	MGSplitViewController	*	mgsplitViewController;
 }

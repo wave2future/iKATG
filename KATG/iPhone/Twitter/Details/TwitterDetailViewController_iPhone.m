@@ -56,8 +56,7 @@
 - (void)openTweet:(NSString *)user
 {
 	TwitterUserTableViewController_iPhone	*	viewController	=	
-	[[TwitterUserTableViewController_iPhone alloc] initWithNibName:@"TwitterTableView" 
-															bundle:nil];
+	[[TwitterUserTableViewController_iPhone alloc] init];
 	viewController.user	=	user;
 	[self.navigationController pushViewController:viewController 
 										 animated:YES];
@@ -66,8 +65,7 @@
 - (void)openHashTag:(NSString *)hashTag
 {
 	TwitterHashTagTableViewController_iPhone	*	viewController	=	
-	[[TwitterHashTagTableViewController_iPhone alloc] initWithNibName:@"TwitterTableView" 
-															 bundle:nil];
+	[[TwitterHashTagTableViewController_iPhone alloc] init];
 	viewController.hashTag					=	hashTag;
 	[(UINavigationController *)self.navigationController pushViewController:viewController 
 																   animated:YES];
@@ -76,8 +74,7 @@
 - (void)openRequest:(NSURLRequest *)request
 {
 	ModalWebViewController_iPhone	*	viewController	=	
-	[[ModalWebViewController_iPhone alloc] initWithNibName:@"ModalWebView_iPhone" 
-													bundle:nil];
+	[[ModalWebViewController_iPhone alloc] init];
 	viewController.request	=	request;
 	[self presentModalViewController:viewController animated:YES];
 	[viewController release];

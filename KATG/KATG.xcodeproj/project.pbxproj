@@ -17,13 +17,19 @@
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
-		9124D2CB129DB0590083B096 /* ImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9124D2CA129DB0580083B096 /* ImageButton.m */; };
 		914685AE1286AAF0004BE24A /* EGOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 914685AD1286AAF0004BE24A /* EGOCache.m */; };
 		914686D21286C353004BE24A /* EventFormattingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 914686D11286C353004BE24A /* EventFormattingOperation.m */; };
-		914687C512877EAF004BE24A /* ArchivePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687C412877EAF004BE24A /* ArchivePictureViewController.m */; };
 		914687E512878544004BE24A /* ArchiveDetailViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687E412878544004BE24A /* ArchiveDetailViewController_iPhone.m */; };
 		914687E81287865C004BE24A /* ArchivePictureViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687E71287865C004BE24A /* ArchivePictureViewController_iPhone.m */; };
 		914687EC12878808004BE24A /* ArchiveTableViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 914687EB12878808004BE24A /* ArchiveTableViewController_iPhone.m */; };
+		914E9F3C12E39A910052820A /* KATG.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 914E9F3A12E39A910052820A /* KATG.xcdatamodeld */; };
+		914E9F4212E39AA70052820A /* Picture.m in Sources */ = {isa = PBXBuildFile; fileRef = 914E9F3F12E39AA70052820A /* Picture.m */; };
+		914E9F4312E39AA70052820A /* Show.m in Sources */ = {isa = PBXBuildFile; fileRef = 914E9F4112E39AA70052820A /* Show.m */; };
+		914E9F9E12E3A3230052820A /* ArchivePictureDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 914E9F9D12E3A3230052820A /* ArchivePictureDetailViewController.m */; };
+		914E9FEA12E3E4290052820A /* DefaultValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 914E9FE912E3E4290052820A /* DefaultValues.m */; };
+		915BCE7612E3952100732687 /* ArchivePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 915BCE7112E3952100732687 /* ArchivePictureViewController.m */; };
+		915BCE7712E3952100732687 /* ImageGridButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 915BCE7312E3952100732687 /* ImageGridButton.m */; };
+		915BCE7812E3952100732687 /* ImageGridTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 915BCE7512E3952100732687 /* ImageGridTableViewCell.m */; };
 		915BED30129AC5620016FC42 /* ChemdaRelief.png in Resources */ = {isa = PBXBuildFile; fileRef = 915BED2C129AC5620016FC42 /* ChemdaRelief.png */; };
 		915BED31129AC5620016FC42 /* ChemdaRelief@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 915BED2D129AC5620016FC42 /* ChemdaRelief@2x.png */; };
 		915BED32129AC5620016FC42 /* KeithRelief.png in Resources */ = {isa = PBXBuildFile; fileRef = 915BED2E129AC5620016FC42 /* KeithRelief.png */; };
@@ -31,7 +37,7 @@
 		917E90FB1285CBB400875294 /* NetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E90FA1285CBB400875294 /* NetworkCache.m */; };
 		917E91A51285DFA600875294 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91A41285DFA600875294 /* Event.m */; };
 		917E91B71285E1EC00875294 /* ModelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91B61285E1EC00875294 /* ModelTableViewController.m */; };
-		91D91F131289B24E00D0EED8 /* TwitterDetailView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91D91F091289B24E00D0EED8 /* TwitterDetailView_iPad.xib */; };
+		91D91F131289B24E00D0EED8 /* TwitterDetailViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91D91F091289B24E00D0EED8 /* TwitterDetailViewController_iPad.xib */; };
 		91D91F141289B24E00D0EED8 /* TwitterDetailViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D91F0B1289B24E00D0EED8 /* TwitterDetailViewController_iPad.m */; };
 		91D91F151289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D91F0E1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m */; };
 		91D91F161289B24E00D0EED8 /* TwitterTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D91F101289B24E00D0EED8 /* TwitterTableViewController_iPad.m */; };
@@ -43,10 +49,8 @@
 		C512DBAE1255A69B003D94BB /* TitleBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DBAD1255A69B003D94BB /* TitleBarButton.m */; };
 		C512DC2F1255B21D003D94BB /* Pause.png in Resources */ = {isa = PBXBuildFile; fileRef = C512DC2D1255B21D003D94BB /* Pause.png */; };
 		C512DC301255B21D003D94BB /* Pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C512DC2E1255B21D003D94BB /* Pause@2x.png */; };
-		C512DCC71256AF91003D94BB /* Picture.m in Sources */ = {isa = PBXBuildFile; fileRef = C512DCC61256AF91003D94BB /* Picture.m */; };
 		C53CCEE5124AF2130072D28A /* UIViewController+Nib.m in Sources */ = {isa = PBXBuildFile; fileRef = C53CCEE2124AF2130072D28A /* UIViewController+Nib.m */; };
 		C53CCEE6124AF2130072D28A /* UIWebView+SetText.m in Sources */ = {isa = PBXBuildFile; fileRef = C53CCEE4124AF2130072D28A /* UIWebView+SetText.m */; };
-		C53CD09D124B24C40072D28A /* Show.m in Sources */ = {isa = PBXBuildFile; fileRef = C53CD09C124B24C40072D28A /* Show.m */; };
 		C55B2FE9124D30E500676D45 /* Push.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B2FE6124D30E500676D45 /* Push.m */; };
 		C55B2FEA124D30E500676D45 /* PushKeys.h.example in Resources */ = {isa = PBXBuildFile; fileRef = C55B2FE8124D30E500676D45 /* PushKeys.h.example */; };
 		C55B325E124D7E8600676D45 /* UIImage+MyAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C55B325D124D7E8600676D45 /* UIImage+MyAdditions.m */; };
@@ -178,8 +182,6 @@
 		C57A40311242BB7000D6BA3B /* RoundedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A402A1242BB7000D6BA3B /* RoundedTextView.m */; };
 		C57A40321242BB7000D6BA3B /* RoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A402C1242BB7000D6BA3B /* RoundedView.m */; };
 		C57A40601242BBFC00D6BA3B /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A405F1242BBFC00D6BA3B /* AudioStreamer.m */; };
-		C57A41FF12431D0B00D6BA3B /* KATG.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C57A41FD12431D0B00D6BA3B /* KATG.xcdatamodeld */; };
-		C57A421112431D4800D6BA3B /* Guest.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A420B12431D4800D6BA3B /* Guest.m */; };
 		C57A421812431DBD00D6BA3B /* DataModel+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A421512431DBD00D6BA3B /* DataModel+Notifications.m */; };
 		C57A421912431DBD00D6BA3B /* DataModel+Processing.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A421712431DBD00D6BA3B /* DataModel+Processing.m */; };
 		C57A42671243D13500D6BA3B /* AccView.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A42661243D13500D6BA3B /* AccView.m */; };
@@ -192,7 +194,6 @@
 		C585CBF3124BD4C900F56AE8 /* OnAirViewController+AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CBDF124BD4C900F56AE8 /* OnAirViewController+AudioStreamer.m */; };
 		C585CBF4124BD4C900F56AE8 /* OnAirViewController+Feedback.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CBE1124BD4C900F56AE8 /* OnAirViewController+Feedback.m */; };
 		C585CBF5124BD4C900F56AE8 /* OnAirViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CBE3124BD4C900F56AE8 /* OnAirViewController.m */; };
-		C585CC21124BD59700F56AE8 /* ArchiveTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC0B124BD59700F56AE8 /* ArchiveTableView.xib */; };
 		C585CC22124BD59700F56AE8 /* ArchiveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC0D124BD59700F56AE8 /* ArchiveTableViewCell.m */; };
 		C585CC23124BD59700F56AE8 /* ArchiveTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC0E124BD59700F56AE8 /* ArchiveTableViewCell.xib */; };
 		C585CC24124BD59700F56AE8 /* ArchiveTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC10124BD59700F56AE8 /* ArchiveTableViewController.m */; };
@@ -202,19 +203,19 @@
 		C585CC28124BD59700F56AE8 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC1A124BD59700F56AE8 /* EventTableViewCell.m */; };
 		C585CC29124BD59700F56AE8 /* EventTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC1B124BD59700F56AE8 /* EventTableViewCell.xib */; };
 		C585CC2A124BD59700F56AE8 /* TwitterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC20124BD59700F56AE8 /* TwitterTableViewController.m */; };
-		C585CC3D124BD63A00F56AE8 /* EventsDetailView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC2F124BD63A00F56AE8 /* EventsDetailView_iPhone.xib */; };
+		C585CC3D124BD63A00F56AE8 /* EventsDetailViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC2F124BD63A00F56AE8 /* EventsDetailViewController_iPhone.xib */; };
 		C585CC3E124BD63A00F56AE8 /* EventsDetailViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC31124BD63A00F56AE8 /* EventsDetailViewController_iPhone.m */; };
 		C585CC3F124BD63A00F56AE8 /* EventsTableViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC34124BD63A00F56AE8 /* EventsTableViewController_iPhone.m */; };
 		C585CC40124BD63A00F56AE8 /* ModalWebView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC36124BD63A00F56AE8 /* ModalWebView_iPhone.xib */; };
 		C585CC41124BD63A00F56AE8 /* ModalWebViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC38124BD63A00F56AE8 /* ModalWebViewController_iPhone.m */; };
-		C585CC42124BD63A00F56AE8 /* OnAirView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC3A124BD63A00F56AE8 /* OnAirView_iPhone.xib */; };
+		C585CC42124BD63A00F56AE8 /* OnAirViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC3A124BD63A00F56AE8 /* OnAirViewController_iPhone.xib */; };
 		C585CC43124BD63A00F56AE8 /* OnAirViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC3C124BD63A00F56AE8 /* OnAirViewController_iPhone.m */; };
-		C585CC5E124BD67800F56AE8 /* EventsDetailView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC50124BD67800F56AE8 /* EventsDetailView_iPad.xib */; };
+		C585CC5E124BD67800F56AE8 /* EventsDetailViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC50124BD67800F56AE8 /* EventsDetailViewController_iPad.xib */; };
 		C585CC5F124BD67800F56AE8 /* EventsDetailViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC52124BD67800F56AE8 /* EventsDetailViewController_iPad.m */; };
 		C585CC60124BD67800F56AE8 /* EventsTableViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC55124BD67800F56AE8 /* EventsTableViewController_iPad.m */; };
-		C585CC61124BD67800F56AE8 /* ModalWebView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC57124BD67800F56AE8 /* ModalWebView_iPad.xib */; };
+		C585CC61124BD67800F56AE8 /* ModalWebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC57124BD67800F56AE8 /* ModalWebViewController_iPad.xib */; };
 		C585CC62124BD67800F56AE8 /* ModalWebViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC59124BD67800F56AE8 /* ModalWebViewController_iPad.m */; };
-		C585CC63124BD67800F56AE8 /* OnAirView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC5B124BD67800F56AE8 /* OnAirView_iPad.xib */; };
+		C585CC63124BD67800F56AE8 /* OnAirViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CC5B124BD67800F56AE8 /* OnAirViewController_iPad.xib */; };
 		C585CC64124BD67800F56AE8 /* OnAirViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CC5D124BD67800F56AE8 /* OnAirViewController_iPad.m */; };
 		C585CD59124BF02300F56AE8 /* TwitterTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C585CD58124BF02300F56AE8 /* TwitterTableView.xib */; };
 		C585CD69124BF27000F56AE8 /* TwitterDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C585CD68124BF27000F56AE8 /* TwitterDetailViewController.m */; };
@@ -227,10 +228,9 @@
 		C5B95A6B12490D94003789B4 /* BGTop_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = C5B95A6A12490D94003789B4 /* BGTop_iPad.png */; };
 		C5B95A8A124912BD003789B4 /* BGBottom_iPad_Left.png in Resources */ = {isa = PBXBuildFile; fileRef = C5B95A89124912BD003789B4 /* BGBottom_iPad_Left.png */; };
 		C5B95A961249143D003789B4 /* BGBottom_iPad_Right.png in Resources */ = {isa = PBXBuildFile; fileRef = C5B95A951249143D003789B4 /* BGBottom_iPad_Right.png */; };
-		C5F6B17B1252AEC800905096 /* KATG.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C5F6B17A1252AEC800905096 /* KATG.sqlite */; };
 		C5F6B2181252E03C00905096 /* TwitterHashTagTableViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F6B2171252E03C00905096 /* TwitterHashTagTableViewController_iPhone.m */; };
 		C5F6B23B1252E59300905096 /* ArchiveDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F6B23A1252E59300905096 /* ArchiveDetailViewController.m */; };
-		C5F6B27B1252F82200905096 /* ArchiveDetailView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F6B27A1252F82200905096 /* ArchiveDetailView_iPhone.xib */; };
+		C5F6B27B1252F82200905096 /* ArchiveDetailViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F6B27A1252F82200905096 /* ArchiveDetailViewController_iPhone.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -250,20 +250,31 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* KATG_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KATG_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* KATG-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "KATG-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		9124D2C9129DB0580083B096 /* ImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageButton.h; sourceTree = "<group>"; };
-		9124D2CA129DB0580083B096 /* ImageButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageButton.m; sourceTree = "<group>"; };
 		914685AC1286AAF0004BE24A /* EGOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGOCache.h; path = Shared/Model/EGOCache.h; sourceTree = "<group>"; };
 		914685AD1286AAF0004BE24A /* EGOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EGOCache.m; path = Shared/Model/EGOCache.m; sourceTree = "<group>"; };
 		914686D01286C353004BE24A /* EventFormattingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormattingOperation.h; sourceTree = "<group>"; };
 		914686D11286C353004BE24A /* EventFormattingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormattingOperation.m; sourceTree = "<group>"; };
-		914687C312877EAF004BE24A /* ArchivePictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchivePictureViewController.h; sourceTree = "<group>"; };
-		914687C412877EAF004BE24A /* ArchivePictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchivePictureViewController.m; sourceTree = "<group>"; };
 		914687E312878544004BE24A /* ArchiveDetailViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveDetailViewController_iPhone.h; sourceTree = "<group>"; };
 		914687E412878544004BE24A /* ArchiveDetailViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveDetailViewController_iPhone.m; sourceTree = "<group>"; };
 		914687E61287865C004BE24A /* ArchivePictureViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchivePictureViewController_iPhone.h; sourceTree = "<group>"; };
 		914687E71287865C004BE24A /* ArchivePictureViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchivePictureViewController_iPhone.m; sourceTree = "<group>"; };
 		914687EA12878808004BE24A /* ArchiveTableViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveTableViewController_iPhone.h; sourceTree = "<group>"; };
 		914687EB12878808004BE24A /* ArchiveTableViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveTableViewController_iPhone.m; sourceTree = "<group>"; };
+		914E9F3B12E39A910052820A /* KATG.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = KATG.xcdatamodel; sourceTree = "<group>"; };
+		914E9F3E12E39AA70052820A /* Picture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Picture.h; sourceTree = "<group>"; };
+		914E9F3F12E39AA70052820A /* Picture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Picture.m; sourceTree = "<group>"; };
+		914E9F4012E39AA70052820A /* Show.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Show.h; sourceTree = "<group>"; };
+		914E9F4112E39AA70052820A /* Show.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Show.m; sourceTree = "<group>"; };
+		914E9F9C12E3A3230052820A /* ArchivePictureDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchivePictureDetailViewController.h; sourceTree = "<group>"; };
+		914E9F9D12E3A3230052820A /* ArchivePictureDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchivePictureDetailViewController.m; sourceTree = "<group>"; };
+		914E9FE812E3E4290052820A /* DefaultValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DefaultValues.h; path = Shared/AbstractSuperClasses/DefaultValues.h; sourceTree = "<group>"; };
+		914E9FE912E3E4290052820A /* DefaultValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DefaultValues.m; path = Shared/AbstractSuperClasses/DefaultValues.m; sourceTree = "<group>"; };
+		915BCE7012E3952100732687 /* ArchivePictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchivePictureViewController.h; sourceTree = "<group>"; };
+		915BCE7112E3952100732687 /* ArchivePictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchivePictureViewController.m; sourceTree = "<group>"; };
+		915BCE7212E3952100732687 /* ImageGridButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageGridButton.h; sourceTree = "<group>"; };
+		915BCE7312E3952100732687 /* ImageGridButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageGridButton.m; sourceTree = "<group>"; };
+		915BCE7412E3952100732687 /* ImageGridTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageGridTableViewCell.h; sourceTree = "<group>"; };
+		915BCE7512E3952100732687 /* ImageGridTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageGridTableViewCell.m; sourceTree = "<group>"; };
 		915BED2C129AC5620016FC42 /* ChemdaRelief.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChemdaRelief.png; sourceTree = "<group>"; };
 		915BED2D129AC5620016FC42 /* ChemdaRelief@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChemdaRelief@2x.png"; sourceTree = "<group>"; };
 		915BED2E129AC5620016FC42 /* KeithRelief.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KeithRelief.png; sourceTree = "<group>"; };
@@ -274,7 +285,7 @@
 		917E91A41285DFA600875294 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		917E91B51285E1EC00875294 /* ModelTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelTableViewController.h; sourceTree = "<group>"; };
 		917E91B61285E1EC00875294 /* ModelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelTableViewController.m; sourceTree = "<group>"; };
-		91D91F091289B24E00D0EED8 /* TwitterDetailView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterDetailView_iPad.xib; sourceTree = "<group>"; };
+		91D91F091289B24E00D0EED8 /* TwitterDetailViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterDetailViewController_iPad.xib; sourceTree = "<group>"; };
 		91D91F0A1289B24E00D0EED8 /* TwitterDetailViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDetailViewController_iPad.h; sourceTree = "<group>"; };
 		91D91F0B1289B24E00D0EED8 /* TwitterDetailViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDetailViewController_iPad.m; sourceTree = "<group>"; };
 		91D91F0D1289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterHashTagTableViewController_iPad.h; sourceTree = "<group>"; };
@@ -294,14 +305,10 @@
 		C512DBAD1255A69B003D94BB /* TitleBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleBarButton.m; sourceTree = "<group>"; };
 		C512DC2D1255B21D003D94BB /* Pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pause.png; sourceTree = "<group>"; };
 		C512DC2E1255B21D003D94BB /* Pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Pause@2x.png"; sourceTree = "<group>"; };
-		C512DCC51256AF91003D94BB /* Picture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Picture.h; sourceTree = "<group>"; };
-		C512DCC61256AF91003D94BB /* Picture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Picture.m; sourceTree = "<group>"; };
 		C53CCEE1124AF2130072D28A /* UIViewController+Nib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Nib.h"; sourceTree = "<group>"; };
 		C53CCEE2124AF2130072D28A /* UIViewController+Nib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Nib.m"; sourceTree = "<group>"; };
 		C53CCEE3124AF2130072D28A /* UIWebView+SetText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+SetText.h"; sourceTree = "<group>"; };
 		C53CCEE4124AF2130072D28A /* UIWebView+SetText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+SetText.m"; sourceTree = "<group>"; };
-		C53CD09B124B24C40072D28A /* Show.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Show.h; sourceTree = "<group>"; };
-		C53CD09C124B24C40072D28A /* Show.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Show.m; sourceTree = "<group>"; };
 		C55B2FE5124D30E500676D45 /* Push.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Push.h; sourceTree = "<group>"; };
 		C55B2FE6124D30E500676D45 /* Push.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Push.m; sourceTree = "<group>"; };
 		C55B2FE7124D30E500676D45 /* PushKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushKeys.h; sourceTree = "<group>"; };
@@ -490,9 +497,6 @@
 		C57A402C1242BB7000D6BA3B /* RoundedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedView.m; sourceTree = "<group>"; };
 		C57A405E1242BBFC00D6BA3B /* AudioStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioStreamer.h; path = UsefulBits/AudioStreamer.h; sourceTree = "<group>"; };
 		C57A405F1242BBFC00D6BA3B /* AudioStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioStreamer.m; path = UsefulBits/AudioStreamer.m; sourceTree = "<group>"; };
-		C57A41FE12431D0B00D6BA3B /* KATG.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = KATG.xcdatamodel; sourceTree = "<group>"; };
-		C57A420A12431D4800D6BA3B /* Guest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Guest.h; sourceTree = "<group>"; };
-		C57A420B12431D4800D6BA3B /* Guest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Guest.m; sourceTree = "<group>"; };
 		C57A421412431DBD00D6BA3B /* DataModel+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DataModel+Notifications.h"; path = "Shared/Model/DataModel+Notifications.h"; sourceTree = "<group>"; };
 		C57A421512431DBD00D6BA3B /* DataModel+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DataModel+Notifications.m"; path = "Shared/Model/DataModel+Notifications.m"; sourceTree = "<group>"; };
 		C57A421612431DBD00D6BA3B /* DataModel+Processing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DataModel+Processing.h"; path = "Shared/Model/DataModel+Processing.h"; sourceTree = "<group>"; };
@@ -517,7 +521,6 @@
 		C585CBE1124BD4C900F56AE8 /* OnAirViewController+Feedback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OnAirViewController+Feedback.m"; sourceTree = "<group>"; };
 		C585CBE2124BD4C900F56AE8 /* OnAirViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnAirViewController.h; sourceTree = "<group>"; };
 		C585CBE3124BD4C900F56AE8 /* OnAirViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnAirViewController.m; sourceTree = "<group>"; };
-		C585CC0B124BD59700F56AE8 /* ArchiveTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArchiveTableView.xib; sourceTree = "<group>"; };
 		C585CC0C124BD59700F56AE8 /* ArchiveTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveTableViewCell.h; sourceTree = "<group>"; };
 		C585CC0D124BD59700F56AE8 /* ArchiveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveTableViewCell.m; sourceTree = "<group>"; };
 		C585CC0E124BD59700F56AE8 /* ArchiveTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArchiveTableViewCell.xib; sourceTree = "<group>"; };
@@ -533,7 +536,7 @@
 		C585CC1B124BD59700F56AE8 /* EventTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventTableViewCell.xib; sourceTree = "<group>"; };
 		C585CC1F124BD59700F56AE8 /* TwitterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTableViewController.h; sourceTree = "<group>"; };
 		C585CC20124BD59700F56AE8 /* TwitterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterTableViewController.m; sourceTree = "<group>"; };
-		C585CC2F124BD63A00F56AE8 /* EventsDetailView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventsDetailView_iPhone.xib; sourceTree = "<group>"; };
+		C585CC2F124BD63A00F56AE8 /* EventsDetailViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventsDetailViewController_iPhone.xib; sourceTree = "<group>"; };
 		C585CC30124BD63A00F56AE8 /* EventsDetailViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsDetailViewController_iPhone.h; sourceTree = "<group>"; };
 		C585CC31124BD63A00F56AE8 /* EventsDetailViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsDetailViewController_iPhone.m; sourceTree = "<group>"; };
 		C585CC33124BD63A00F56AE8 /* EventsTableViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsTableViewController_iPhone.h; sourceTree = "<group>"; };
@@ -541,18 +544,18 @@
 		C585CC36124BD63A00F56AE8 /* ModalWebView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModalWebView_iPhone.xib; sourceTree = "<group>"; };
 		C585CC37124BD63A00F56AE8 /* ModalWebViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalWebViewController_iPhone.h; sourceTree = "<group>"; };
 		C585CC38124BD63A00F56AE8 /* ModalWebViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalWebViewController_iPhone.m; sourceTree = "<group>"; };
-		C585CC3A124BD63A00F56AE8 /* OnAirView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnAirView_iPhone.xib; sourceTree = "<group>"; };
+		C585CC3A124BD63A00F56AE8 /* OnAirViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnAirViewController_iPhone.xib; sourceTree = "<group>"; };
 		C585CC3B124BD63A00F56AE8 /* OnAirViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnAirViewController_iPhone.h; sourceTree = "<group>"; };
 		C585CC3C124BD63A00F56AE8 /* OnAirViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnAirViewController_iPhone.m; sourceTree = "<group>"; };
-		C585CC50124BD67800F56AE8 /* EventsDetailView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventsDetailView_iPad.xib; sourceTree = "<group>"; };
+		C585CC50124BD67800F56AE8 /* EventsDetailViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventsDetailViewController_iPad.xib; sourceTree = "<group>"; };
 		C585CC51124BD67800F56AE8 /* EventsDetailViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsDetailViewController_iPad.h; sourceTree = "<group>"; };
 		C585CC52124BD67800F56AE8 /* EventsDetailViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsDetailViewController_iPad.m; sourceTree = "<group>"; };
 		C585CC54124BD67800F56AE8 /* EventsTableViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsTableViewController_iPad.h; sourceTree = "<group>"; };
 		C585CC55124BD67800F56AE8 /* EventsTableViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsTableViewController_iPad.m; sourceTree = "<group>"; };
-		C585CC57124BD67800F56AE8 /* ModalWebView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModalWebView_iPad.xib; sourceTree = "<group>"; };
+		C585CC57124BD67800F56AE8 /* ModalWebViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModalWebViewController_iPad.xib; sourceTree = "<group>"; };
 		C585CC58124BD67800F56AE8 /* ModalWebViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalWebViewController_iPad.h; sourceTree = "<group>"; };
 		C585CC59124BD67800F56AE8 /* ModalWebViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalWebViewController_iPad.m; sourceTree = "<group>"; };
-		C585CC5B124BD67800F56AE8 /* OnAirView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnAirView_iPad.xib; sourceTree = "<group>"; };
+		C585CC5B124BD67800F56AE8 /* OnAirViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnAirViewController_iPad.xib; sourceTree = "<group>"; };
 		C585CC5C124BD67800F56AE8 /* OnAirViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnAirViewController_iPad.h; sourceTree = "<group>"; };
 		C585CC5D124BD67800F56AE8 /* OnAirViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnAirViewController_iPad.m; sourceTree = "<group>"; };
 		C585CD58124BF02300F56AE8 /* TwitterTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterTableView.xib; sourceTree = "<group>"; };
@@ -570,12 +573,11 @@
 		C5B95A6A12490D94003789B4 /* BGTop_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BGTop_iPad.png; sourceTree = "<group>"; };
 		C5B95A89124912BD003789B4 /* BGBottom_iPad_Left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BGBottom_iPad_Left.png; sourceTree = "<group>"; };
 		C5B95A951249143D003789B4 /* BGBottom_iPad_Right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BGBottom_iPad_Right.png; sourceTree = "<group>"; };
-		C5F6B17A1252AEC800905096 /* KATG.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = KATG.sqlite; path = Shared/KATG.sqlite; sourceTree = "<group>"; };
 		C5F6B2161252E03C00905096 /* TwitterHashTagTableViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterHashTagTableViewController_iPhone.h; sourceTree = "<group>"; };
 		C5F6B2171252E03C00905096 /* TwitterHashTagTableViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterHashTagTableViewController_iPhone.m; sourceTree = "<group>"; };
 		C5F6B2391252E59300905096 /* ArchiveDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveDetailViewController.h; sourceTree = "<group>"; };
 		C5F6B23A1252E59300905096 /* ArchiveDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveDetailViewController.m; sourceTree = "<group>"; };
-		C5F6B27A1252F82200905096 /* ArchiveDetailView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArchiveDetailView_iPhone.xib; sourceTree = "<group>"; };
+		C5F6B27A1252F82200905096 /* ArchiveDetailViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArchiveDetailViewController_iPhone.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -622,6 +624,8 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				914E9FE812E3E4290052820A /* DefaultValues.h */,
+				914E9FE912E3E4290052820A /* DefaultValues.m */,
 				28EEC0491118E28000187D67 /* AppDelegate_Shared.h */,
 				28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */,
 				C57A3E3012429B0F00D6BA3B /* Model */,
@@ -688,8 +692,7 @@
 		9146871C1286CF1C004BE24A /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				C5F6B17A1252AEC800905096 /* KATG.sqlite */,
-				C57A41FD12431D0B00D6BA3B /* KATG.xcdatamodeld */,
+				914E9F3A12E39A910052820A /* KATG.xcdatamodeld */,
 				917E91A31285DFA600875294 /* Event.h */,
 				917E91A41285DFA600875294 /* Event.m */,
 				C585CDA3124BF99E00F56AE8 /* Tweet.h */,
@@ -698,6 +701,37 @@
 				914685AD1286AAF0004BE24A /* EGOCache.m */,
 			);
 			name = Storage;
+			sourceTree = "<group>";
+		};
+		914E9F9A12E3A2FA0052820A /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				914E9F9C12E3A3230052820A /* ArchivePictureDetailViewController.h */,
+				914E9F9D12E3A3230052820A /* ArchivePictureDetailViewController.m */,
+			);
+			name = Detail;
+			sourceTree = "<group>";
+		};
+		914E9F9B12E3A3020052820A /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				915BCE7012E3952100732687 /* ArchivePictureViewController.h */,
+				915BCE7112E3952100732687 /* ArchivePictureViewController.m */,
+				915BCE7412E3952100732687 /* ImageGridTableViewCell.h */,
+				915BCE7512E3952100732687 /* ImageGridTableViewCell.m */,
+				915BCE7212E3952100732687 /* ImageGridButton.h */,
+				915BCE7312E3952100732687 /* ImageGridButton.m */,
+			);
+			name = Table;
+			sourceTree = "<group>";
+		};
+		915BCE6F12E3952100732687 /* Picture */ = {
+			isa = PBXGroup;
+			children = (
+				914E9F9B12E3A3020052820A /* Table */,
+				914E9F9A12E3A2FA0052820A /* Detail */,
+			);
+			path = Picture;
 			sourceTree = "<group>";
 		};
 		915BED2B129AC5620016FC42 /* TwitterHeads */ = {
@@ -726,7 +760,7 @@
 			children = (
 				91D91F0A1289B24E00D0EED8 /* TwitterDetailViewController_iPad.h */,
 				91D91F0B1289B24E00D0EED8 /* TwitterDetailViewController_iPad.m */,
-				91D91F091289B24E00D0EED8 /* TwitterDetailView_iPad.xib */,
+				91D91F091289B24E00D0EED8 /* TwitterDetailViewController_iPad.xib */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -1328,10 +1362,7 @@
 			children = (
 				C5F6B2391252E59300905096 /* ArchiveDetailViewController.h */,
 				C5F6B23A1252E59300905096 /* ArchiveDetailViewController.m */,
-				914687C312877EAF004BE24A /* ArchivePictureViewController.h */,
-				914687C412877EAF004BE24A /* ArchivePictureViewController.m */,
-				9124D2C9129DB0580083B096 /* ImageButton.h */,
-				9124D2CA129DB0580083B096 /* ImageButton.m */,
+				915BCE6F12E3952100732687 /* Picture */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -1341,7 +1372,6 @@
 			children = (
 				C585CC0F124BD59700F56AE8 /* ArchiveTableViewController.h */,
 				C585CC10124BD59700F56AE8 /* ArchiveTableViewController.m */,
-				C585CC0B124BD59700F56AE8 /* ArchiveTableView.xib */,
 				C585CC0C124BD59700F56AE8 /* ArchiveTableViewCell.h */,
 				C585CC0D124BD59700F56AE8 /* ArchiveTableViewCell.m */,
 				C585CC0E124BD59700F56AE8 /* ArchiveTableViewCell.xib */,
@@ -1431,7 +1461,7 @@
 			children = (
 				C585CC30124BD63A00F56AE8 /* EventsDetailViewController_iPhone.h */,
 				C585CC31124BD63A00F56AE8 /* EventsDetailViewController_iPhone.m */,
-				C585CC2F124BD63A00F56AE8 /* EventsDetailView_iPhone.xib */,
+				C585CC2F124BD63A00F56AE8 /* EventsDetailViewController_iPhone.xib */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -1460,7 +1490,7 @@
 			children = (
 				C585CC3B124BD63A00F56AE8 /* OnAirViewController_iPhone.h */,
 				C585CC3C124BD63A00F56AE8 /* OnAirViewController_iPhone.m */,
-				C585CC3A124BD63A00F56AE8 /* OnAirView_iPhone.xib */,
+				C585CC3A124BD63A00F56AE8 /* OnAirViewController_iPhone.xib */,
 			);
 			path = OnAir;
 			sourceTree = "<group>";
@@ -1480,7 +1510,7 @@
 			children = (
 				C585CC51124BD67800F56AE8 /* EventsDetailViewController_iPad.h */,
 				C585CC52124BD67800F56AE8 /* EventsDetailViewController_iPad.m */,
-				C585CC50124BD67800F56AE8 /* EventsDetailView_iPad.xib */,
+				C585CC50124BD67800F56AE8 /* EventsDetailViewController_iPad.xib */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -1499,7 +1529,7 @@
 			children = (
 				C585CC58124BD67800F56AE8 /* ModalWebViewController_iPad.h */,
 				C585CC59124BD67800F56AE8 /* ModalWebViewController_iPad.m */,
-				C585CC57124BD67800F56AE8 /* ModalWebView_iPad.xib */,
+				C585CC57124BD67800F56AE8 /* ModalWebViewController_iPad.xib */,
 			);
 			name = ModalWeb;
 			path = iPad/ModalWeb;
@@ -1510,7 +1540,7 @@
 			children = (
 				C585CC5C124BD67800F56AE8 /* OnAirViewController_iPad.h */,
 				C585CC5D124BD67800F56AE8 /* OnAirViewController_iPad.m */,
-				C585CC5B124BD67800F56AE8 /* OnAirView_iPad.xib */,
+				C585CC5B124BD67800F56AE8 /* OnAirViewController_iPad.xib */,
 			);
 			name = OnAir;
 			path = iPad/OnAir;
@@ -1530,7 +1560,7 @@
 			children = (
 				914687E312878544004BE24A /* ArchiveDetailViewController_iPhone.h */,
 				914687E412878544004BE24A /* ArchiveDetailViewController_iPhone.m */,
-				C5F6B27A1252F82200905096 /* ArchiveDetailView_iPhone.xib */,
+				C5F6B27A1252F82200905096 /* ArchiveDetailViewController_iPhone.xib */,
 				914687E61287865C004BE24A /* ArchivePictureViewController_iPhone.h */,
 				914687E71287865C004BE24A /* ArchivePictureViewController_iPhone.m */,
 			);
@@ -1673,28 +1703,26 @@
 				C5B95A6B12490D94003789B4 /* BGTop_iPad.png in Resources */,
 				C5B95A8A124912BD003789B4 /* BGBottom_iPad_Left.png in Resources */,
 				C5B95A961249143D003789B4 /* BGBottom_iPad_Right.png in Resources */,
-				C585CC21124BD59700F56AE8 /* ArchiveTableView.xib in Resources */,
 				C585CC23124BD59700F56AE8 /* ArchiveTableViewCell.xib in Resources */,
 				C585CC26124BD59700F56AE8 /* EventsTableView.xib in Resources */,
 				C585CC29124BD59700F56AE8 /* EventTableViewCell.xib in Resources */,
-				C585CC3D124BD63A00F56AE8 /* EventsDetailView_iPhone.xib in Resources */,
+				C585CC3D124BD63A00F56AE8 /* EventsDetailViewController_iPhone.xib in Resources */,
 				C585CC40124BD63A00F56AE8 /* ModalWebView_iPhone.xib in Resources */,
-				C585CC42124BD63A00F56AE8 /* OnAirView_iPhone.xib in Resources */,
-				C585CC5E124BD67800F56AE8 /* EventsDetailView_iPad.xib in Resources */,
-				C585CC61124BD67800F56AE8 /* ModalWebView_iPad.xib in Resources */,
-				C585CC63124BD67800F56AE8 /* OnAirView_iPad.xib in Resources */,
+				C585CC42124BD63A00F56AE8 /* OnAirViewController_iPhone.xib in Resources */,
+				C585CC5E124BD67800F56AE8 /* EventsDetailViewController_iPad.xib in Resources */,
+				C585CC61124BD67800F56AE8 /* ModalWebViewController_iPad.xib in Resources */,
+				C585CC63124BD67800F56AE8 /* OnAirViewController_iPad.xib in Resources */,
 				C585CD59124BF02300F56AE8 /* TwitterTableView.xib in Resources */,
 				C585CE66124C205E00F56AE8 /* Arrow.png in Resources */,
 				C585CE67124C205E00F56AE8 /* Arrow@2x.png in Resources */,
 				C585CED9124C261A00F56AE8 /* TwitterTableViewCell.xib in Resources */,
 				C55B2FEA124D30E500676D45 /* PushKeys.h.example in Resources */,
 				C55B3360124E475000676D45 /* TwitterDetailView_iPhone.xib in Resources */,
-				C5F6B17B1252AEC800905096 /* KATG.sqlite in Resources */,
-				C5F6B27B1252F82200905096 /* ArchiveDetailView_iPhone.xib in Resources */,
+				C5F6B27B1252F82200905096 /* ArchiveDetailViewController_iPhone.xib in Resources */,
 				C512DB921255A38D003D94BB /* PlayerController.xib in Resources */,
 				C512DC2F1255B21D003D94BB /* Pause.png in Resources */,
 				C512DC301255B21D003D94BB /* Pause@2x.png in Resources */,
-				91D91F131289B24E00D0EED8 /* TwitterDetailView_iPad.xib in Resources */,
+				91D91F131289B24E00D0EED8 /* TwitterDetailViewController_iPad.xib in Resources */,
 				915BED30129AC5620016FC42 /* ChemdaRelief.png in Resources */,
 				915BED31129AC5620016FC42 /* ChemdaRelief@2x.png in Resources */,
 				915BED32129AC5620016FC42 /* KeithRelief.png in Resources */,
@@ -1709,7 +1737,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C57A41FF12431D0B00D6BA3B /* KATG.xcdatamodeld in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate_iPad.m in Sources */,
 				28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */,
@@ -1754,7 +1781,6 @@
 				C57A40311242BB7000D6BA3B /* RoundedTextView.m in Sources */,
 				C57A40321242BB7000D6BA3B /* RoundedView.m in Sources */,
 				C57A40601242BBFC00D6BA3B /* AudioStreamer.m in Sources */,
-				C57A421112431D4800D6BA3B /* Guest.m in Sources */,
 				C57A421812431DBD00D6BA3B /* DataModel+Notifications.m in Sources */,
 				C57A421912431DBD00D6BA3B /* DataModel+Processing.m in Sources */,
 				C57A42671243D13500D6BA3B /* AccView.m in Sources */,
@@ -1763,7 +1789,6 @@
 				C57A43F112442B5400D6BA3B /* MGSplitViewController.m in Sources */,
 				C53CCEE5124AF2130072D28A /* UIViewController+Nib.m in Sources */,
 				C53CCEE6124AF2130072D28A /* UIWebView+SetText.m in Sources */,
-				C53CD09D124B24C40072D28A /* Show.m in Sources */,
 				C585CBE7124BD4C900F56AE8 /* ModelFetchedTableViewController.m in Sources */,
 				C585CBE8124BD4C900F56AE8 /* ModelViewController.m in Sources */,
 				C585CBF2124BD4C900F56AE8 /* ModalWebViewController.m in Sources */,
@@ -1803,13 +1828,11 @@
 				C512DB4F12559EB6003D94BB /* PlayerController+Wifi.m in Sources */,
 				C512DB5012559EB6003D94BB /* PlayerController.m in Sources */,
 				C512DBAE1255A69B003D94BB /* TitleBarButton.m in Sources */,
-				C512DCC71256AF91003D94BB /* Picture.m in Sources */,
 				917E90FB1285CBB400875294 /* NetworkCache.m in Sources */,
 				917E91A51285DFA600875294 /* Event.m in Sources */,
 				917E91B71285E1EC00875294 /* ModelTableViewController.m in Sources */,
 				914685AE1286AAF0004BE24A /* EGOCache.m in Sources */,
 				914686D21286C353004BE24A /* EventFormattingOperation.m in Sources */,
-				914687C512877EAF004BE24A /* ArchivePictureViewController.m in Sources */,
 				914687E512878544004BE24A /* ArchiveDetailViewController_iPhone.m in Sources */,
 				914687E81287865C004BE24A /* ArchivePictureViewController_iPhone.m in Sources */,
 				914687EC12878808004BE24A /* ArchiveTableViewController_iPhone.m in Sources */,
@@ -1817,7 +1840,14 @@
 				91D91F151289B24E00D0EED8 /* TwitterHashTagTableViewController_iPad.m in Sources */,
 				91D91F161289B24E00D0EED8 /* TwitterTableViewController_iPad.m in Sources */,
 				91D91F171289B24E00D0EED8 /* TwitterUserTableViewController_iPad.m in Sources */,
-				9124D2CB129DB0590083B096 /* ImageButton.m in Sources */,
+				915BCE7612E3952100732687 /* ArchivePictureViewController.m in Sources */,
+				915BCE7712E3952100732687 /* ImageGridButton.m in Sources */,
+				915BCE7812E3952100732687 /* ImageGridTableViewCell.m in Sources */,
+				914E9F3C12E39A910052820A /* KATG.xcdatamodeld in Sources */,
+				914E9F4212E39AA70052820A /* Picture.m in Sources */,
+				914E9F4312E39AA70052820A /* Show.m in Sources */,
+				914E9F9E12E3A3230052820A /* ArchivePictureDetailViewController.m in Sources */,
+				914E9FEA12E3E4290052820A /* DefaultValues.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1965,18 +1995,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		C57A41FD12431D0B00D6BA3B /* KATG.xcdatamodeld */ = {
+		914E9F3A12E39A910052820A /* KATG.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				C57A41FE12431D0B00D6BA3B /* KATG.xcdatamodel */,
-				C53CD09B124B24C40072D28A /* Show.h */,
-				C53CD09C124B24C40072D28A /* Show.m */,
-				C57A420A12431D4800D6BA3B /* Guest.h */,
-				C57A420B12431D4800D6BA3B /* Guest.m */,
-				C512DCC51256AF91003D94BB /* Picture.h */,
-				C512DCC61256AF91003D94BB /* Picture.m */,
+				914E9F3B12E39A910052820A /* KATG.xcdatamodel */,
+				914E9F4012E39AA70052820A /* Show.h */,
+				914E9F4112E39AA70052820A /* Show.m */,
+				914E9F3E12E39AA70052820A /* Picture.h */,
+				914E9F3F12E39AA70052820A /* Picture.m */,
 			);
-			currentVersion = C57A41FE12431D0B00D6BA3B /* KATG.xcdatamodel */;
+			currentVersion = 914E9F3B12E39A910052820A /* KATG.xcdatamodel */;
 			name = KATG.xcdatamodeld;
 			path = Shared/KATG.xcdatamodeld;
 			sourceTree = "<group>";

@@ -18,6 +18,10 @@
 //  
 
 #import "AppDelegate_iPhone.h"
+#import "OnAirViewController_iPhone.h"
+#import "EventsTableViewController_iPhone.h"
+#import "ArchiveTableViewController_iPhone.h"
+#import "TwitterTableViewController_iPhone.h"
 
 @implementation AppDelegate_iPhone
 
@@ -29,10 +33,35 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
+	
+	[self.activityIndicator startAnimating];
+	
+	[self performSelector:@selector(loadTabs) withObject:nil afterDelay:4.0];
+	
 	[self.window addSubview:tabBarController.view];
+	
 	[window makeKeyAndVisible];
 	
 	return YES;
+}
+- (void)loadTabs
+{
+	OnAirViewController_iPhone *onAirViewController = [[OnAirViewController_iPhone alloc] init];
+	EventsTableViewController_iPhone *eventsViewController = [[EventsTableViewController_iPhone alloc] init];
+	ArchiveTableViewController_iPhone *archiveViewController = [[ArchiveTableViewController_iPhone alloc] init];
+	TwitterTableViewController_iPhone *twitterViewController = [[TwitterTableViewController_iPhone alloc] init];
+	self.tabBarController.viewControllers = [NSArray arrayWithObjects:
+											 onAirViewController, 
+											 [self wrapViewController:eventsViewController], 
+											 [self wrapViewController:archiveViewController], 
+											 [self wrapViewController:twitterViewController], 
+											 nil];
+	[onAirViewController release];
+	[eventsViewController release];
+	[archiveViewController release];
+	[twitterViewController release];
+	
+	[self.activityIndicator stopAnimating];
 }
 - (void)applicationWillResignActive:(UIApplication *)application 
 {
@@ -41,8 +70,6 @@
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
 }
-
-
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
     /*

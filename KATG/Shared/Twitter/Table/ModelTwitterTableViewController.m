@@ -32,12 +32,39 @@
 
 /******************************************************************************/
 #pragma mark -
+#pragma mark Setup Cleanup
+#pragma mark -
+/******************************************************************************/
+- (id)init
+{
+	if ((self = [super initWithStyle:UITableViewStylePlain]))
+	{
+		
+	}
+	return self;
+}
+- (void)didReceiveMemoryWarning 
+{
+    [super didReceiveMemoryWarning];
+}
+- (void)dealloc 
+{
+	[model removeDelegate:self]; model	=	nil;
+	[items release];
+    [super dealloc];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark View Life Cycle
 #pragma mark -
 /******************************************************************************/
 - (void)viewDidLoad 
 {
 	[super viewDidLoad];
+	//	
+	//	Default Background Color
+	//	
+	self.tableView.backgroundColor = [DefaultValues defaultBackgroundColor];
 	//	
 	//	
 	//	
@@ -60,21 +87,6 @@
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Memory Management
-#pragma mark -
-/******************************************************************************/
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
-}
-- (void)dealloc 
-{
-	[model removeDelegate:self]; model	=	nil;
-	[items release];
-    [super dealloc];
 }
 /******************************************************************************/
 #pragma mark -

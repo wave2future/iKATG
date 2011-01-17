@@ -42,13 +42,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PlayerController);
 
 - (id)init
 {
-	[self initWithNibName:@"PlayerController" bundle:nil];
-	return self;
-}
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]))
+	if ((self = [super initWithNibName:nil bundle:nil]))
+	{
 		[self setup];
+	}
 	return self;
 }
 - (void)setup
@@ -279,8 +276,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 - (void)openRequest:(NSURLRequest *)request
 {
 	ModalWebViewController_iPhone	*	viewController	=	
-	[[ModalWebViewController_iPhone alloc] initWithNibName:@"ModalWebView_iPhone" 
-													bundle:nil];
+	[[ModalWebViewController_iPhone alloc] init];
 	viewController.request	=	request;
 	[self presentModalViewController:viewController animated:YES];
 	[viewController release];

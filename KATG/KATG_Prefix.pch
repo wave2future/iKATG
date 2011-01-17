@@ -9,4 +9,5 @@
 	#import "UtilityFunctions.h"
 	#import "GUIFunctions.h"
 	#import "ESLogger.h"
+	#import "DefaultValues.h"
 #endif

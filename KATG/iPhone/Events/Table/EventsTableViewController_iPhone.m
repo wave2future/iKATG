@@ -31,8 +31,7 @@
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	EventsDetailViewController_iPhone	*	viewController	=
-	[[EventsDetailViewController_iPhone alloc] initWithNibName:@"EventsDetailView_iPhone" 
-														bundle:nil];
+	[[EventsDetailViewController_iPhone alloc] init];
 	Event	*	event	=	[self.items objectAtIndex:indexPath.row];
 	viewController.event	=	event;
 	[self.navigationController pushViewController:viewController animated:YES];

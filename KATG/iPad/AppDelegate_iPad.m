@@ -19,8 +19,16 @@
 
 #import "AppDelegate_iPad.h"
 #import "MGSplitViewController.h"
+#import "OnAirViewController_iPad.h"
 #import "EventsTableViewController_iPad.h"
+#import "EventsDetailViewController_iPad.h"
 #import "TwitterTableViewController_iPad.h"
+
+@interface AppDelegate_iPad ()
+- (MGSplitViewController *)splitViewControllerWithMasterViewController:(UIViewController *)masterViewController 
+												  detailViewController:(id<MGSplitViewControllerDelegate>)detailViewController;
+@end
+
 
 @implementation AppDelegate_iPad
 
@@ -32,10 +40,58 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
+	
+	[self.activityIndicator startAnimating];
+	
+	[self performSelector:@selector(loadTabs) withObject:nil afterDelay:4.0];
+	
 	[self.window addSubview:tabBarController.view];
+	
 	[window makeKeyAndVisible];
 	
 	return YES;
+}
+- (void)loadTabs
+{
+	OnAirViewController_iPad *onAirViewController = [[OnAirViewController_iPad alloc] init];
+	
+	EventsTableViewController_iPad *eventsViewController = [[EventsTableViewController_iPad alloc] init];
+	EventsDetailViewController_iPad *eventsDetailViewController = [[EventsDetailViewController_iPad alloc] init];
+	eventsViewController.detailViewController = eventsDetailViewController;
+	MGSplitViewController *eventsSplitViewController = [self splitViewControllerWithMasterViewController:eventsViewController 
+																					detailViewController:eventsDetailViewController];
+	eventsViewController.mgsplitViewController = eventsSplitViewController;
+	eventsDetailViewController.mgsplitViewController = eventsSplitViewController;
+	eventsSplitViewController.showsMasterInPortrait = YES;
+	
+//	TwitterTableViewController_iPad *twitterViewController = [[TwitterTableViewController_iPad alloc] init];
+	
+	self.tabBarController.viewControllers = [NSArray arrayWithObjects:
+											 onAirViewController, 
+											 eventsSplitViewController, 
+//											 [self wrapViewController:eventsViewController], 
+//											 [self wrapViewController:twitterViewController], 
+											 nil];
+	[onAirViewController release];
+	[eventsViewController release];
+	[eventsDetailViewController release];
+//	[twitterViewController release];
+	
+	[self.activityIndicator stopAnimating];
+}
+- (MGSplitViewController *)splitViewControllerWithMasterViewController:(UIViewController *)masterViewController 
+												  detailViewController:(id<MGSplitViewControllerDelegate>)detailViewController
+{
+	MGSplitViewController *svc = [[MGSplitViewController alloc] init];
+	
+	svc.viewControllers = [NSArray arrayWithObjects:
+						   masterViewController, 
+						   detailViewController, 
+						   nil];
+	svc.tabBarItem = masterViewController.tabBarItem;
+	svc.delegate = detailViewController;
+	
+	return [svc autorelease];
 }
 - (void)applicationWillResignActive:(UIApplication *)application 
 {

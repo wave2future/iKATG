@@ -45,6 +45,43 @@
 
 /******************************************************************************/
 #pragma mark -
+#pragma mark Setup Cleanup
+#pragma mark -
+/******************************************************************************/
+- (id)init
+{
+	if ((self = [super init]))
+	{
+		self.tabBarItem = [[[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"On Air", @"")  
+														 image:[UIImage imageNamed:@"OnAirTab"] 
+														   tag:0] autorelease];
+	}
+	return self;
+}
+- (void)dealloc 
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self stopLiveShowStatusTimer];
+	[self stopNextLiveShowTimer];
+	[feedbackView release];
+	[nameField release];
+	[locationField release];
+	[commentView release];
+	[submitButton release];
+	[infoButton release];
+	[audioButton release];
+	[streamer release];
+	[volumeView release];
+	[nextLiveShowLabel release];
+	[nextLiveShowActivityIndicator release];
+	[liveShowStatusLabel release];
+	[liveShowStatusActivityIndicator release];
+	[guestLabel release];
+	[guestActivityIndicator release];
+    [super dealloc];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark View Life Cycle
 #pragma mark -
 /******************************************************************************/
@@ -101,37 +138,6 @@
 	self.liveShowStatusActivityIndicator	=	nil;
 	self.guestLabel		=	nil;
 	self.guestActivityIndicator	=	nil;
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Memory Management
-#pragma mark -
-/******************************************************************************/
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
-}
-- (void)dealloc 
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[self stopLiveShowStatusTimer];
-	[self stopNextLiveShowTimer];
-	[feedbackView release];
-	[nameField release];
-	[locationField release];
-	[commentView release];
-	[submitButton release];
-	[infoButton release];
-	[audioButton release];
-	[streamer release];
-	[volumeView release];
-	[nextLiveShowLabel release];
-	[nextLiveShowActivityIndicator release];
-	[liveShowStatusLabel release];
-	[liveShowStatusActivityIndicator release];
-	[guestLabel release];
-	[guestActivityIndicator release];
-    [super dealloc];
 }
 /******************************************************************************/
 #pragma mark -
@@ -272,7 +278,6 @@
 	 name:UIApplicationWillResignActiveNotification 
 	 object:nil];
 }
-
 - (void)handleForegroundNotification:(NSNotification *)note
 {
 #ifdef DEVELOPMENTBUILD
@@ -324,7 +329,6 @@
 	
 	[self writeDefaults];
 }
-
 - (void)handleActiveNotification:(NSNotification *)note
 {
 #ifdef DEVELOPMENTBUILD
