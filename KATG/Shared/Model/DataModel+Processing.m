@@ -211,7 +211,7 @@
 /******************************************************************************/
 - (void)processShowsList:(id)result count:(NSInteger)count
 {
-#define kCutoffShow 1200
+#define kCutoffShow 1300
 	[coreDataQueue addOperationWithBlock:^(void) {
 		//	
 		//	/*UNREVISEDCOMMENTS*/
@@ -405,93 +405,41 @@
 - (void)procesShowPictures:(NSArray *)pictures withID:(NSString *)ID
 {
 	[coreDataQueue addOperationWithBlock:^(void) {
-		//	
-		//	/*UNREVISEDCOMMENTS*/
-		//	
-		NSPersistentStoreCoordinator	*	psc			=	[self.managedObjectContext persistentStoreCoordinator];
-		NSManagedObjectContext			*	showContext	=	[[NSManagedObjectContext alloc] init];
-		showContext.persistentStoreCoordinator			=	psc;
-		//	
-		//	/*UNREVISEDCOMMENTS*/
-		//	
-		NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
-		NSEntityDescription	*	entity	=
-		[NSEntityDescription entityForName:@"Show" 
-					inManagedObjectContext:showContext];
-		[request setEntity:entity];
-		[request setFetchLimit:1];
-		request.relationshipKeyPathsForPrefetching	=	[NSArray arrayWithObject:@"Pictures"];
-		NSPredicate	*	predicate	=
-		[NSPredicate predicateWithFormat:@"ID == %@", ID];
-		[request setPredicate:predicate];
-		NSError		*	error;
-		NSArray		*	fetchResults	=
-		[showContext executeFetchRequest:request 
-								   error:&error];
-		if (fetchResults == nil)
-		{	// Handle Error
-			ESLog(@"%@", error);
-#ifdef DEVELOPMENTBUILD
-            abort();
-#endif
-		}
-		if (fetchResults.count > 0)
+		NSMutableArray *pictureObjects = [[NSMutableArray alloc] init];
+		for (NSDictionary *picture in pictures)
 		{
-			Show	*	show	=	[fetchResults objectAtIndex:0];
-			for (NSDictionary *picture in pictures)
+			NSString	*	thumbURL	=	[picture objectForKey:@"url"];
+			NSString	*	url			=	ReplaceString(thumbURL, @"-Thumb", @"");
+			if (!url || (url.length == 0))
+				continue;
+			
+			Picture *pictureObject = [[Picture alloc] init];
+			
+			if (pictureObject)
 			{
-				//NSLog(@"%@", picture);
+				pictureObject.URL			=	url;
+				pictureObject.thumbURL		=	thumbURL;
 				
-				NSString	*	url	=	[picture objectForKey:@"url"];
-				if (!url || (url.length == 0)) continue;
+				NSString	*	description	=	[picture objectForKey:@"description"];
+				NSString	*	title		=	[picture objectForKey:@"title"];
 				
-				Picture	*	managedPicture	=	nil;
-				for (Picture *aPicture in [show Pictures])
-				{
-					if ([managedPicture.URL isEqualToString:url])
-					{
-						managedPicture		=	aPicture;
-						break;
-					}
-				}
-				if (managedPicture == nil)
-				{
-					managedPicture	=	
-					(Picture *)[NSEntityDescription insertNewObjectForEntityForName:@"Picture" 
-															 inManagedObjectContext:showContext];
-					
-					managedPicture.URL			=	ReplaceString(url, @"-Thumb", @"");
-					managedPicture.ThumbURL		=	url;
-					
-					NSString	*	description	=	[picture objectForKey:@"description"];
-					NSString	*	title		=	[picture objectForKey:@"title"];
-					
-					if (description)
-						managedPicture.Description	=	description;
-					
-					if (title)
-						managedPicture.Title		=	title;
-					
-					[show addPicturesObject:managedPicture];
-				}
+				if (description)
+					pictureObject.desc	=	description;
+				
+				if (title)
+					pictureObject.title		=	title;
+				
+				[pictureObjects addObject:pictureObject];
 			}
-			//NSLog(@"Save Pictures");
-			NSError	*	error;
-			if (![showContext save:&error])
-			{	// Handle Error
-				ESLog(@"Core Data Error %@", error);
-#ifdef DEVELOPMENTBUILD
-				abort();
-#endif
-			}
+			
+			[pictureObject release];
 		}
-		[request release];
-		[showContext release];
 		
-		[self performSelectorOnMainThread:@selector(notifyShowPictures:) 
-							   withObject:ID 
-							waitUntilDone:NO];
+		dispatch_async(dispatch_get_main_queue(), ^(void) {
+			[self notifyShowPictures:pictureObjects];
+		});
 		
+		[pictureObjects release];
 	}];
 }
 - (void)processGetImage:(NSData *)imgData forURL:(NSString *)url
@@ -732,10 +680,7 @@
 		[pictureCacheDictionary setObject:object forKey:key];
 		if (pictureCacheDictionary.count > 300)
 		{
-			for (int i = 0; i < 100; i++)
-			{
-				[pictureCacheDictionary removeObjectForKey:[[pictureCacheDictionary allKeys] objectAtIndex:i]];
-			}
+			[pictureCacheDictionary removeObjectFromIndex:100 To:(pictureCacheDictionary.count - 1)];
 		}
 	}
 }

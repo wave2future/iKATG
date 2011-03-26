@@ -99,7 +99,7 @@
 	//	
 	//	
 	//	
-	BOOL	success	=	[self.fetchedResultsController performFetch:nil];
+	BOOL success = [self.fetchedResultsController performFetch:nil];
 	if (success)
 		[self.activityIndicator stopAnimating];
 }
@@ -119,7 +119,7 @@
 		return _context;
 	NSPersistentStoreCoordinator	*	psc		=	[model.managedObjectContext persistentStoreCoordinator];
 	_context									=	[[NSManagedObjectContext alloc] init];
-	_context.persistentStoreCoordinator	=	psc;
+	_context.persistentStoreCoordinator			=	psc;
 	return _context;
 }
 - (void)setContext:(NSManagedObjectContext *)context
@@ -242,7 +242,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:kAnimType];
 			break;
 		case NSFetchedResultsChangeUpdate:
-			[self decorateCell:[self.tableView cellForRowAtIndexPath:indexPath] withIndexPath:indexPath];
+			//[self decorateCell:[self.tableView cellForRowAtIndexPath:indexPath] withIndexPath:indexPath];
+			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
 			break;
 		case NSFetchedResultsChangeMove:
 			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:kAnimType];

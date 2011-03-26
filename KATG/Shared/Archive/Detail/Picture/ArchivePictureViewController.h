@@ -23,12 +23,12 @@
 @class Show;
 @interface ArchivePictureViewController : ModelTableViewController 
 {
-	Show	*	show;
+	NSNumber*	ID;
 	NSInteger	imagesAcross;
-	NSArray *	images;
+	NSArray*	images;
 }
 
-@property (nonatomic, assign)	Show	*	show;
-@property (nonatomic, retain)	NSArray *	images;
+@property (nonatomic, copy)	NSNumber*	ID;
+@property (nonatomic, retain)	NSArray*	images;
 
 @end

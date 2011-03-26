@@ -25,6 +25,7 @@
 #import "NetworkOperationQueue.h"
 #import "OrderedDictionary.h"
 
+@class Show;
 @interface DataModel : NSObject
 {
 	//	
@@ -169,6 +170,10 @@
 //	@property (nonatomic, retain) NSSet* Pictures;
 //
 - (void)shows;
+//	
+//	
+//	
+- (Show *)fetchShow:(NSManagedObjectID *)objectID showID:(NSNumber *)showID;
 //
 //	Updates existing instance of 
 //  NSManagedObject subclass Show

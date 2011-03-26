@@ -36,6 +36,12 @@
 - (void)notifyNextLiveShowTime:(NSDictionary *)nextLiveShow;
 /******************************************************************************/
 #pragma mark -
+#pragma mark Archived Shows
+#pragma mark -
+/******************************************************************************/
+- (void)notifyShowPictures:(NSArray *)pictures;
+/******************************************************************************/
+#pragma mark -
 #pragma mark Events
 #pragma mark -
 /******************************************************************************/

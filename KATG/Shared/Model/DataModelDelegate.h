@@ -44,7 +44,7 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
-- (void)showPicturesAvailable:(NSString *)ID;
+- (void)showPictures:(NSArray *)pictures;
 //	
 //	/*UNREVISEDCOMMENT*/
 //	

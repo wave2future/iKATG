@@ -2,13 +2,12 @@
 //  Show.h
 //  KATG
 //
-//  Created by Doug Russell on 1/16/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  Created by Doug Russell on 3/2/11.
+//  Copyright (c) 2011 Doug Russell. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-
-@class Picture;
+#import <CoreData/CoreData.h>
 
 @interface Show : NSManagedObject {
 @private
@@ -25,6 +24,5 @@
 @property (nonatomic, retain) NSString * Notes;
 @property (nonatomic, retain) NSString * Quote;
 @property (nonatomic, retain) NSNumber * PictureCount;
-@property (nonatomic, retain) NSSet* Pictures;
 
 @end

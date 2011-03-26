@@ -21,6 +21,7 @@
 
 #import "OnAirViewController_iPhone.h"
 #import "OnAirViewController+Feedback.h"
+#import "RoundedTextView.h"
 
 @interface OnAirViewController_iPhone ()
 - (void)registerKeyboardNotifications;
@@ -170,6 +171,11 @@ shouldChangeTextInRange:(NSRange)range
 }
 - (void)foldupFeedbackView
 {
+	if (self.commentView.text.length > 0)
+	{
+		// backup string
+		self.commentView.text = nil;
+	}
 	self.infoButton.hidden	=	NO;
 	[UIView beginAnimations:NULL context:NULL];
 	[UIView setAnimationDuration:0.3];

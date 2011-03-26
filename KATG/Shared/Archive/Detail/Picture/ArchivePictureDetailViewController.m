@@ -1,4 +1,4 @@
-    //
+//
 //  ArchivePictureDetailViewController.m
 //  KATG
 //
@@ -8,10 +8,12 @@
 
 #import "ArchivePictureDetailViewController.h"
 #import "Picture.h"
+#import "ImageScrollView.h"
 
 @implementation ArchivePictureDetailViewController
 @synthesize picture;
-@synthesize activityIndicator;
+@synthesize activityIndicator = _activityIndicator;
+@synthesize imageView = _imageView;
 
 /******************************************************************************/
 #pragma mark -
@@ -21,6 +23,8 @@
 - (void)dealloc 
 {
 	picture = nil;
+	[_activityIndicator release];
+	[_imageView release];
     [super dealloc];
 }
 /******************************************************************************/
@@ -30,15 +34,28 @@
 /******************************************************************************/
 - (void)loadView 
 {
-	UIImageView *imageView = [[UIImageView alloc] init];
-	imageView.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin |
+	UIScrollView *scrollView = [[UIScrollView alloc] init];
+	scrollView.delegate = self;
+	scrollView.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin |
+								   UIViewAutoresizingFlexibleRightMargin |
+								   UIViewAutoresizingFlexibleBottomMargin |
+								   UIViewAutoresizingFlexibleLeftMargin |
+								   UIViewAutoresizingFlexibleWidth |
+								   UIViewAutoresizingFlexibleHeight);
+	self.view = scrollView;
+	[scrollView release];
+	
+	ImageScrollView *imageView = [[ImageScrollView alloc] init];
+	imageView.autoresizingMask = (/*UIViewAutoresizingFlexibleTopMargin |
 								  UIViewAutoresizingFlexibleRightMargin |
 								  UIViewAutoresizingFlexibleBottomMargin |
-								  UIViewAutoresizingFlexibleLeftMargin |
+								  UIViewAutoresizingFlexibleLeftMargin |*/
 								  UIViewAutoresizingFlexibleWidth |
 								  UIViewAutoresizingFlexibleHeight);
 	imageView.contentMode = UIViewContentModeScaleAspectFit;
-	self.view = imageView;
+	self.imageView = imageView;
+//	self.view = imageView;
+	[self.view addSubview:self.imageView];
 	[imageView release];
 	
 	UIActivityIndicatorView *aView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -66,8 +83,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	if (picture.Title && 
-		(picture.Title.length != 0))
+	if (picture.title && 
+		(picture.title.length != 0))
 	{
 		[self.navigationController setToolbarHidden:NO animated:NO];
 		
@@ -75,7 +92,7 @@
 		UILabel *description = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width - 20.0, size.height)];
 		description.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		description.backgroundColor = [UIColor clearColor];
-		description.text = picture.Title;
+		description.text = picture.title;
 		description.adjustsFontSizeToFitWidth = YES;
 		description.minimumFontSize = 10.0;
 		description.textAlignment = UITextAlignmentCenter;
@@ -98,7 +115,7 @@
 	if (img)
 	{
 		[self.activityIndicator stopAnimating];
-		[(UIImageView *)[self view] setImage:img];
+		[self.imageView displayImage:img];
 	}
 }
 - (void)viewWillDisappear:(BOOL)animated
@@ -112,6 +129,11 @@
     [super viewDidUnload];
 	self.activityIndicator = nil;
 }
+/******************************************************************************/
+#pragma mark -
+#pragma mark Data Model
+#pragma mark -
+/******************************************************************************/
 - (void)imageAvailableForURL:(NSString *)url
 {
 	if ([NSThread isMainThread])
@@ -120,13 +142,23 @@
 		if (img)
 		{
 			[self.activityIndicator stopAnimating];
-			[(UIImageView *)[self view] setImage:img];
+			//[(UIImageView *)[self view] setImage:img];
+			[self.imageView displayImage:img];
 		}
 	}
 	else
 		[self performSelectorOnMainThread:@selector(imageAvailableForURL:) 
 							   withObject:url 
 							waitUntilDone:NO];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Scroll View Delegate
+#pragma mark -
+/******************************************************************************/
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+	return self.imageView;
 }
 
 @end

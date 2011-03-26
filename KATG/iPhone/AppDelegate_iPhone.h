@@ -25,5 +25,7 @@
 	
 }
 
+- (void)loadTabs;
+
 @end
 

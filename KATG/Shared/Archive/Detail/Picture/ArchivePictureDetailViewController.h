@@ -10,13 +10,16 @@
 #import "ModelViewController.h"
 
 @class Picture;
-@interface ArchivePictureDetailViewController : ModelViewController 
+@class ImageScrollView;
+@interface ArchivePictureDetailViewController : ModelViewController <UIScrollViewDelegate>
 {
 	Picture *picture;
-	UIActivityIndicatorView *activityIndicator;
+	UIActivityIndicatorView *_activityIndicator;
+	ImageScrollView *_imageView;
 }
 
 @property (nonatomic, assign) Picture *picture;
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, retain) ImageScrollView *imageView;
 
 @end

@@ -67,7 +67,7 @@ NSString * AppDirectoryLibraryPath()
 }
 NSString * AppDirectoryLibraryPathAppended(NSString * pathToAppend)
 {
-	return [AppDirectoryDocumentsPath() stringByAppendingPathComponent:pathToAppend];
+	return [AppDirectoryLibraryPath() stringByAppendingPathComponent:pathToAppend];
 }
 
 NSString * EncodeHTMLEntities(NSString * source)

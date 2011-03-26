@@ -20,7 +20,7 @@
 #define kBaseURL @"http://app.keithandthegirl.com"
 
 #import "NetworkOperation.h"
-#import "CJSONDeserializer.h"
+#import "JSONKit.h"
 #import "HandleXMLFeed.h"
 
 @interface NetworkOperation ()
@@ -156,17 +156,13 @@
 			break;
 		case ParseJSONDictionary:
 			[[self.queue parseQueue] addOperationWithBlock:^(void) {
-				NSError			*	error;
-				NSDictionary	*	result	=
-				[[CJSONDeserializer deserializer] deserializeAsDictionary:data error:&error];
+				NSDictionary	*	result	=	[data objectFromJSONData];
 				[self networkOperationDidComplete:self withResult:result];
 			}];
 			break;
 		case ParseJSONArray:
 			[[self.queue parseQueue] addOperationWithBlock:^(void) {
-				NSError			*	error;
-				NSDictionary	*	result	=
-				[[CJSONDeserializer deserializer] deserializeAsArray:data error:&error];
+				NSArray	*	result	=	[data objectFromJSONData];
 				[self networkOperationDidComplete:self withResult:result];
 			}];
 			break;

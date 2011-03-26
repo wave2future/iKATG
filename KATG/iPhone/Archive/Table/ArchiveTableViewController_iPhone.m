@@ -19,6 +19,7 @@
 
 #import "ArchiveTableViewController_iPhone.h"
 #import "ArchiveDetailViewController_iPhone.h"
+#import "Show.h"
 
 @implementation ArchiveTableViewController_iPhone
 
@@ -29,11 +30,12 @@
 /******************************************************************************/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	ArchiveDetailViewController_iPhone	*	viewController	=	
-	[[ArchiveDetailViewController_iPhone alloc] init];
-	viewController.show	=	(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+	ArchiveDetailViewController_iPhone	*	viewController	=	[[ArchiveDetailViewController_iPhone alloc] init];
+	viewController.showObjectID	=	[(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath] objectID];
+	viewController.showID		=	[(Show *)[self.fetchedResultsController objectAtIndexPath:indexPath] ID];
 	[self.navigationController pushViewController:viewController animated:YES];
 	[viewController release];
+	[self.searchDisplayController setActive:NO];
 }
 
 @end

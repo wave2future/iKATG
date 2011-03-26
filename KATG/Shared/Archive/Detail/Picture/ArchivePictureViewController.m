@@ -25,8 +25,7 @@
 #import "ImageGridButton.h"
 
 @implementation ArchivePictureViewController
-@synthesize show;
-@synthesize images;
+@synthesize images, ID;
 
 /******************************************************************************/
 #pragma mark -
@@ -43,6 +42,7 @@
 }
 - (void)dealloc 
 {
+	[ID release];
 	[images release];
     [super dealloc];
 }
@@ -65,12 +65,7 @@
 	
 	imagesAcross = floor((self.view.bounds.size.width / [ImageGridTableViewCell cellHeight]));
 	
-	NSSet	*	pictures	=	[show Pictures];
-	self.images = [pictures allObjects];
-	if (pictures.count == 0)
-		[model showPictures:[self.show.ID stringValue]];
-	else
-		[self.activityIndicator stopAnimating];
+	[model showPictures:[self.ID stringValue]];
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
@@ -90,18 +85,17 @@
 #pragma mark Model Delegate Methods
 #pragma mark -
 /******************************************************************************/
-- (void)showPicturesAvailable:(NSString *)ID
+- (void)showPictures:(NSArray *)pictures
 {
 	if ([NSThread isMainThread])
 	{
-		[self.activityIndicator stopAnimating];
-		NSSet	*	pictures	=	[show Pictures];
-		self.images = [pictures allObjects];
+		self.images = pictures;
 		[self reloadTableView];
+		[self.activityIndicator stopAnimating];
 	}
 	else
-		[self performSelectorOnMainThread:@selector(showPicturesAvailable:) 
-							   withObject:ID 
+		[self performSelectorOnMainThread:@selector(showPictures:) 
+							   withObject:pictures 
 							waitUntilDone:NO];
 }
 - (void)imageAvailableForURL:(NSString *)url
@@ -111,7 +105,7 @@
 		for (int i = 0; i < self.images.count; i++)
 		{
 			Picture *pic = [self.images objectAtIndex:i];
-			if ([pic.ThumbURL isEqual:url])
+			if ([pic.thumbURL isEqual:url])
 			{
 				int row = floor(i / imagesAcross);
 				[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:row 

@@ -305,6 +305,12 @@
 	[self startLiveShowStatusTimer];
 	
 	//	
+	//	Make sure that audio assets are set up
+	//	
+	
+	[self setupAudioAssets];
+	
+	//	
 	//	Resume playback, set name and location
 	//	
 	
@@ -328,6 +334,12 @@
 	//	
 	
 	[self writeDefaults];
+	
+	//	
+	//	Tear down audio streamer
+	//	
+	
+	[self destroyStreamer];
 }
 - (void)handleActiveNotification:(NSNotification *)note
 {

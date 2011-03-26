@@ -32,9 +32,8 @@
 {
 	ArchivePictureViewController_iPhone	*	viewController	=	
 	[[ArchivePictureViewController_iPhone alloc] init];
-	viewController.show	=	self.show;
-	[self.navigationController pushViewController:viewController 
-										 animated:YES];
+	viewController.ID	=	self.show.ID;
+	[self.navigationController pushViewController:viewController animated:YES];
 	[viewController release];
 }
 

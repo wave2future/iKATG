@@ -339,7 +339,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	op.instanceCode				=	kShowArchivesCode;
 	op.URI						=	kShowListURIAddress;
 	// Using the twitter date formatter to avoid creating another dateformatter just for this
-	NSDate	*	start			=	[self.twitterSearchFormatter dateFromString:@"Mon, 01 Apr 2010 07:36:57 +0000"];
+	NSDate	*	start			=	[self.twitterSearchFormatter dateFromString:@"Sat, 01 Jan 2011 00:00:00 +0000"];
 	if (start)
 	{
 		NSInteger	days		=	[start timeIntervalSinceDate:[NSDate date]] / -(60 /*Seconds*/ * 60 /*Minutes*/ * 24 /*Hours*/);
@@ -347,6 +347,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 		op.bodyBufferDict		=	[NSDictionary dictionaryWithObjectsAndKeys:
 									 [NSString stringWithFormat:@"%d", days], @"ShowCount", nil];
 	}
+	
 	op.parseType				=	ParseXML;
 	op.xPath					=	kShowArchivesXPath;
 	if (connected)
@@ -354,6 +355,39 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	else
 		[delayedOperations addObject:op];
 	[op release];
+}
+- (Show *)fetchShow:(NSManagedObjectID *)objectID showID:(NSNumber *)showID
+{
+	//	
+	//	/*UNREVISEDCOMMENTS*/
+	//	
+	NSError	*	error;
+	Show	*	show	=	nil;
+	show				=	(Show *)[self.managedObjectContext existingObjectWithID:objectID 
+																error:&error];
+	if (show == nil || ![show isKindOfClass:[Show class]])
+	{
+		NSFetchRequest		*	request	=	[[NSFetchRequest alloc] init];
+		NSEntityDescription	*	entity	=
+		[NSEntityDescription entityForName:@"Show" 
+					inManagedObjectContext:self.managedObjectContext];
+		[request setEntity:entity];
+		[request setFetchLimit:1];
+		request.relationshipKeyPathsForPrefetching	=	[NSArray arrayWithObject:@"Pictures"];
+		NSPredicate	*	predicate	=
+		[NSPredicate predicateWithFormat:@"ID == %@", showID];
+		[request setPredicate:predicate];
+		NSError		*	error;
+		NSArray		*	fetchResults	=
+		[self.managedObjectContext executeFetchRequest:request 
+												 error:&error];
+		if (fetchResults.count > 0)
+		{
+			show = [fetchResults objectAtIndex:0];
+		}
+		[request release];
+	}
+	return show;
 }
 - (void)showDetails:(NSString *)ID
 {

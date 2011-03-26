@@ -20,7 +20,7 @@
 
 + (CGFloat)cellHeight
 {
-	return 102;
+	return 102 / [[UIScreen mainScreen] scale];
 }
 + (CGFloat)imageSideDimension
 {
@@ -67,7 +67,7 @@
 	//	
 	for (int i = 0; i < _images.count; i++)
 	{
-		UIImage *image = [[DataModel sharedDataModel] imageForURL:[(Picture *)[_images objectAtIndex:i] ThumbURL]];
+		UIImage *image = [[DataModel sharedDataModel] imageForURL:[(Picture *)[_images objectAtIndex:i] thumbURL]];
 		CGFloat sideDimension = [ImageGridTableViewCell imageSideDimension];
 		ImageGridButton *button = [[ImageGridButton alloc] initWithFrame:CGRectMake(0, 1, sideDimension, sideDimension) 
 																   image:image 

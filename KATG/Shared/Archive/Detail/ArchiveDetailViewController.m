@@ -30,6 +30,7 @@
 @end
 
 @implementation ArchiveDetailViewController
+@synthesize showObjectID, showID;
 @synthesize show;
 @synthesize showTitleLabel, showNumberLabel, showGuestsLabel, showNotesTextView;
 @synthesize	showNotesContainer;
@@ -43,8 +44,9 @@
 {
 	[super viewDidLoad];
 	[self updateFields];
-	[model showDetails:[NSString stringWithFormat:@"%@", show.ID]];
-	//[model showPictures:[NSString stringWithFormat:@"%@", show.ID]];
+	self.show = [model fetchShow:self.showObjectID showID:self.showID];
+	if (self.show)
+		[model showDetails:[NSString stringWithFormat:@"%@", show.ID]];
 }
 - (void)viewWillAppear:(BOOL)animated
 {

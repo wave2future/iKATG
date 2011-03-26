@@ -20,6 +20,7 @@
 #define kReachabilityURL @"app.keithandthegirl.com"
 
 #import "DataModel+SetupCleanup.h"
+#import "NetworkCache.h"
 
 const void * MyRetainNoOp(CFAllocatorRef allocator, const void *value) { return value; }
 void MyReleaseNoOp(CFAllocatorRef allocator, const void * value) { }
@@ -162,6 +163,19 @@ NSMutableArray * CreateNonRetainingArray()
 	 selector:@selector(mergeChangesFromContextDidSaveNotification:) 
 	 name:NSManagedObjectContextDidSaveNotification 
 	 object:nil];
+	//	
+	//	
+	//	
+	[[NSNotificationCenter defaultCenter] 
+	 addObserver:self 
+	 selector:@selector(lowMemoryWarning:) 
+	 name:UIApplicationDidReceiveMemoryWarningNotification 
+	 object:nil];
+}
+- (void)lowMemoryWarning:(NSNotification *)notification
+{
+	[pictureCacheDictionary removeAllObjects];
+	[[NetworkCache sharedNetworkCache] removeAllCachedResponses];
 }
 /******************************************************************************/
 #pragma mark -

@@ -104,13 +104,13 @@
 	}
 	[dlgts release];
 }
-- (void)notifyShowPictures:(NSString *)ID
+- (void)notifyShowPictures:(NSArray *)pictures
 {
 	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
 	for (id delegate in dlgts)
 	{
-		if ([delegate respondsToSelector:@selector(showPicturesAvailable:)])
-			[delegate showPicturesAvailable:ID];
+		if ([delegate respondsToSelector:@selector(showPictures:)])
+			[delegate showPictures:pictures];
 	}
 	[dlgts release];
 }

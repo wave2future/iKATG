@@ -170,19 +170,19 @@ void uncaughtExceptionHandler(NSException *exception)
         if (persistentStoreCoordinator_ != nil)
             return persistentStoreCoordinator_;
         
-//		NSString	*	defaultStorePath	=	[[NSBundle bundleForClass:[self class]] pathForResource:@"KATG" ofType:@"sqlite"];
+		NSString	*	defaultStorePath	=	[[NSBundle bundleForClass:[self class]] pathForResource:@"KATG" ofType:@"sqlite"];
         NSString	*	storePath			=	[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"KATG.sqlite"];
         
         NSError		*	error;
-//        if (![[NSFileManager defaultManager] fileExistsAtPath:storePath]) 
-//        {
-//            if ([[NSFileManager defaultManager] copyItemAtPath:defaultStorePath 
-//														toPath:storePath 
-//														 error:&error])
-//                NSLog(@"Copied starting data to %@", storePath);
-//            else 
-//                NSLog(@"Error copying default DB to %@ (%@)", storePath, error);
-//        }
+        if (![[NSFileManager defaultManager] fileExistsAtPath:storePath]) 
+        {
+            if ([[NSFileManager defaultManager] copyItemAtPath:defaultStorePath 
+														toPath:storePath 
+														 error:&error])
+                NSLog(@"Copied starting data to %@", storePath);
+            else 
+                NSLog(@"Error copying default DB to %@ (%@)", storePath, error);
+        }
         
         NSURL		*	storeURL			=	[NSURL fileURLWithPath:storePath];
         
