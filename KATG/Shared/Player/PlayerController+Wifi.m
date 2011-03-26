@@ -43,7 +43,8 @@
 			NSLog(@"Stalled");
 			break;
 	}
-	switch (self.player.playbackState) {
+	switch (self.player.playbackState)
+	{
 		case MPMoviePlaybackStateStopped:
 			NSLog(@"MPMoviePlaybackStateStopped");
 			break;
@@ -83,20 +84,23 @@
 	CGRect	playerFrame;
 	if (CGSizeEqualToSize(self.player.naturalSize, CGSizeZero))
 	{
-		if (UIDeviceOrientationIsLandscape(self.interfaceOrientation))
+		self.player.view.backgroundColor = [UIColor clearColor];
+		if (UIInterfaceOrientationIsLandscape((self.interfaceOrientation)))
 			playerFrame	=	CGRectMake(0, 10, boundsSize.height, 40);
 		else
 			playerFrame	=	CGRectMake(0, 10, boundsSize.width, 40);
 	}
 	else
 	{
-		CGSize	naturalSize	=	self.player.naturalSize;
-		if (UIDeviceOrientationIsLandscape(self.interfaceOrientation))
-			playerFrame	=	CGRectMake(0, 0, boundsSize.height, boundsSize.width - 20);
-		else
-			playerFrame	=	CGRectMake(0, 0, 
-									   MIN(naturalSize.width, boundsSize.width), 
-									   MIN(naturalSize.height, boundsSize.height - 70));
+		self.player.controlStyle = MPMovieControlStyleEmbedded;
+		playerFrame	=	self.view.bounds;
+		UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, playerFrame.size.width, 44)];
+		toolBar.barStyle = UIBarStyleBlackTranslucent;
+		toolBar.items = [NSArray arrayWithObjects:
+						 [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(stop:)] autorelease], 
+						 [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], nil];
+		[self.player.view addSubview:toolBar];
+		[toolBar release];
 	}
 	self.player.view.frame	=	playerFrame;
 }

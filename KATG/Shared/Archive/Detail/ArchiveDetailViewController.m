@@ -152,6 +152,10 @@
 - (void)presentPlayer
 {
 	PlayerController	*	viewController	=	[PlayerController sharedPlayerController];
+	if ([self.show.TV boolValue])
+		viewController.mediaType = Video;
+	else
+		viewController.mediaType = Audio;
 	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:viewController animated:YES];
 }

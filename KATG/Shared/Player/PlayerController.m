@@ -36,7 +36,8 @@
 @synthesize	player;
 @synthesize activityIndicator;
 @dynamic	playbackState;
-@synthesize titleLabel, textView, stopButton, adBanner;
+@synthesize titleLabel, textView, stopButton, hideButton, adBanner;
+@synthesize mediaType;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(PlayerController);
 
@@ -95,6 +96,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PlayerController);
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	if (self.mediaType == Video)
+	{
+		
+	}
 	if (self.player != nil && self.player.view.superview == nil)
 	{
 		[self setPlayerFrame];
@@ -115,6 +120,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PlayerController);
 	self.titleLabel			=	nil;
 	self.textView			=	nil;
 	self.stopButton			=	nil;
+	self.hideButton			=	nil;
 	self.adBanner			=	nil;
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -160,6 +166,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PlayerController);
 	[textView release];
 	
 	[stopButton release];
+	[hideButton release];
 	
 	[adBanner release];
 	

@@ -225,6 +225,10 @@
 		C5F6B2181252E03C00905096 /* TwitterHashTagTableViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F6B2171252E03C00905096 /* TwitterHashTagTableViewController_iPhone.m */; };
 		C5F6B23B1252E59300905096 /* ArchiveDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F6B23A1252E59300905096 /* ArchiveDetailViewController.m */; };
 		C5F6B27B1252F82200905096 /* ArchiveDetailViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F6B27A1252F82200905096 /* ArchiveDetailViewController_iPhone.xib */; };
+		F5B775FE133E83B300FF96D3 /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B775FA133E83B300FF96D3 /* Back.png */; };
+		F5B775FF133E83B300FF96D3 /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B775FB133E83B300FF96D3 /* Back@2x.png */; };
+		F5B77600133E83B300FF96D3 /* Forward.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B775FC133E83B300FF96D3 /* Forward.png */; };
+		F5B77601133E83B300FF96D3 /* Forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B775FD133E83B300FF96D3 /* Forward@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -559,6 +563,10 @@
 		C5F6B2391252E59300905096 /* ArchiveDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveDetailViewController.h; sourceTree = "<group>"; };
 		C5F6B23A1252E59300905096 /* ArchiveDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveDetailViewController.m; sourceTree = "<group>"; };
 		C5F6B27A1252F82200905096 /* ArchiveDetailViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArchiveDetailViewController_iPhone.xib; sourceTree = "<group>"; };
+		F5B775FA133E83B300FF96D3 /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back.png; sourceTree = "<group>"; };
+		F5B775FB133E83B300FF96D3 /* Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back@2x.png"; sourceTree = "<group>"; };
+		F5B775FC133E83B300FF96D3 /* Forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Forward.png; sourceTree = "<group>"; };
+		F5B775FD133E83B300FF96D3 /* Forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Forward@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -851,6 +859,7 @@
 		C57A3D7812429A5800D6BA3B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F5B775F9133E83B300FF96D3 /* Webview */,
 				915BED2B129AC5620016FC42 /* TwitterHeads */,
 				C57A3D9512429A5800D6BA3B /* Icons */,
 				C57A3D9D12429A5800D6BA3B /* LaunchImages */,
@@ -1532,6 +1541,17 @@
 			path = Table;
 			sourceTree = "<group>";
 		};
+		F5B775F9133E83B300FF96D3 /* Webview */ = {
+			isa = PBXGroup;
+			children = (
+				F5B775FA133E83B300FF96D3 /* Back.png */,
+				F5B775FB133E83B300FF96D3 /* Back@2x.png */,
+				F5B775FC133E83B300FF96D3 /* Forward.png */,
+				F5B775FD133E83B300FF96D3 /* Forward@2x.png */,
+			);
+			path = Webview;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1684,6 +1704,10 @@
 				915BED32129AC5620016FC42 /* KeithRelief.png in Resources */,
 				915BED33129AC5620016FC42 /* KeithRelief@2x.png in Resources */,
 				9163439E133E69270058C641 /* KATG.sqlite in Resources */,
+				F5B775FE133E83B300FF96D3 /* Back.png in Resources */,
+				F5B775FF133E83B300FF96D3 /* Back@2x.png in Resources */,
+				F5B77600133E83B300FF96D3 /* Forward.png in Resources */,
+				F5B77601133E83B300FF96D3 /* Forward@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

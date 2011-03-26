@@ -75,6 +75,7 @@
 	[dateTimeLabel setText:dateTime];
 	
 	NSString	*	details		=	event.Details;
+	NSString	*	stripped	=	nil;
 	if (details && details.length != 0)
 	{
 		NSRegularExpression	*	styleRegex	=	
@@ -86,6 +87,7 @@
 											 options:0 
 											   range:NSMakeRange(0, details.length) 
 										withTemplate:@""];
+		
 		details	= [details stringByReplacingOccurrencesOfString:@"http://www.keithandthegirl.com/Live/HowToListen.aspx" 
 													 withString:@""];
 		details	= [details stringByReplacingOccurrencesOfString:@"../Live/HowToListen.aspx" 
@@ -94,8 +96,22 @@
 													 withString:@""];
 		details	= [details stringByReplacingOccurrencesOfString:@"Here's how to listen:"
 													 withString:@""];
-		[webView setText:details];
+		
+		NSRegularExpression	*	htmlRegex	=	
+		[NSRegularExpression regularExpressionWithPattern:@"<(.|\n)*?>|\\s" 
+												  options:0 
+													error:nil];
+		stripped	=	
+		[htmlRegex stringByReplacingMatchesInString:details 
+											 options:0 
+											   range:NSMakeRange(0, details.length) 
+										withTemplate:@""];
 	}
+	
+	if (details && 
+		details.length != 0 && 
+		stripped.length != 0)
+		[webView setText:details];
 	else
 		[webView setText:@"No Event Details"];
 }

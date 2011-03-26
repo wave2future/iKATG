@@ -19,8 +19,14 @@
 
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
+//#import <AVFoundation/AVFoundation.h>
 #import <iAd/iAd.h>
 #import "Reachability.h"
+
+typedef enum {
+	Audio,
+	Video
+} PlayerMediaType;
 
 @class AudioStreamer;
 @interface PlayerController : UIViewController 
@@ -49,10 +55,15 @@
 	//	
 	//	
 	UIButton		*	stopButton;
+	UIButton		*	hideButton;
 	//	
 	//	Shameless Money Grab
 	//	
 	ADBannerView	*	adBanner;
+	//	
+	//	
+	//	
+	PlayerMediaType		mediaType;
 }
 
 @property (nonatomic, retain)	IBOutlet	UIButton		*	audioButton;
@@ -66,8 +77,11 @@
 @property (nonatomic, retain)	IBOutlet	UITextView		*	textView;
 
 @property (nonatomic, retain)	IBOutlet	UIButton		*	stopButton;
+@property (nonatomic, retain)	IBOutlet	UIButton		*	hideButton;
 
 @property (nonatomic, retain)	IBOutlet	ADBannerView	*	adBanner;
+
+@property (nonatomic, assign)				PlayerMediaType		mediaType;
 
 + (PlayerController *)sharedPlayerController;
 - (void)preparePlayer:(NSURL *)URL;
