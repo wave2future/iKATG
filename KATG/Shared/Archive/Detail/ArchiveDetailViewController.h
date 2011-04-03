@@ -23,7 +23,7 @@
 @class Show, RoundedView;
 @interface ArchiveDetailViewController : ModelViewController 
 {
-	NSManagedObjectID	*	showObjectID;
+	NSManagedObjectID*	showObjectID;
 	Show			*	show;
 	UILabel			*	showTitleLabel;
 	UILabel			*	showNumberLabel;
