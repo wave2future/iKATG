@@ -20,7 +20,7 @@
 #import <UIKit/UIKit.h>
 #import "ModelFetchedTableViewController.h"
 
-@interface ArchiveTableViewController : ModelFetchedTableViewController <UISearchDisplayDelegate>
+@interface ArchiveTableViewController : ModelFetchedTableViewController <UISearchDisplayDelegate, UISearchBarDelegate>
 {
 	UISearchDisplayController *searchController;
 	NSFetchedResultsController *searchFetchedResultsController;

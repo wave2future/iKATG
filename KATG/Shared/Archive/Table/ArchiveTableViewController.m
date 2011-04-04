@@ -84,6 +84,7 @@ typedef enum {
 											  green:(128.0/255.0) 
 											   blue:(40.0/255.0) 
 											  alpha:1.0];
+		searchBar.delegate = self;
 		searchBar.showsScopeBar = YES;
 		searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"Title", @"Guests", @"Number", nil];
 		searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
