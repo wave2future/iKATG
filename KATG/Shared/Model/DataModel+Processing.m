@@ -42,10 +42,8 @@
 	switch (operation.instanceCode)
 	{
 		case kLiveShowStatusCode:
-			NSParameterAssert([result isKindOfClass:[NSArray class]]);
-			NSParameterAssert(([(NSArray *)result count] == 1));
-			if ([(NSArray *)result count] > 0)
-				[self processLiveShowStatus:[(NSArray *)result objectAtIndex:0]];
+			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
+			[self processLiveShowStatus:(NSDictionary *)result];
 			break;
 		case kFeedbackCode:
 			
@@ -178,8 +176,6 @@
 	//	/*UNREVISEDCOMMENT*/
 	//	
 	NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
-	NSParameterAssert(([[(NSDictionary *)result objectForKey:kOnAirKey] isEqualToString:@"0"] ||
-					   [[(NSDictionary *)result objectForKey:kOnAirKey] isEqualToString:@"1"]));
 	BOOL	onAir	=	[[(NSDictionary *)result objectForKey:kOnAirKey] boolValue];
 	if (onAir != live)
 		[self nextLiveShowTime];
@@ -246,11 +242,11 @@
 		//	
 		for (NSDictionary *show in shows)
 		{
-			NSString	*	number			=	[show objectForKey:@"N"];
+			NSNumber	*	number			=	[show objectForKey:@"N"];
 			NSInteger		numInt			=	0;
 			if (number)
 				numInt						=	[number intValue];
-			NSString	*	isKATGTV		=	[show objectForKey:@"TV"];
+			NSNumber	*	isKATGTV		=	[show objectForKey:@"TV"];
 			BOOL			isTV			=	NO;
 			if (isKATGTV)
 				isTV						=	[isKATGTV boolValue];
@@ -258,19 +254,19 @@
 			//if (numInt > kCutoffShow) continue;
 			if (numInt < kCutoffShow && !isTV) continue;
 			
-			NSString	*	ID				=	[show objectForKey:@"I"];
+			NSNumber	*	ID				=	[show objectForKey:@"I"];
 			
-			Show	*	managedShow			=	nil;
+			Show		*	managedShow		=	nil;
 			managedShow						=	[self hasShow:fetchResults 
-														forID:[NSNumber numberWithInt:[ID intValue]]];
+														forID:ID];
 			if (!managedShow)
 				managedShow					=	(Show *)[NSEntityDescription insertNewObjectForEntityForName:@"Show" 
 																					  inManagedObjectContext:showContext];
 			
 			NSString	*	guests			=	[show objectForKey:@"G"];
-			NSString	*	pdt				=	[show objectForKey:@"PDT"];
-			NSString	*	pictureCount	=	[show objectForKey:@"P"];
-			NSString	*	hasShowNotes	=	[show objectForKey:@"SN"];
+			NSNumber	*	pdt				=	[show objectForKey:@"PDT"];
+			NSNumber	*	pictureCount	=	[show objectForKey:@"P"];
+			NSNumber	*	hasShowNotes	=	[show objectForKey:@"SN"];
 			NSString	*	title			=	[show objectForKey:@"T"];
 			
 			
@@ -281,31 +277,27 @@
 			
 			if (ID)
 			{
-				NSInteger	idInt	=	[ID intValue];
-				[managedShow setID:[NSNumber numberWithInt:idInt]];
+				[managedShow setID:ID];
 			}
 			if (number)
 				[managedShow setNumber:[NSNumber numberWithInt:numInt]];
 			if (pdt)
 			{
-				double	pdtDouble	=	[pdt doubleValue];
-				[managedShow setPDT:[NSNumber numberWithDouble:pdtDouble]];
+				[managedShow setPDT:pdt];
 			}
 			if (pictureCount)
 			{
-				NSInteger	picCnt	=	[pictureCount intValue];
-				[managedShow setPictureCount:[NSNumber numberWithInt:picCnt]];
+				[managedShow setPictureCount:pictureCount];
 			}
 			if (hasShowNotes)
 			{
-				BOOL	hasShwNts	=	[hasShowNotes boolValue];
-				[managedShow setHasNotes:[NSNumber numberWithBool:hasShwNts]];
+				[managedShow setHasNotes:hasShowNotes];
 			}
 			if (title)
 				[managedShow setTitle:title];
 			
 			if (isKATGTV)
-				[managedShow setTV:[NSNumber numberWithBool:isTV]];
+				[managedShow setTV:isKATGTV];
 		}
 		//NSLog(@"Save Shows");
 		NSError	*	error;

@@ -104,8 +104,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	op.delegate					=	self;
 	op.instanceCode				=	kLiveShowStatusCode;
 	op.URI						=	kLiveShowStatusAddress;
-	op.parseType				=	ParseXML;
-	op.xPath					=	kOnAirXPath;
+	op.parseType				=	ParseJSONDictionary;
 	if (connected)
 		[operationQueue addOperation:op];
 	else
@@ -217,8 +216,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	op.delegate					=	self;
 	op.instanceCode				=	kLiveShowStatusCode;
 	op.URI						=	kLiveShowStatusAddress;
-	op.parseType				=	ParseXML;
-	op.xPath					=	kOnAirXPath;
 	op.bodyBufferDict			=	[NSDictionary dictionaryWithObjectsAndKeys:
 									 [[name copy] autorelease],		@"Name",
 									 [[location copy] autorelease],	@"Location",
@@ -348,7 +345,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 									 [NSString stringWithFormat:@"%d", days], @"ShowCount", nil];
 	}
 	
-	op.parseType				=	ParseXML;
+	op.parseType				=	ParseJSONArray;
 	op.xPath					=	kShowArchivesXPath;
 	if (connected)
 		[operationQueue addOperation:op];

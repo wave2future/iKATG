@@ -156,13 +156,15 @@
 			break;
 		case ParseJSONDictionary:
 			[[self.queue parseQueue] addOperationWithBlock:^(void) {
-				NSDictionary	*	result	=	[data objectFromJSONData];
+				NSError			*	error	=	nil;
+				NSDictionary	*	result	=	[data objectFromJSONDataWithParseOptions:JKParseOptionStrict error:&error];
 				[self networkOperationDidComplete:self withResult:result];
 			}];
 			break;
 		case ParseJSONArray:
 			[[self.queue parseQueue] addOperationWithBlock:^(void) {
-				NSArray	*	result	=	[data objectFromJSONData];
+				NSError	*	error	=	nil;
+				NSArray	*	result	=	[data objectFromJSONDataWithParseOptions:JKParseOptionStrict error:&error];
 				[self networkOperationDidComplete:self withResult:result];
 			}];
 			break;

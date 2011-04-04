@@ -8,14 +8,14 @@
 //	API URIs
 //	
 
-static NSString * const kLiveShowStatusAddress	=	@"/Api/App/Feed/Live/";
+static NSString * const kLiveShowStatusAddress	=	@"/Api/App/Feed/Live/json";
 
 static NSString * const kFeedbackBaseURLAddress	=	@"http://www.attackwork.com";
 static NSString * const kFeedbackURIAddress		=	@"/Voxback/Comment-Form-Iframe.aspx";
 
 static NSString * const kEventsFeedAddress		=	@"/Api/App/Events/";
 
-static NSString * const kShowListURIAddress		=	@"/Api/App/ShowArchive/ListCompact/";
+static NSString * const kShowListURIAddress		=	@"/Api/App/ShowArchive/ListCompact/json/";
 static NSString * const kShowDetailsURIAddress	=	@"/Api/App/ShowArchive/Show/Details/";
 static NSString * const kShowPicturesURIAddress	=	@"/Api/App/ShowArchive/Show/Pictures/";
 
@@ -63,7 +63,6 @@ typedef enum {
 //	Data object keys for node objects and xpaths
 //	
 
-#define kOnAirXPath			@"root"
 #define kOnAirKey			@"OnAir"
 #define kEventsXPath		@"Event"
 #define kShowArchivesXPath	@"S"
