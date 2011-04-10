@@ -1,9 +1,0 @@
-#ifdef PUSHDEVSERVER
-// Dev
-#define kApplicationKey// @""
-#define kApplicationSecret// @""
-#else
-// Production
-#define kApplicationKey// @""
-#define kApplicationSecret// @""
-#endif
