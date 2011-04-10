@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ApplicationProperties</key>
+	<dict>
+		<key>ApplicationPath</key>
+		<string>Applications/KATG.app</string>
+		<key>CFBundleIdentifier</key>
+		<string>com.KATG</string>
+		<key>CFBundleShortVersionString</key>
+		<string>1.3.0</string>
+		<key>IconPaths</key>
+		<array>
+			<string>Applications/KATG.app/AppIcon.png</string>
+			<string>Applications/KATG.app/AppIcon@2x.png</string>
+			<string>Applications/KATG.app/AppIcon_iPad.png</string>
+			<string>Applications/KATG.app/SettingsIcon.png</string>
+			<string>Applications/KATG.app/SettingsIcon@2x.png</string>
+		</array>
+	</dict>
+	<key>ArchiveVersion</key>
+	<real>1</real>
+	<key>Comment</key>
+	<string>Rev 16 App Store Submission</string>
+	<key>CreationDate</key>
+	<date>2011-04-10T16:05:42Z</date>
+	<key>Name</key>
+	<string>KATG 1.3</string>
+	<key>SchemeName</key>
+	<string>KATG</string>
+</dict>
+</plist>
