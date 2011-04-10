@@ -47,7 +47,8 @@
 /******************************************************************************/
 - (id)init
 {
-	if ((self = [super init]))
+	self = [super init];
+	if (self)
 	{
 		self.baseURL	=	kBaseURL;
 		URI				=	nil;
@@ -158,6 +159,8 @@
 			[[self.queue parseQueue] addOperationWithBlock:^(void) {
 				NSError			*	error	=	nil;
 				NSDictionary	*	result	=	[data objectFromJSONDataWithParseOptions:JKParseOptionStrict error:&error];
+				if (error)
+					ESLog(@"%@", error);
 				[self networkOperationDidComplete:self withResult:result];
 			}];
 			break;

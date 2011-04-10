@@ -20,9 +20,13 @@
 #import "OnAirViewController_iPad.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GradButton.h"
+#import "ModalWebViewController_iPad.h"
 
 @interface OnAirViewController_iPad ()
 - (void)processFeedbackPosition;
+- (void)loadChat;
+- (void)loadError;
+- (void)openRequest:(NSURLRequest *)request;
 @end
 
 @implementation OnAirViewController_iPad
@@ -37,7 +41,7 @@
 {
 	[super viewDidLoad];
 	feedbackResizingMask	=	self.feedbackView.autoresizingMask;
-	[self.chatView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.keithandthegirl.com/chat/iChatroom.aspx"]]];
+	[self loadChat];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -146,12 +150,20 @@
 - (void)handleActiveNotification:(NSNotification *)note
 {
 	//[super performSelector:@selector(handleActiveNotification:) withObject:note];
-	[self.chatView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.keithandthegirl.com/chat/iChatroom.aspx"]]];
+	[self loadChat];
 }
 - (void)handleInactiveNotification:(NSNotification *)note
 {
 	//[super performSelector:@selector(handleInactiveNotification:) withObject:note];
 	[self.chatView loadHTMLString:@"" baseURL:nil];
+}
+- (void)loadChat
+{
+	[self.chatView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.keithandthegirl.com/chat/iChatroom.aspx"]]];
+}
+- (void)loadError
+{
+	[self.chatView loadHTMLString:@"<html><head></head><body><p>Error<br /><a href=\"http://www.keithandthegirl.com/chat/iChat.aspx\">Try Again?</a></body></html>" baseURL:nil];
 }
 /******************************************************************************/
 #pragma mark -
@@ -160,7 +172,7 @@
 /******************************************************************************/
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-	[self.chatView loadHTMLString:@"Error" baseURL:nil];
+	[self loadError];
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
@@ -172,13 +184,64 @@
 }
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-#if 0
-	NSLog(@"\nRequest: %@\nHeaders: %@\nBody: %@", 
+#if 1
+	NSLog(@"\nRequest: %@\nHeaders: %@\nBody: %@\nType: %d", 
 		  request, 
 		  [request allHTTPHeaderFields], 
-		  [[[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding] autorelease]);	
+		  [[[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding] autorelease],
+		  navigationType);	
 #endif
+	if ((navigationType == UIWebViewNavigationTypeFormSubmitted) && 
+		[[request URL] isEqual:[NSURL URLWithString:@"http://www.keithandthegirl.com/chat/iChat-Login.aspx"]])
+	{
+		NSString *referer = [[request valueForHTTPHeaderField:@"Referer"] lowercaseString];
+		if ([referer isEqualToString:@"http://www.keithandthegirl.com/chat/ichat-login.aspx"])
+		{
+			[[DataModel sharedDataModel] loginToChatWithRequest:request];
+			return NO;
+		}
+	}
+	else if ((navigationType == UIWebViewNavigationTypeLinkClicked) &&
+			  [[request URL] isEqual:[NSURL URLWithString:@"http://www.keithandthegirl.com/chat/Chat-Login.aspx"]])
+	{
+		[self.chatView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.keithandthegirl.com/chat/iChat-Login.aspx"]]];
+		return NO;
+	}
+	else if ((navigationType == UIWebViewNavigationTypeLinkClicked) &&
+			 [[request URL] isEqual:[NSURL URLWithString:@"http://www.keithandthegirl.com/forums/register.php"]])
+	{
+		[self openRequest:request];
+		return NO;
+	}
+	else if ((navigationType == UIWebViewNavigationTypeLinkClicked) &&
+			 [[request URL] isEqual:[NSURL URLWithString:@"http://www.keithandthegirl.com/forums/login.php?do=lostpw"]])
+	{
+		[self openRequest:request];
+		return NO;
+	}
 	return YES;
+}
+- (void)openRequest:(NSURLRequest *)request
+{
+	ModalWebViewController_iPad	*	viewController	=	
+	[[ModalWebViewController_iPad alloc] init];
+	viewController.request					=	request;
+	viewController.modalPresentationStyle	=	UIModalPresentationFormSheet;
+	viewController.modalTransitionStyle		=	UIModalTransitionStyleFlipHorizontal;
+	[self presentModalViewController:viewController animated:YES];
+	[viewController release];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Data Model Delegate
+#pragma mark -
+/******************************************************************************/
+- (void)chatLoginSuccessful:(BOOL)chat
+{
+	if (chat)
+		[self loadChat];
+	else
+		[self loadError];
 }
 
 @end

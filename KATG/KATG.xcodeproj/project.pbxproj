@@ -37,6 +37,8 @@
 		915BED33129AC5620016FC42 /* KeithRelief@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 915BED2F129AC5620016FC42 /* KeithRelief@2x.png */; };
 		9163439C133E51600058C641 /* Picture.m in Sources */ = {isa = PBXBuildFile; fileRef = 9163439B133E51600058C641 /* Picture.m */; };
 		9163439E133E69270058C641 /* KATG.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 9163439D133E69270058C641 /* KATG.sqlite */; };
+		916AC57B13515FD30094743D /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 916AC57A13515FD30094743D /* Entitlements.plist */; };
+		916AC57D13515FE90094743D /* DebugEntitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 916AC57C13515FE90094743D /* DebugEntitlements.plist */; };
 		917E90FB1285CBB400875294 /* NetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E90FA1285CBB400875294 /* NetworkCache.m */; };
 		917E91A51285DFA600875294 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91A41285DFA600875294 /* Event.m */; };
 		917E91B71285E1EC00875294 /* ModelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 917E91B61285E1EC00875294 /* ModelTableViewController.m */; };
@@ -282,6 +284,8 @@
 		9163439A133E51600058C641 /* Picture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Picture.h; path = Shared/Model/Picture.h; sourceTree = "<group>"; };
 		9163439B133E51600058C641 /* Picture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Picture.m; path = Shared/Model/Picture.m; sourceTree = "<group>"; };
 		9163439D133E69270058C641 /* KATG.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = KATG.sqlite; path = Shared/KATG.sqlite; sourceTree = "<group>"; };
+		916AC57A13515FD30094743D /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		916AC57C13515FE90094743D /* DebugEntitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DebugEntitlements.plist; sourceTree = "<group>"; };
 		917E90F91285CBB400875294 /* NetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkCache.h; sourceTree = "<group>"; };
 		917E90FA1285CBB400875294 /* NetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkCache.m; sourceTree = "<group>"; };
 		917E91A31285DFA600875294 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
@@ -645,6 +649,8 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* KATG_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				916AC57A13515FD30094743D /* Entitlements.plist */,
+				916AC57C13515FE90094743D /* DebugEntitlements.plist */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -1708,6 +1714,8 @@
 				F5B775FF133E83B300FF96D3 /* Back@2x.png in Resources */,
 				F5B77600133E83B300FF96D3 /* Forward.png in Resources */,
 				F5B77601133E83B300FF96D3 /* Forward@2x.png in Resources */,
+				916AC57B13515FD30094743D /* Entitlements.plist in Resources */,
+				916AC57D13515FE90094743D /* DebugEntitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1861,7 +1869,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = DebugEntitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Doug Russell (U77D7975SM)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1874,10 +1883,11 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A2E96E0E-E84B-46FE-8395-403295CBBB73";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Debug;
 		};
@@ -1885,8 +1895,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Doug Russell";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1896,7 +1907,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CB52CDB5-F21E-487E-9705-EA0DD9ED0832";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1908,6 +1919,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Doug Russell";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
@@ -1921,7 +1933,7 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "95517781-A78F-404E-A6A8-1C20F2B698B9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "97805A58-0BC3-4569-8807-A2B3FD95A9AF";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

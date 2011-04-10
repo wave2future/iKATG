@@ -68,15 +68,13 @@
 								 count:[[operation.bodyBufferDict objectForKey:@"ShowCount"] intValue]];
 			break;
 		case kShowDetailsCode:
-			NSParameterAssert([result isKindOfClass:[NSArray class]]);
-			NSParameterAssert(([(NSArray *)result count] > 0));
+			NSParameterAssert([result isKindOfClass:[NSDictionary class]]);
 			if ([(NSArray *)result count] > 0)
-				[self procesShowDetails:[(NSArray *)result objectAtIndex:0] 
+				[self procesShowDetails:(NSDictionary *)result 
 								 withID:[operation.bodyBufferDict objectForKey:kShowIDKey]];
 			break;
 		case kShowPicturesCode:
 			NSParameterAssert([result isKindOfClass:[NSArray class]]);
-			//NSParameterAssert(([(NSArray *)result count] > 0));
 			[self procesShowPictures:result 
 							  withID:[operation.bodyBufferDict objectForKey:kShowIDKey]];
 			break;
@@ -109,6 +107,10 @@
 		case kGetTwitterImageCode:
 			NSParameterAssert([result isKindOfClass:[NSData class]]);
 			[self processGetTwitterImage:(NSData *)result forURL:operation.baseURL];
+			break;
+		case kChatCode:
+			NSParameterAssert([result isKindOfClass:[NSData class]]);
+			[self processChatLogin:(NSData *)result];
 			break;
 		default:
 			break;
@@ -150,23 +152,6 @@
 }
 /******************************************************************************/
 #pragma mark -
-#pragma mark 
-#pragma mark -
-/******************************************************************************/
-- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
-{
-	//	
-	//	Merge in any changes in other mocs on the main thread
-	//	
-	if ([NSThread isMainThread])
-		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
-	else
-		[self performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) 
-							   withObject:notification 
-							waitUntilDone:NO];
-}
-/******************************************************************************/
-#pragma mark -
 #pragma mark Live Show
 #pragma mark -
 /******************************************************************************/
@@ -181,6 +166,20 @@
 		[self nextLiveShowTime];
 	live			=	onAir;
 	[self notifyLiveShowStatus:live];
+}
+/******************************************************************************/
+#pragma mark -
+#pragma mark Chat
+#pragma mark -
+/******************************************************************************/
+- (void)processChatLogin:(id)result
+{
+	NSParameterAssert([result isKindOfClass:[NSData class]]);
+	NSString *resultString = [[[NSString alloc] initWithData:(NSData *)result encoding:NSUTF8StringEncoding] autorelease];
+	BOOL success = ([resultString rangeOfString:@"Login successful" options:NSCaseInsensitiveSearch].location != NSNotFound);
+	dispatch_async(dispatch_get_main_queue(), ^(void) {
+		[self notifyChatLogin:success];
+	});
 }
 /******************************************************************************/
 #pragma mark -
@@ -214,11 +213,9 @@
 		//	
 		NSArray	*	shows	=	(NSArray *)result;
 		//	
-		//	/*UNREVISEDCOMMENTS*/
+		//	Get a moc for this thread
 		//	
-		NSPersistentStoreCoordinator	*	psc			=	[self.managedObjectContext persistentStoreCoordinator];
-		NSManagedObjectContext			*	showContext	=	[[NSManagedObjectContext alloc] init];
-		showContext.persistentStoreCoordinator			=	psc;
+		NSManagedObjectContext			*	showContext	=	[self managedObjectContext];
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	
@@ -230,9 +227,8 @@
 		request.fetchLimit				=	count + 100;
 		NSPredicate	*	predicate		=	[NSPredicate predicateWithFormat:@"Number >= %d or TV == YES", kCutoffShow];
 		[request setPredicate:predicate];
-		NSError		*	anError;
-		NSArray		*	fetchResults	=	[managedObjectContext executeFetchRequest:request 
-																				error:&anError];
+		NSError		*	anError = nil;
+		NSArray		*	fetchResults	=	[showContext executeFetchRequest:request error:&anError];
 		if (fetchResults == nil)
 		{	// Handle Error
 			NSLog(@"%@", anError);
@@ -304,12 +300,8 @@
 		if (![showContext save:&error])
 		{	// Handle Error
 			ESLog(@"Core Data Error %@", error);
-#ifdef DEVELOPMENTBUILD
-            abort();
-#endif
 		}
 		[request release];
-		[showContext release];
 	}];
 }
 - (Show *)hasShow:(NSArray *)recentShows forID:(NSNumber *)ID

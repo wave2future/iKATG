@@ -136,7 +136,7 @@ typedef enum {
 	NSFetchRequest		*	request			=	[[NSFetchRequest alloc] init];
 	NSEntityDescription	*	entity			=	[NSEntityDescription 
 												 entityForName:@"Show" 
-												 inManagedObjectContext:self.context];
+												 inManagedObjectContext:[[DataModel sharedDataModel] managedObjectContext]];
 	request.entity							=	entity;
 	NSSortDescriptor	*	sortDescriptor	=	[[NSSortDescriptor alloc] 
 												 initWithKey:@"PDT" 
@@ -150,7 +150,7 @@ typedef enum {
 	NSFetchedResultsController	*	aFetchedResultsController	=	
 	[[NSFetchedResultsController alloc] 
 	 initWithFetchRequest:request 
-	 managedObjectContext:self.context 
+	 managedObjectContext:[[DataModel sharedDataModel] managedObjectContext] 
 	 sectionNameKeyPath:nil 
 	 cacheName:@"archives"];
 	aFetchedResultsController.delegate		=	self;

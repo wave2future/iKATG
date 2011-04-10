@@ -93,43 +93,45 @@
 	//	
 	//	Preflight request
 	//	
-	if ([NSURLConnection canHandleRequest:_request])
-	{
-		//	
-		//	Check cache for available data
-		//	
-		//NSCachedURLResponse	*	cachedResponse	=	[[NSURLCache sharedURLCache] cachedResponseForRequest:_request];
-		NSCachedURLResponse	*	cachedResponse	=	[[NetworkCache sharedNetworkCache] cachedResponseForRequest:_request];
-		if (cachedResponse != nil && !cancelled)
-		{
-#if 0
-			NSLog(@"Response From Cache");
-#endif
-			_response	=	[[cachedResponse response] retain];
-			_data		=	[[cachedResponse data] retain];
-			if ([(NSObject *)self.delegate respondsToSelector:@selector(networkRequestDone:data:)])
-				[self.delegate networkRequestDone:self data:_data];
-		}
-		else if (!cancelled)
-		{
-			_data								=	[[NSMutableData alloc] init];
-			_connection							=	[[NSURLConnection alloc] initWithRequest:_request delegate:self];
-			if (_connection == nil)
-			{	// Unable to make connection
-				CleanRelease(_data);
-				// Report error to delegate
-				NSError				*	error	=	[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
-				if ([(NSObject *)self.delegate respondsToSelector:@selector(networkRequestFailed:error:)])
-					[self.delegate networkRequestFailed:self error:error];
-			}
-		}
-	}
-	else if (!cancelled)
+	if (![NSURLConnection canHandleRequest:_request])
 	{	// Unable to preflight connection
 		// Report error to delegate
 		NSError					*	error	=	[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
 		if ([(NSObject *)self.delegate respondsToSelector:@selector(networkRequestFailed:error:)])
 			[self.delegate networkRequestFailed:self error:error];
+		
+		return;
+	}
+		
+	//	
+	//	Check cache for available data
+	//	
+	//NSCachedURLResponse	*	cachedResponse	=	[[NSURLCache sharedURLCache] cachedResponseForRequest:_request];
+	NSCachedURLResponse	*	cachedResponse	=	[[NetworkCache sharedNetworkCache] cachedResponseForRequest:_request];
+	if (cachedResponse != nil && !cancelled)
+	{
+#if 0
+		NSLog(@"Response From Cache");
+#endif
+		_response	=	[[cachedResponse response] retain];
+		_data		=	[[cachedResponse data] retain];
+		if ([(NSObject *)self.delegate respondsToSelector:@selector(networkRequestDone:data:)])
+			[self.delegate networkRequestDone:self data:_data];
+	}
+	else if (!cancelled)
+	{
+		_data								=	[[NSMutableData alloc] init];
+		_connection							=	[[NSURLConnection alloc] initWithRequest:_request delegate:self];
+		if (_connection == nil)
+		{	// Unable to make connection
+			CleanRelease(_data);
+			// Report error to delegate
+			NSError				*	error	=	[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
+			if ([(NSObject *)self.delegate respondsToSelector:@selector(networkRequestFailed:error:)])
+				[self.delegate networkRequestFailed:self error:error];
+			return;
+		}
+		[_connection start];
 	}
 }
 - (void)cancel

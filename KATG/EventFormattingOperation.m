@@ -146,8 +146,9 @@
 				[processedEvent setDateTime:dateTime];
 				
 				NSString	*	details		=	[event objectForKey:@"Details"];
-				if (!details || [details isEqualToString:@"NULL"]) details	=	@"";
-				[processedEvent setDetails:details];
+				if (!details || [details isEqualToString:@"NULL"])
+					details	=	@"";
+				[processedEvent setDetails:DecodeHTMLEntities(details)];
 				
 				NSString	*	day			=	[dateTimes objectForKey:@"Day"];
 				if (!day)		day			=	@"";

@@ -61,7 +61,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ESLogger);
 }
 - (id)init
 {
-	if ((self = [super init]))
+	self = [super init];
+	if (self)
 	{
 		NSString *path = AppDirectoryDocumentsPathAppended(@"Debug.log");
 		if (path)

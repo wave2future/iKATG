@@ -34,7 +34,7 @@
 {
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
-//	[self.activityIndicator startAnimating];
+	[self.activityIndicator startAnimating];
 	
 //	[self performSelector:@selector(loadTabs) withObject:nil afterDelay:4.0];
 	
@@ -63,7 +63,7 @@
 	[archiveViewController release];
 	[twitterViewController release];
 	
-//	[self.activityIndicator stopAnimating];
+	[self.activityIndicator stopAnimating];
 }
 - (void)applicationWillResignActive:(UIApplication *)application 
 {

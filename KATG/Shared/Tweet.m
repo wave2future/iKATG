@@ -60,5 +60,9 @@
 	[ImageURL release];
 	[super dealloc];
 }
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"{\n\tFrom : %@\n\tTo : %@\n\tDate : %@\n}\n", self.From, self.To, self.Date];
+}
 
 @end

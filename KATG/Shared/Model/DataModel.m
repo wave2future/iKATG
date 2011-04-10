@@ -87,6 +87,120 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 }
 /******************************************************************************/
 #pragma mark -
+#pragma mark Core Data Stack
+#pragma mark -
+/******************************************************************************/
+- (void)saveContext 
+{
+	NSError *error = nil;
+	if ([[self managedObjectContext] hasChanges] && ![[self managedObjectContext] save:&error]) 
+	{
+		ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		BasicAlert(@"Database Error", @"Application database is incompatible, please reinstall app.", nil, @"OK", nil);
+	} 
+}
+#define kMOCKey @"moc"
+- (NSManagedObjectContext *)managedObjectContext 
+{
+	/**
+	 Returns the managed object context for the application.
+	 If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
+	 */
+	
+	NSManagedObjectContext	*	context	=	[[[NSThread currentThread] threadDictionary] objectForKey:kMOCKey];
+	if (context)
+		return context;
+	
+	context								=	[[NSManagedObjectContext alloc] init];
+	if (context)
+	{
+		[context setPersistentStoreCoordinator:[self persistentStoreCoordinator]];
+		[[[NSThread currentThread] threadDictionary] setObject:context forKey:kMOCKey];
+		[context release];
+	}
+	
+	return context;
+}
+- (NSManagedObjectModel *)managedObjectModel 
+{
+	/**
+	 Returns the managed object model for the application.
+	 If the model doesn't already exist, it is created from the application's model.
+	 */
+	if (managedObjectModel_ != nil)
+		return managedObjectModel_;
+	
+	NSString	*	modelPath	=	[[NSBundle mainBundle] pathForResource:@"KATG" ofType:@"momd"];
+	NSURL		*	modelURL	=	[NSURL fileURLWithPath:modelPath];
+	managedObjectModel_			=	[[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
+	return managedObjectModel_;
+}
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
+{//http://iphonedevelopment.blogspot.com/2010/08/core-data-starting-data.html
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		NSString	*	defaultStorePath	=	[[NSBundle bundleForClass:[self class]] pathForResource:@"KATG" ofType:@"sqlite"];
+        NSString	*	storePath			=	[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"KATG.sqlite"];
+        
+        NSError		*	error				=	nil;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:storePath]) 
+        {
+            if ([[NSFileManager defaultManager] copyItemAtPath:defaultStorePath 
+														toPath:storePath 
+														 error:&error])
+                NSLog(@"Copied starting data to %@", storePath);
+            else 
+                NSLog(@"Error copying default DB to %@ (%@)", storePath, error);
+        }
+        
+        NSURL		*	storeURL			=	[NSURL fileURLWithPath:storePath];
+        
+        persistentStoreCoordinator_			=	[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+        
+        NSDictionary	*	options			=	[NSDictionary dictionaryWithObjectsAndKeys:
+												 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+												 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+		
+        if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType 
+													   configuration:nil 
+																 URL:storeURL 
+															 options:options 
+															   error:&error]) 
+        {
+			NSLog(@"PSC error %@, %@", error, [error userInfo]);
+			error	=	nil;
+			[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+			if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType 
+														   configuration:nil URL:storeURL 
+																 options:options 
+																   error:&error]) 
+			{
+				ESLog(@"Unresolved error %@, %@", error, [error userInfo]);
+				BasicAlert(@"Database Error", @"Application database is incompatible, please reinstall app.", nil, @"OK", nil);
+			}
+		}
+	});
+	
+	return persistentStoreCoordinator_;
+}
+- (NSString *)applicationDocumentsDirectory
+{
+	/**
+	 Returns the path to the application's Documents directory.
+	 */
+	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+}
+- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
+{
+	if ([NSThread isMainThread])
+		[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
+	else
+		[self performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) 
+							   withObject:notification 
+							waitUntilDone:NO];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark Live Show Status
 #pragma mark -
 /******************************************************************************/
@@ -231,6 +345,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 }
 /******************************************************************************/
 #pragma mark -
+#pragma mark Chat
+#pragma mark -
+/******************************************************************************/
+- (void)loginToChatWithRequest:(NSURLRequest *)request
+{
+	if (!request)
+		return;
+	
+	NetworkOperation	*	op	=	[[NetworkOperation alloc] init];
+	op.delegate					=	self;
+	op.instanceCode				=	kChatCode;
+	op.request					=	request;
+	if (connected)
+		[operationQueue addOperation:op];
+	else
+		[delayedOperations addObject:op];
+	[op release];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark Events
 #pragma mark -
 /******************************************************************************/
@@ -310,8 +444,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 #else
 	op.URI						=	kEventsFeedAddress;
 #endif
-	op.parseType				=	ParseXML;
-	op.xPath					=	kEventsXPath;
+	op.parseType				=	ParseJSONArray;
 	if (connected)
 		[operationQueue addOperation:op];
 	else
@@ -399,8 +532,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	op.requestType				=	POST;
 	op.bodyBufferDict			=	[NSDictionary dictionaryWithObjectsAndKeys:
 									 [[ID copy] autorelease], kShowIDKey, nil];
-	op.parseType				=	ParseXML;
-	op.xPath					=	kShowDetailsXPath;
+	op.parseType				=	ParseJSONDictionary;
 	if (connected)
 		[operationQueue addOperation:op];
 	else
@@ -420,8 +552,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 	op.requestType				=	POST;
 	op.bodyBufferDict			=	[NSDictionary dictionaryWithObjectsAndKeys:
 									 [[ID copy] autorelease], kShowIDKey, nil];
-	op.parseType				=	ParseXML;
-	op.xPath					=	kShowPicturesXPath;
+	op.parseType				=	ParseJSONArray;
 	if (connected)
 		[operationQueue addOperation:op];
 	else

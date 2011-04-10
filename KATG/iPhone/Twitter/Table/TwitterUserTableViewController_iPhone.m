@@ -19,7 +19,7 @@
 
 #import "TwitterUserTableViewController_iPhone.h"
 #import "Tweet.h"
-#import "TwitterDetailViewController.h"
+#import "TwitterDetailViewController_iPhone.h"
 
 @implementation TwitterUserTableViewController_iPhone
 
@@ -43,7 +43,7 @@
 /******************************************************************************/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	TwitterDetailViewController	*	viewController	=	[[TwitterDetailViewController alloc] init];
+	TwitterDetailViewController_iPhone	*	viewController	=	[[TwitterDetailViewController_iPhone alloc] init];
 	viewController.item								=	[self.items objectAtIndex:indexPath.row];
 	[self.navigationController pushViewController:viewController animated:YES];
 	[viewController release];

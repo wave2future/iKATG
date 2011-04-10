@@ -36,6 +36,10 @@
 //	
 //	/*UNREVISEDCOMMENT*/
 //	
+- (void)chatLoginSuccessful:(BOOL)chat;
+//	
+//	/*UNREVISEDCOMMENT*/
+//	
 - (void)eventsAvailable:(NSArray *)events;
 //	
 //	/*UNREVISEDCOMMENT*/

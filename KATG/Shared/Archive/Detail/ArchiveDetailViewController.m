@@ -44,9 +44,9 @@
 {
 	[super viewDidLoad];
 	[self updateFields];
-	self.show = [model fetchShow:self.showObjectID showID:self.showID];
+	self.show = [[DataModel sharedDataModel] fetchShow:self.showObjectID showID:self.showID];
 	if (self.show)
-		[model showDetails:[NSString stringWithFormat:@"%@", show.ID]];
+		[[DataModel sharedDataModel] showDetails:[NSString stringWithFormat:@"%@", show.ID]];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -125,9 +125,12 @@
 }
 - (void)updateFields
 {
-	self.showTitleLabel.text	=	[self.show Title];
-	self.showNumberLabel.text	=	[NSString stringWithFormat:@"Show %@", [self.show Number]];
-	self.showGuestsLabel.text	=	[self.show Guests];
+	self.showTitleLabel.text		=	[self.show Title];
+	if ([self.show Number])
+		self.showNumberLabel.text	=	[NSString stringWithFormat:@"Show %@", [self.show Number]];
+	else
+		self.showNumberLabel.text	=	@"";
+	self.showGuestsLabel.text		=	[self.show Guests];
 	
 	if ([self.show Notes])
 		self.showNotesTextView.text	=	[self.show Notes];

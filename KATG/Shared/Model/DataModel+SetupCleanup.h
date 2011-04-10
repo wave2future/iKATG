@@ -27,8 +27,10 @@ NSMutableArray * CreateNonRetainingArray();
 - (void)registerNotifications;
 
 - (void)cleanup;
+- (void)cleanupCoreData;
 - (void)cleanupDateFormatters;
 - (void)cleanupOperations;
+- (void)cleanupNotifications;
 
 - (void)checkReachability;
 - (void)updateReachability:(Reachability*)curReach;

@@ -158,18 +158,18 @@ NSMutableArray * CreateNonRetainingArray()
 	//	
 	//	
 	//	
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:self 
-	 selector:@selector(mergeChangesFromContextDidSaveNotification:) 
-	 name:NSManagedObjectContextDidSaveNotification 
-	 object:nil];
-	//	
-	//	
-	//	
 	[[NSNotificationCenter defaultCenter] 
 	 addObserver:self 
 	 selector:@selector(lowMemoryWarning:) 
 	 name:UIApplicationDidReceiveMemoryWarningNotification 
+	 object:nil];
+	//	
+	//	Core Data Synchronization
+	//	
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self 
+	 selector:@selector(mergeChangesFromContextDidSaveNotification:) 
+	 name:NSManagedObjectContextDidSaveNotification 
 	 object:nil];
 }
 - (void)lowMemoryWarning:(NSNotification *)notification
@@ -185,8 +185,10 @@ NSMutableArray * CreateNonRetainingArray()
 - (void)dealloc
 {
 	[self cleanup];
+	[self cleanupCoreData];
 	[self cleanupDateFormatters];
 	[self cleanupOperations];
+	[self cleanupNotifications];
 	[super dealloc];
 }
 - (void)cleanup
@@ -194,12 +196,31 @@ NSMutableArray * CreateNonRetainingArray()
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	CleanRelease(delegates);
 	CleanRelease(cacheDirectoryPath);
-	CleanRelease(managedObjectContext);
 	CleanRelease(hostReach);
 	CleanRelease(twitterSearchRefreshURL);
 	CleanRelease(twitterExtendedSearchRefreshURL);
 	CleanRelease(twitterHashSearchRefreshURL);
 	CleanRelease(pictureCacheDictionary);
+}
+- (void)cleanupNotifications
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self 
+													name:kReachabilityChangedNotification 
+												  object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self 
+													name:UIApplicationWillTerminateNotification 
+												  object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self 
+													name:NSManagedObjectContextDidSaveNotification 
+												  object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self 
+													name:UIApplicationDidReceiveMemoryWarningNotification 
+												  object:nil];
+}
+- (void)cleanupCoreData
+{
+	[managedObjectModel_ release];
+	[persistentStoreCoordinator_ release];
 }
 - (void)cleanupDateFormatters
 {

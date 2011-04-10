@@ -46,10 +46,6 @@
 	BOOL						connected;
 	NetworkStatus				connectionType;
 	//
-	//  Core Data Context
-	//
-	NSManagedObjectContext	*	managedObjectContext;
-	//
 	//  Default location for storing data
 	//
 	NSString				*	cacheDirectoryPath;
@@ -83,6 +79,11 @@
 	//	
 	//	
 	BOOL						live;
+	//	
+	//	Core Data Stack
+	//	
+	NSManagedObjectModel			*	managedObjectModel_;
+	NSPersistentStoreCoordinator	*	persistentStoreCoordinator_;
 }
 
 /******************************************************************************/
@@ -93,7 +94,9 @@
 @property (nonatomic, retain)			NSMutableArray	*	delegates;
 @property (readwrite, assign, getter=isConnected)	BOOL	connected;
 @property (nonatomic, readonly)				NetworkStatus	connectionType;
-@property (nonatomic, retain)	NSManagedObjectContext	*	managedObjectContext;
+@property (nonatomic, retain, readonly)	NSManagedObjectContext			*	managedObjectContext;
+@property (nonatomic, retain, readonly)	NSManagedObjectModel			*	managedObjectModel;
+@property (nonatomic, retain, readonly)	NSPersistentStoreCoordinator	*	persistentStoreCoordinator;
 /******************************************************************************/
 #pragma mark -
 #pragma mark Setup Methods
@@ -119,6 +122,13 @@
 - (void)removeDelegate:(id<DataModelDelegate>)delegate;
 /******************************************************************************/
 #pragma mark -
+#pragma mark Core Data Stack
+#pragma mark -
+/******************************************************************************/
+- (NSString *)applicationDocumentsDirectory;
+- (void)saveContext;
+/******************************************************************************/
+#pragma mark -
 #pragma mark API Calls
 #pragma mark -
 /******************************************************************************/
@@ -132,6 +142,10 @@
 //	/*UNREVISEDCOMMENTS*/
 //	
 - (void)nextLiveShowTime;
+//	
+//	Login To Chat
+//	
+- (void)loginToChatWithRequest:(NSURLRequest *)request;
 //	
 //  Submit feedback to hosts
 //  Doesn't return any confirmation of success

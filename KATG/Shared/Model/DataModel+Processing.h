@@ -43,6 +43,7 @@
 - (Show *)hasShow:(NSArray *)recentShows forID:(NSNumber *)ID;
 - (void)procesShowDetails:(NSDictionary *)details withID:(NSString *)ID;
 - (void)procesShowPictures:(NSArray *)pictures withID:(NSString *)ID;
+- (void)processGetImage:(NSData *)imgData forURL:(NSString *)url;
 /******************************************************************************/
 #pragma mark -
 #pragma mark Twitter

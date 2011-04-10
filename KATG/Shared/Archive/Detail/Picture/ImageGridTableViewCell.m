@@ -71,9 +71,10 @@
 		CGFloat sideDimension = [ImageGridTableViewCell imageSideDimension];
 		ImageGridButton *button = [[ImageGridButton alloc] initWithFrame:CGRectMake(0, 1, sideDimension, sideDimension) 
 																   image:image 
-																   index:((row * _images.count) + i) 
+																   index:((row * 3) + i) 
 																  target:target 
 																  action:action];
+		NSLog(@"Row %d Image Number %d", row, ((row * 3) + i));
 		if (button)
 		{
 			[_imageViews addObject:button];

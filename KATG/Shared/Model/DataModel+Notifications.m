@@ -45,6 +45,21 @@
 }
 /******************************************************************************/
 #pragma mark -
+#pragma mark Chat
+#pragma mark -
+/******************************************************************************/
+- (void)notifyChatLogin:(BOOL)chat
+{
+	NSMutableArray	*	dlgts	=	[[NSMutableArray alloc] initWithArray:delegates];
+	for (id delegate in dlgts)
+	{
+		if ([delegate respondsToSelector:@selector(chatLoginSuccessful:)])
+			[delegate chatLoginSuccessful:chat];
+	}
+	[dlgts release];
+}
+/******************************************************************************/
+#pragma mark -
 #pragma mark Live Show Status
 #pragma mark -
 /******************************************************************************/

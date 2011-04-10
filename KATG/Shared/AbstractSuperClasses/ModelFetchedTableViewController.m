@@ -25,7 +25,7 @@
 @end
 
 @implementation ModelFetchedTableViewController
-@dynamic fetchedResultsController, context;
+@dynamic fetchedResultsController;
 @synthesize activityIndicator;
 
 /******************************************************************************/
@@ -49,7 +49,6 @@
 {
     [model removeDelegate:self]; model = nil;
 	CleanRelease(_fetchedResultsController);
-	CleanRelease(_context);
 	CleanRelease(activityIndicator);
 	[super dealloc];
 }
@@ -74,14 +73,6 @@
 	//	
 	model	=	[DataModel sharedDataModel];
 	[model addDelegate:self];
-	//	
-	//	
-	//	
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:self 
-	 selector:@selector(mergeChangesFromContextDidSaveNotification:) 
-	 name:NSManagedObjectContextDidSaveNotification 
-	 object:nil];
 	//	
 	//	
 	//	
@@ -113,26 +104,10 @@
 	CleanRelease(_fetchedResultsController);
 	_fetchedResultsController	=	fetchedResultsController;
 }
-- (NSManagedObjectContext *)context
-{
-	if (_context)
-		return _context;
-	NSPersistentStoreCoordinator	*	psc		=	[model.managedObjectContext persistentStoreCoordinator];
-	_context									=	[[NSManagedObjectContext alloc] init];
-	_context.persistentStoreCoordinator			=	psc;
-	return _context;
-}
-- (void)setContext:(NSManagedObjectContext *)context
-{
-	[context retain];
-	CleanRelease(_context);
-	_context	=	context;
-}
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
 	self.fetchedResultsController	=	nil;
-	self.context					=	nil;
 	self.activityIndicator			=	nil;
 }
 /******************************************************************************/
@@ -144,20 +119,6 @@
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait ||
 			interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
-}
-/******************************************************************************/
-#pragma mark -
-#pragma mark Core Data
-#pragma mark -
-/******************************************************************************/
-- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
-{
-	if ([NSThread isMainThread])
-		[self.context mergeChangesFromContextDidSaveNotification:notification];
-	else
-		[self performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) 
-							   withObject:notification 
-							waitUntilDone:NO];
 }
 /******************************************************************************/
 #pragma mark -
