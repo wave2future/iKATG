@@ -86,7 +86,7 @@ typedef enum {
 //	Logging
 //	
 
-#define LogEventCaching 1
+#define LogEventCaching 0
 
 //	
 //	Testing

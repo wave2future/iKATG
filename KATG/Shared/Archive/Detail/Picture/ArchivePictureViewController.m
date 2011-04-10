@@ -34,7 +34,8 @@
 /******************************************************************************/
 - (id)init
 {
-	if ((self = [super initWithStyle:UITableViewStylePlain]))
+	self = [super initWithStyle:UITableViewStylePlain];
+	if (self)
 	{
 		
 	}

@@ -443,11 +443,11 @@
 		//	
 		//	/*UNREVISEDCOMMENTS*/
 		//	
-		CGFloat		scale	=	1.0;
-		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
-			scale			=	[[UIScreen mainScreen] scale];
-		if (scale != 1.0)
-			image = [UIImage imageWithCGImage:image.CGImage scale:scale orientation:UIImageOrientationUp];
+		//CGFloat		scale	=	1.0;
+		//if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+		//	scale			=	[[UIScreen mainScreen] scale];
+		//if (scale != 1.0)
+		//	image = [UIImage imageWithCGImage:image.CGImage scale:scale orientation:UIImageOrientationUp];
 		
 		[self addToCache:imgData key:url];
 		

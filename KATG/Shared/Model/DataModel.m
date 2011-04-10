@@ -573,10 +573,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(DataModel);
 		UIImage		*	image	=	[UIImage imageWithData:imageData];
 		if (image)
 		{
-			CGFloat		scale	=	[[UIScreen mainScreen] scale];
-			if (scale != 1.0)
-				image			=	[UIImage imageWithCGImage:image.CGImage scale:scale orientation:0];
-			if (image)
+			//CGFloat		scale	=	[[UIScreen mainScreen] scale];
+			//if (scale != 1.0)
+			//	image			=	[UIImage imageWithCGImage:image.CGImage scale:scale orientation:0];
+			//if (image)
 				return image;
 		}
 	}

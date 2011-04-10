@@ -15,8 +15,8 @@
 #import "AudioStreamer.h"
 #import <CFNetwork/CFNetwork.h>
 
-#define LOG 1
-#define VERBOSE_ERRORS 1
+#define LOG 0
+#define VERBOSE_ERRORS 0
 
 NSString	*	const	ASStatusChangedNotification						=	@"ASStatusChangedNotification";
 NSString	*	const	AS_NO_ERROR_STRING								=	@"No error.";
@@ -209,7 +209,6 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 }
 @implementation AudioStreamer
 @synthesize	errorCode;
-@synthesize	state;
 @synthesize	bitRate;
 @dynamic	progress;
 //	
@@ -397,6 +396,10 @@ void ASReadStreamCallBack (CFReadStreamRef		aStream,
 //	Parameters:
 //		anErrorCode - the error condition
 //	
+- (AudioStreamerState)state
+{
+	return state;
+}
 - (void)setState:(AudioStreamerState)aStatus
 {
 	@synchronized(self)

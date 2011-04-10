@@ -20,7 +20,7 @@
 
 + (CGFloat)cellHeight
 {
-	return 102 / [[UIScreen mainScreen] scale];
+	return 102 / 1;//[[UIScreen mainScreen] scale];
 }
 + (CGFloat)imageSideDimension
 {
